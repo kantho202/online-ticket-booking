@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 const Logo = () => {
     return (
         <div>
-             <Link className="flex justify-center items-center font-bold logo text-xl"> 
+             <Link to="/" className="flex justify-center items-center font-bold logo text-xl"> 
                 <MdOutlineAirplaneTicket color='orange' size={33} />EasyTrip <span className='text-orange-400'>Ticket</span></Link>
         </div>
     );

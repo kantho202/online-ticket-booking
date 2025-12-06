@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import SocialLogin from './SocialLogin';
 import { Bounce, toast } from 'react-toastify';
 const Register = () => {
-    const { createUser } = useAuth();
+    const {  createUser,updateUserProfile } = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm()
     const navigate = useNavigate()
     const location = useLocation()
@@ -14,10 +14,19 @@ const Register = () => {
     const handleRegister = (data) => {
         console.log(data)
 
+
         createUser(data.email, data.password)
             .then(result => {
                 console.log(result.user)
-                navigate(location.state || "/")
+                const userProfile={
+                    displayName:data.name,
+                    photoURL:data.photo
+                }
+                updateUserProfile(userProfile)
+                    .then(() => {
+                        console.log("Profile Updated!");
+                        navigate(location.state || "/");
+                    })
             })
             .catch(error => {
                 console.log(error)

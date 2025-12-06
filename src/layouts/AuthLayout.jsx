@@ -1,10 +1,7 @@
 
 import React from 'react';
-
 import { Outlet } from 'react-router';
-import Loading from '../components/Loading/Loading';
 import Logo from '../components/Logo/Logo';
-import Navbar from '../pages/Shares/Navbar';
 const AuthLayout = () => {
    
     return (

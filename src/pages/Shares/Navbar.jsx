@@ -21,8 +21,29 @@ const Navbar = () => {
     }
     return (
         <div className="navbar bg-[#faf7f5] w-11/12 mx-auto ">
+               <div className="lg:hidden">
+                    <input id="my-drawer-1" type="checkbox" className="drawer-toggle" />
+                    <div className="drawer-content">
+
+
+                        <label htmlFor="my-drawer-1" className="">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
+
+                        </label>
+                    </div>
+                    <div className="drawer-side flex items-end ">
+                        <label htmlFor="my-drawer-1" aria-label="close sidebar" className="drawer-overlay"></label>
+                        <ul className="menu bg-base-200 min-h-full text-center w-80 p-4">
+
+                            {links}
+                            <Link to="/login" className="btn btn-sm mr-4 mb-3 btn-outline w-full ">LogIn</Link>
+                            <Link to="/register" className="btn btn-sm w-full my-btn ">Register</Link>
+                        </ul>
+                    </div>
+                </div>
+
             <div className="navbar-start">
-                <div className="dropdown">
+                {/* <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
                     </div>
@@ -31,7 +52,7 @@ const Navbar = () => {
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
                        {links}
                     </ul>
-                </div>
+                </div> */}
                <Logo></Logo>
             </div>
             <div className="navbar-center hidden lg:flex">

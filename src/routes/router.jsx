@@ -2,12 +2,17 @@ import { createBrowserRouter } from "react-router";
 import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/Home/Home/Home";
 import AllTickets from "../pages/AllTickets/AllTickets";
-import Dashboard from "../pages/Dashboard/Dashboard";
 import AuthLayout from "../layouts/AuthLayout";
 import LogIn from "../pages/Auth/LogIn";
 import Register from "../pages/Auth/Register";
 import ForgetPassword from "../pages/Auth/ForgetPassword";
 import PrivateRoute from "./PrivateRoute";
+import DashboardLayout from "../layouts/DashboardLayout";
+import VendorProfile from "../pages/Dashboard/VendorProfile/VendorProfile";
+import AddTicket from "../pages/Dashboard/AddTicket/AddTicket";
+import MyAddedTickets from "../pages/Dashboard/MyAddedTickets/MyAddedTickets";
+import RequestedBooking from "../pages/Dashboard/RequestedBooking/RequestedBooking";
+import RevenueOverview from "../pages/Dashboard/RevenueOverview/RevenueOverview";
 
 export const router = createBrowserRouter([
   {
@@ -24,12 +29,6 @@ export const router = createBrowserRouter([
           <AllTickets></AllTickets>
         </PrivateRoute>
       },
-      {
-        path:'/dashboard',
-        element:<PrivateRoute>
-          <Dashboard></Dashboard>
-        </PrivateRoute>
-      }
     ]
   },
    {
@@ -52,4 +51,33 @@ export const router = createBrowserRouter([
 
         ]
     },
+    {
+      path:'/dashboard',
+      element:<PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>,
+      children:[
+        {
+          path:'vendorProfile',
+          Component:VendorProfile
+        },
+        {
+          path:'addTicket',
+          Component:AddTicket
+        },
+        {
+          path:'myAddedTickets',
+          Component:MyAddedTickets
+        },
+        {
+          path:'RequestedBooking',
+          Component:RequestedBooking
+        },
+        {
+          path:'RevenueOverview',
+          Component:RevenueOverview
+        },
+       
+      ]
+    }
 ]);
