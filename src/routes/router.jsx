@@ -17,67 +17,68 @@ import RevenueOverview from "../pages/Dashboard/RevenueOverview/RevenueOverview"
 export const router = createBrowserRouter([
   {
     path: "/",
-    Component:RootLayout,
-    children:[
+    Component: RootLayout,
+    children: [
       {
-        index:true,
-        Component:Home
+        index: true,
+        Component: Home
       },
       {
-        path:'/allTickets',
-        element:<PrivateRoute>
+        path: '/allTickets',
+        element: <PrivateRoute>
           <AllTickets></AllTickets>
         </PrivateRoute>
       },
     ]
   },
-   {
-        path: '/',
-        element: <AuthLayout></AuthLayout>,
-        children: [
-            {
-                path: 'login',
-                Component: LogIn
-            },
-            {
-                path: '/register',
-                Component:Register
-            },
-            {
-              path:'forget-password',
-              Component:ForgetPassword
-            }
-           
+  {
+    path: '/',
+    element: <AuthLayout></AuthLayout>,
+    children: [
+      {
+        path: 'login',
+        Component: LogIn
+      },
+      {
+        path: '/register',
+        Component: Register
+      },
+      {
+        path: 'forget-password',
+        Component: ForgetPassword
+      }
 
-        ]
-    },
-    {
-      path:'/dashboard',
-      element:<PrivateRoute>
-        <DashboardLayout></DashboardLayout>
-      </PrivateRoute>,
-      children:[
-        {
-          path:'vendorProfile',
-          Component:VendorProfile
-        },
-        {
-          path:'addTicket',
-          Component:AddTicket
-        },
-        {
-          path:'myAddedTickets',
-          Component:MyAddedTickets
-        },
-        {
-          path:'RequestedBooking',
-          Component:RequestedBooking
-        },
-        {
-          path:'RevenueOverview',
-          Component:RevenueOverview
-        },
-       
-      ]
-    }
+
+    ]
+  },
+  {
+    path: '/dashboard',
+    element: <PrivateRoute>
+      <DashboardLayout></DashboardLayout>
+    </PrivateRoute>,
+    children: [
+      {
+        path: 'vendorProfile',
+        Component: VendorProfile
+      },
+      {
+        path: 'addTicket',
+        loader: () => fetch('/serviceCenter.json').then(res => res.json()),
+        Component: AddTicket
+      },
+      {
+        path: 'myAddedTickets',
+        Component: MyAddedTickets
+      },
+      {
+        path: 'RequestedBooking',
+        Component: RequestedBooking
+      },
+      {
+        path: 'RevenueOverview',
+        Component: RevenueOverview
+      },
+
+    ]
+  }
 ]);
