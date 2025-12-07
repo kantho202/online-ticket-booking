@@ -72,7 +72,7 @@ const Register = () => {
                                 className="input bg-white w-full"
                                 placeholder="Photo url" />
                             {
-                                errors.name?.type === "required" &&
+                                errors.photo?.type === "required" &&
                                 <p className='text-red-500'>Photo url is required</p>
                             }
                         </div>

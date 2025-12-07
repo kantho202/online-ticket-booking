@@ -8,7 +8,7 @@ const Navbar = () => {
     const links=<>
     <li><NavLink to="/">Home</NavLink></li>
     <li><NavLink to="/allTickets">All Tickets</NavLink></li>
-    <li><NavLink to="/dashboard">Dashboard</NavLink></li>
+    <li><NavLink to="/dashboard/vendorProfile">Dashboard</NavLink></li>
     </>
     const handleLogout=()=>{
             signOutUser()
@@ -62,7 +62,33 @@ const Navbar = () => {
             </div>
             <div className="navbar-end space-x-2.5">
                 {
-                    user ?   <button onClick={handleLogout} className='btn btn-primary btn-outline'>Logout</button>
+                    user ?  
+                    //  <button onClick={handleLogout} className='btn btn-primary btn-outline'>Logout</button>
+                     <div className="flex gap-2 mr-4">
+
+                            <div className="dropdown dropdown-end">
+                                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                    <div className="w-10 rounded-full">
+                                        <img
+                                            alt="Tailwind CSS Navbar component"
+                                            src={user?.photoURL} />
+                                    </div>
+                                </div>
+                                <ul
+                                    tabIndex="-1"
+                                    className="menu menu-md dropdown-content bg-base-100 rounded-box z-2 mt-3 w-70 p-2 shadow">
+                                    <li className=''>
+                                        <Link to="/dashboard/vendorProfile" className="justify-between mb-3 ">
+                                            {user?.displayName}
+                                            <span className="badge">New</span>
+                                        </Link>
+                                    </li>
+                                    <li><Link to="/dashboard/vendorProfile" className='mb-3 p-2'>{user?.email}</Link></li>
+                                    <button onClick={handleLogout} className='btn btn-sm btn-outline my-btn '>LogOut</button>
+
+                                </ul>
+                            </div>
+                        </div>
                     :
                     <>
                         <Link to="/login"><button className='btn btn-primary btn-outline'>Log in</button></Link>

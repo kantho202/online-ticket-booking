@@ -13,6 +13,7 @@ import AddTicket from "../pages/Dashboard/AddTicket/AddTicket";
 import MyAddedTickets from "../pages/Dashboard/MyAddedTickets/MyAddedTickets";
 import RequestedBooking from "../pages/Dashboard/RequestedBooking/RequestedBooking";
 import RevenueOverview from "../pages/Dashboard/RevenueOverview/RevenueOverview";
+import Error from "../components/Error/Error";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
           <AllTickets></AllTickets>
         </PrivateRoute>
       },
+      {
+        path:'*',
+        Component:Error
+      }
     ]
   },
   {

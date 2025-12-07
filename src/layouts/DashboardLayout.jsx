@@ -21,7 +21,7 @@ const DashboardLayout = () => {
                     <Link to="/" className="px-4"><Logo></Logo></Link>
                 </nav>
                 {/* Page content here */}
-                <div className="p-4"><Outlet></Outlet></div>
+                <div className=""><Outlet></Outlet></div>
             </div>
 
             <div className="drawer-side is-drawer-close:overflow-visible">
@@ -41,7 +41,7 @@ const DashboardLayout = () => {
                         </li>
                         <li>
                             <Link to="/dashboard/vendorProfile">
-                                <button className=" is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center " data-tip="vendorProfile">
+                                <button className=" is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center " data-tip="Vendor Profile">
                                     {/* Home icon */}
                                     <FaUserTie />
                                     <span className="is-drawer-close:hidden pl-2">Vendor Profile</span>
