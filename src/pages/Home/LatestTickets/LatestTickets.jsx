@@ -17,8 +17,8 @@ const LatestTickets = () => {
         console.log('clicked')
     }
     return (
-        <div className='bg-[#faf7f5]'>
-            <h1>home ticket {homeTicket.length}</h1>
+        <div className='bg-[#faf7f5] py-10'>
+            {/* <h1>home ticket {homeTicket.length}</h1> */}
             <div className="p-6 min-h-screen bg-[#faf7f5]">
                 <h1 className="text-2xl font-bold text-gray-800 mb-8 text-center">Latest Tickets</h1>
 
@@ -77,7 +77,7 @@ const LatestTickets = () => {
 
                                 {/* Action Buttons */}
                                 <div className="pt-3 flex justify-between">
-                                    <Link to=""
+                                    <Link to={`/seeDetails/${ticket._id}`}
                                         onClick={handleSeeDetails}
                                         className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition">
                                         SeeDetails

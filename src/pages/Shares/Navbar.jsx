@@ -79,11 +79,12 @@ const Navbar = () => {
                                     className="menu menu-md dropdown-content bg-base-100 rounded-box z-2 mt-3 w-70 p-2 shadow">
                                     <li className=''>
                                         <Link to="/dashboard/vendorProfile" className="justify-between mb-3 ">
-                                            {user?.displayName}
-                                            <span className="badge">New</span>
+                                            <h2>My Profile</h2>
+                                            {/* {user?.displayName} */}
+                                            {/* <span className="badge">New</span> */}
                                         </Link>
                                     </li>
-                                    <li><Link to="/dashboard/vendorProfile" className='mb-3 p-2'>{user?.email}</Link></li>
+                                    {/* <li><Link to="/dashboard/vendorProfile" className='mb-3 p-2'>{user?.email}</Link></li> */}
                                     <button onClick={handleLogout} className='btn btn-sm btn-outline my-btn '>LogOut</button>
 
                                 </ul>

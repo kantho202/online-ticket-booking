@@ -14,6 +14,9 @@ import MyAddedTickets from "../pages/Dashboard/MyAddedTickets/MyAddedTickets";
 import RequestedBooking from "../pages/Dashboard/RequestedBooking/RequestedBooking";
 import RevenueOverview from "../pages/Dashboard/RevenueOverview/RevenueOverview";
 import Error from "../components/Error/Error";
+import TicketDetails from "../pages/Home/LatestTickets/TicketDetails";
+import MyBookedTickets from "../pages/Dashboard/MyBookedTickets/MyBookedTickets";
+// import TicketDetails from "../pages/Home/LatestTickets/TicketDetails";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +32,10 @@ export const router = createBrowserRouter([
         element: <PrivateRoute>
           <AllTickets></AllTickets>
         </PrivateRoute>
+      },
+      {
+        path:'/seeDetails/:id',
+        element:<TicketDetails></TicketDetails>
       },
       {
         path:'*',
@@ -70,6 +77,10 @@ export const router = createBrowserRouter([
         path: 'addTicket',
         loader: () => fetch('/serviceCenter.json').then(res => res.json()),
         Component: AddTicket
+      },
+      {
+        path: 'myBookedTickets',
+        Component: MyBookedTickets
       },
       {
         path: 'myAddedTickets',

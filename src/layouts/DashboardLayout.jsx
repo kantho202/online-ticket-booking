@@ -4,8 +4,9 @@ import Logo from '../components/Logo/Logo';
 import { FaUserTie } from 'react-icons/fa';
 import { IoTicket } from 'react-icons/io5';
 import { LuTicketsPlane } from 'react-icons/lu';
-import { HiOutlineDocumentSearch } from 'react-icons/hi';
+import { HiOutlineDocumentSearch, HiTicket } from 'react-icons/hi';
 import { RiLineChartLine } from 'react-icons/ri';
+import { BsTicketPerforated } from 'react-icons/bs';
 
 const DashboardLayout = () => {
     return (
@@ -54,6 +55,17 @@ const DashboardLayout = () => {
                                     {/* Home icon */}
                                     <IoTicket />
                                     <span className="is-drawer-close:hidden pl-2">Add Ticket</span>
+                                </button>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/dashboard/myBookedTickets">
+                                <button className="is-drawer-close:tooltip
+                                 is-drawer-close:tooltip-right flex items-center justify-center " 
+                                 data-tip="My Booked Tickets">
+                                    {/* Home icon */}
+                                   <BsTicketPerforated />
+                                    <span className="is-drawer-close:hidden pl-2">My Booked Tickets</span>
                                 </button>
                             </Link>
                         </li>

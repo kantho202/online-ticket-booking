@@ -75,7 +75,7 @@ const MyAddedTickets = () => {
     }
     return (
         <div className="p-6 bg-gray-50 min-h-screen  bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100">
-            <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">My Added Tickets</h1>
+            <h1 className="text-2xl font-bold text-gray-800 mb-8 text-center">My Added Tickets</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {tickets.map(ticket => (

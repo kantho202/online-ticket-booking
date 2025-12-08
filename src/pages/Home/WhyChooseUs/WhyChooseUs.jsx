@@ -8,7 +8,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <div className="p-6">
+    <div className="p-6 py-10">
       <h2 className="text-2xl text-center font-bold mb-4">Why Choose Us</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
