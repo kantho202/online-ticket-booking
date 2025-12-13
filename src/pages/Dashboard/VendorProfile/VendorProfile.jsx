@@ -12,7 +12,7 @@ const VendorProfile = () => {
                 {/* Profile Image */}
                 <div className="flex justify-center mb-6">
                     <img
-                        src={user.photoURL}
+                        src={user?.photoURL || user.photo}
                         alt="Vendor"
                         className="w-40 h-40 rounded-full shadow-xl object-cover ring-4 ring-white/70 hover:ring-orange-400 
                                    transition-all duration-300"
@@ -30,7 +30,7 @@ const VendorProfile = () => {
                 {/* Profile Information */}
                 <div className="space-y-3">
                     <p className="text-xl font-semibold text-gray-700">
-                        Name: <span className="font-normal">{user.displayName}</span>
+                        Name: <span className="font-normal">{user.displayName || user.name}</span>
                     </p>
 
                     <p className="text-xl font-semibold text-gray-700">

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router';
 import Logo from '../components/Logo/Logo';
-import { FaUserTie } from 'react-icons/fa';
+import { FaHistory, FaTicketAlt, FaUsersCog, FaUserTie } from 'react-icons/fa';
 import { IoTicket } from 'react-icons/io5';
 import { LuTicketsPlane } from 'react-icons/lu';
 import { HiOutlineDocumentSearch, HiTicket } from 'react-icons/hi';
@@ -79,6 +79,17 @@ const DashboardLayout = () => {
                             </Link>
                         </li>
                         <li>
+                            <Link to="/dashboard/transactionHistory">
+                                <button className="is-drawer-close:tooltip 
+                                is-drawer-close:tooltip-right flex items-center justify-center "
+                                data-tip="Transaction History">
+                                    {/* Home icon */}
+                                    <FaHistory />
+                                    <span className="is-drawer-close:hidden pl-2">Transaction History</span>
+                                </button>
+                            </Link>
+                        </li>
+                        <li>
                             <Link to="/dashboard/requestedBooking">
                                 <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center " data-tip="Requested Booking">
                                     {/* Home icon */}
@@ -93,6 +104,39 @@ const DashboardLayout = () => {
                                     {/* Home icon */}
                                     <RiLineChartLine />
                                     <span className="is-drawer-close:hidden pl-2">Revenue Overview</span>
+                                </button>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/dashboard/manageTickets">
+                                <button className="is-drawer-close:tooltip
+                                 is-drawer-close:tooltip-right flex items-center justify-center"
+                                  data-tip="Manage Tickets">
+                                    {/* Home icon */}
+                                   <FaTicketAlt />
+                                    <span className="is-drawer-close:hidden pl-2">Manage Tickets</span>
+                                </button>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/dashboard/mangeUsers">
+                                <button className="is-drawer-close:tooltip
+                                 is-drawer-close:tooltip-right flex items-center justify-center"
+                                  data-tip="Manage Users">
+                                    {/* Home icon */}
+                                  <FaUsersCog />
+                                    <span className="is-drawer-close:hidden pl-2">Manage Users</span>
+                                </button>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/dashboard/mangeUsers">
+                                <button className="is-drawer-close:tooltip
+                                 is-drawer-close:tooltip-right flex items-center justify-center"
+                                  data-tip="Manage Users">
+                                    {/* Home icon */}
+                                  <FaUsersCog />
+                                    <span className="is-drawer-close:hidden pl-2">Advertise Tickets</span>
                                 </button>
                             </Link>
                         </li>

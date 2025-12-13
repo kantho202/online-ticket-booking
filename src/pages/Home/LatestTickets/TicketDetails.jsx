@@ -1,5 +1,5 @@
 import useAxiosSecure from "../../../hook/useAxiosecure";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 // import { ArrowLeft, Bus, Calendar, Clock, MapPin, MapPinCheck, Ticket, User } from "lucide";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide";
@@ -17,7 +17,7 @@ const TicketDetails = () => {
   const axiosSecure = useAxiosSecure();
   const ticketModalRef = useRef(null)
   const {register,handleSubmit}=useForm()
-  
+  const navigate=useNavigate()
   const { data: ticket = [], isLoading } = useQuery({
     queryKey: ["ticketDetails", id],
     queryFn: async () => {
@@ -39,6 +39,8 @@ const TicketDetails = () => {
   const handleTicketSubmit=(data)=>{
     
     const bookingInfo ={
+      name:ticket.name,
+      email:ticket.email,
       ticket_title:ticket.ticketTitle,
       image:ticket.image,
       quantity:Number(data.ticketQuantity),
@@ -53,6 +55,8 @@ const TicketDetails = () => {
     console.log(data,bookingInfo)
     axiosSecure.post('/bookings',bookingInfo)
     .then(res=>{
+      ticketModalRef.current.close()
+      navigate('/dashboard/myBookedTickets')
       console.log(res.data)
     })
     .catch(err=>{
@@ -123,7 +127,7 @@ const TicketDetails = () => {
                 <p className="flex items-center gap-2">
                   <FaTicket></FaTicket>
                   {/* <Ticket size={18} className="text-primary" /> */}
-                  <span className="font-semibold">Quantity:</span> {ticket.ticketQuantity}
+                  <span className="font-semibold">Quantity:</span> {ticket.ticketQuantity }
                 </p>
 
                 <p className="flex items-center gap-2">

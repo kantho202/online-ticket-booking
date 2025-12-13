@@ -2,7 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 /* logo */
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: winter --default, night --prefersdark;
+}
+
+@custom-variant dark (&:where([data-theme=night], [data-theme=night] *));
 
 
 @import "tailwindcss";
@@ -13,6 +17,14 @@
   default: true;
   --color-primary: orange;
   --color-secondary: teal;
+  
+}
+@plugin "daisyui/theme" {
+  name: "dark";
+  default: true;
+  --color-primary: green;
+  --color-secondary: skyblue;
+  
   
 }
 

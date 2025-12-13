@@ -5,12 +5,13 @@ import useAuth from '../../hook/useAuth';
 import { useForm } from 'react-hook-form';
 import SocialLogin from './SocialLogin';
 import { Bounce, toast } from 'react-toastify';
+import useAxiosSecure from '../../hook/useAxiosecure';
 const Register = () => {
     const {  createUser,updateUserProfile } = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm()
     const navigate = useNavigate()
     const location = useLocation()
-
+    const axiosSecure =useAxiosSecure()
     const handleRegister = (data) => {
         console.log(data)
 
@@ -18,6 +19,22 @@ const Register = () => {
         createUser(data.email, data.password)
             .then(result => {
                 console.log(result.user)
+
+                
+                // create user in database 
+                const userInfo ={
+                    email:data.email,
+                    displayName:data.name,
+                    photoURL:data.photo
+                }
+                axiosSecure.post('/users',userInfo)
+                .then(res=>{
+                    if(res.data.insertedId){
+                        //   navigate(location.state || "/");
+                        console.log('user  created in the database',res.data)
+                    }
+                })
+
                 const userProfile={
                     displayName:data.name,
                     photoURL:data.photo
@@ -59,7 +76,7 @@ const Register = () => {
                         <div className=' '>
                             <input type="text"  {...register('name', { required: true })}
                                 className="input bg-white w-full"
-                                placeholder="Email Address" />
+                                placeholder="Name" />
                             {
                                 errors.name?.type === "required" &&
                                 <p className='text-red-500'>Name is required</p>

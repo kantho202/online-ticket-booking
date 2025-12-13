@@ -1,22 +1,33 @@
 import React from 'react';
 import useAuth from '../../hook/useAuth';
 import { useNavigate } from 'react-router';
+import useAxiosSecure from '../../hook/useAxiosecure';
 
 
 // import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const SocialLogin = () => {
     const {googleSigInUser}=useAuth();
-    
+    const axiosSecure =useAxiosSecure()
     const navigate =useNavigate()
     // const axiosSecure =useAxiosSecure()
     const handleGoogleSignIn =()=>{
         googleSigInUser()
         .then(result=>{
             console.log(result.user)
-            navigate(location.state || "/")
-             // create user in the database 
-                
+            
+             
+              // create user in database 
+                const userInfo ={
+                    email:result.user.email,
+                    displayName:result.user.displayName,
+                    photoURL:result.user.photoURL
+                }
+                axiosSecure.post('/users',userInfo)
+                .then(res=>{
+                    console.log('user data save in database',res.data)
+                    navigate(location.state || "/")
+                })
         })
         .catch(error=>{
             console.log(error)
