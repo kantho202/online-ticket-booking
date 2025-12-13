@@ -66,14 +66,14 @@ const LatestTickets = () => {
                                 )}
 
                                 {/* Verification Status */}
-                                <p className={`mt-3 font-semibold text-sm ${ticket.verificationStatus === "approved"
+                                {/* <p className={`mt-3 font-semibold text-sm ${ticket.verificationStatus === "approved"
                                     ? "text-green-600"
                                     : ticket.verificationStatus === "rejected"
                                         ? "text-red-600"
                                         : "text-yellow-500"
                                     }`}>
                                     Status: {ticket.verificationStatus || "pending"}
-                                </p>
+                                </p> */}
 
                                 {/* Action Buttons */}
                                 <div className="pt-3 flex justify-between">

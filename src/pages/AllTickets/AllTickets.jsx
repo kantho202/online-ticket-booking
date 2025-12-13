@@ -1,33 +1,46 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import useAxiosSecure from '../../hook/useAxiosecure';
-import useAuth from '../../hook/useAuth';
 import { Link } from 'react-router';
 
 const AllTickets = () => {
-    const axiosSecure=useAxiosSecure()
-    // const {data: tickets=[]}=useQuery({
-    //     queryKey:['tickets'],
-    //     queryFn:async()=>{
-    //         const res =await axiosSecure.get('/tickets')
-    //         return res.data
-    //     }
-    // })
-    const {user}=useAuth()
-     const { data: tickets = []  } = useQuery({
-            queryKey: ['tickets', user?.email],
-            queryFn: async () => {
-                const res = await axiosSecure.get(`/tickets?status=approved`)
-                return res.data;
+    const axiosSecure = useAxiosSecure()
+    const [searchText,setSearchText]=useState('')
+    const { data: tickets = [] } = useQuery({
+        queryKey: ['tickets',searchText],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/tickets?status=approved&searchText=${searchText}`)
+            return res.data;
+
+        }
+    })
     
-            }
-        })
     return (
         <div className='bg-[#faf7f5] py-10 w-11/12 mx-auto'>
             {/* <h1>home ticket {homeTicket.length}</h1> */}
             <div className="p-6 min-h-screen bg-[#faf7f5]">
                 <h1 className="text-2xl font-bold text-gray-800 mb-8 text-center">All Tickets</h1>
-
+                
+                <div className='flex justify-center py-10'>
+                    <label className="input w-2xl  ">
+                        <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <g
+                                strokeLinejoin="round"
+                                strokeLinecap="round"
+                                strokeWidth="2.5"
+                                fill="none"
+                                stroke="currentColor"
+                            >
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.3-4.3"></path>
+                            </g>
+                        </svg>
+                        <input onChange={(e)=>setSearchText(e.target.value)}
+                         type="search"
+                          className="grow input-primary" placeholder="Search" />
+                       
+                    </label>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {tickets.map(ticket => (
                         <div

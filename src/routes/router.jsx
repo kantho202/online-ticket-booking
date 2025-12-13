@@ -22,6 +22,10 @@ import PaymentCancel from "../pages/Dashboard/Payment/PaymentCancel";
 import TransactionHistory from "../pages/Dashboard/TransactionHistory/TransactionHistory";
 import ManageTickets from "../pages/Dashboard/ManageTickets/ManageTickets";
 import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
+import AdvertiseTickets from "../pages/Dashboard/AdvertiseTickets/AdvertiseTickets";
+import AdminRoute from "./AdminRoute";
+import UserProfile from "../pages/Dashboard/UserProfile/UserProfile";
+import AdminProfile from "../pages/Dashboard/AdminProfile/AdminProfile";
 // import TicketDetails from "../pages/Home/LatestTickets/TicketDetails";
 
 export const router = createBrowserRouter([
@@ -76,8 +80,16 @@ export const router = createBrowserRouter([
     </PrivateRoute>,
     children: [
       {
+        path: 'userProfile',
+        Component: UserProfile
+      },
+      {
         path: 'vendorProfile',
         Component: VendorProfile
+      },
+      {
+        path: 'adminProfile',
+        Component: AdminProfile
       },
       {
         path: 'addTicket',
@@ -110,7 +122,12 @@ export const router = createBrowserRouter([
       },
       {
         path: 'mangeUsers',
-        Component: ManageUsers
+        // Component:ManageUsers
+        element:<AdminRoute><ManageUsers></ManageUsers> </AdminRoute>
+      },
+      {
+        path: 'advertiseTickets',
+        Component:AdvertiseTickets
       },
       {
         path:'payment/:ticketId',
