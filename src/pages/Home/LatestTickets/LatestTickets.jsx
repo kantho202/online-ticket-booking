@@ -42,7 +42,7 @@ const LatestTickets = () => {
                             <div className="p-5 space-y-3">
                                 <h2 className="text-[28px] font-bold logo text-gray-900">{ticket.ticketTitle}</h2>
                                 <p className="text-gray-700"><span className="font-semibold">Name:</span> {ticket.name}</p>
-                                {/* <p className="text-gray-700"><span className="font-semibold">From:</span> {ticket.from}</p> */}
+                                
                                 {/* <p className="text-gray-700"><span className="font-semibold">To:</span> {ticket.to}</p> */}
                                 <p className="text-gray-700"><span className="font-semibold">Transport:</span> {ticket.transport}</p>
                                 {/* <p className="text-gray-700"><span className="font-semibold">Date:</span> {ticket.date}</p> */}
