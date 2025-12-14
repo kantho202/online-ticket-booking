@@ -2,21 +2,22 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import useAxiosSecure from '../../hook/useAxiosecure';
 import { Link } from 'react-router';
+import { LuSearch } from "react-icons/lu";
 
 const AllTickets = () => {
     const axiosSecure = useAxiosSecure()
     const [searchText, setSearchText] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const [sort,setSort]=useState('')
-    const [order,setOrder]=useState("")
+    const [sort,setSort]=useState('price')
+    const [order,setOrder]=useState("asc")
     const itemsPerPage = 6;
     const skip = (currentPage - 1) * itemsPerPage;
     // const hasNextPage = tickets.length === itemsPerPage;
 
     const { data: tickets = [], isLoading } = useQuery({
-        queryKey: ['tickets', searchText, currentPage],
+        queryKey: ['tickets', searchText, currentPage,order,sort],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/tickets?status=approved&searchText=${searchText}&limit=${itemsPerPage}&skip=${skip}`)
+            const res = await axiosSecure.get(`/tickets?status=approved&searchText=${searchText}&limit=${itemsPerPage}&skip=${skip}&sort=${sort}&order=${order}`)
             return res.data;
 
         },
@@ -24,6 +25,9 @@ const AllTickets = () => {
     })
     const handleSelect=(e)=>{
         console.log(e.target.value)
+        const sortText=e.target.value;
+        setSort(sortText.split("-")[0])
+        setOrder(sortText.split("-")[1])
     }
     return (
         <div className='bg-[#faf7f5] py-10 w-11/12 mx-auto'>
@@ -35,7 +39,7 @@ const AllTickets = () => {
                     <div></div>
                     <label className="input input-bordered w-2xl rounded-full h-14
                     focus-within:border-primary focus-within:ring-1 focus-within:ring-primary outline-0  ">
-                        <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        {/* <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <g
                                 strokeLinejoin="round"
                                 strokeLinecap="round"
@@ -46,7 +50,9 @@ const AllTickets = () => {
                                 <circle cx="11" cy="11" r="8"></circle>
                                 <path d="m21 21-4.3-4.3"></path>
                             </g>
-                        </svg>
+                        </svg> */}
+                        <LuSearch className='text-gray-500' size={24}/>
+
                         <input onChange={(e) => {
                             setSearchText(e.target.value);
                             setCurrentPage(1)
@@ -58,11 +64,12 @@ const AllTickets = () => {
                     </label>
 
                     <form className='flex justify-end '>
-                        <select className="select outline-0 border-0 font-semibold
+                        <select  defaultValue="low-asc"
+                        onChange={handleSelect} className="select outline-0 border-0 font-semibold
                          focus-within:border-primary focus-within:ring-1 focus-within:ring-primary " required>
                             <option disabled selected value="">Sort by price:</option>
-                            <option value={"low-to-high"}>Low to High</option>
-                            <option value={"high-to-low"}>High to Low</option>
+                            <option value={"low-asc"}>Low to High</option>
+                            <option value={"high-desc"}>High to Low</option>
                         </select>
 
                     </form>
