@@ -1,13 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import useAuth from '../../../hook/useAuth';
 import useAxiosSecure from '../../../hook/useAxiosecure';
 import Swal from 'sweetalert2';
+// import { useForm } from 'react-hook-form';
 
 const MyAddedTickets = () => {
     const { user } = useAuth()
     const axiosSecure = useAxiosSecure()
-    const { data: tickets = [] ,refetch } = useQuery({
+    const [selectedTicket, setSelectedTicket] = useState(null)
+    // const [editMode, setEditMode] = useState(false)
+    // const { register, handleSubmit, formState: { errors } } = useForm()
+    const { data: tickets = [], refetch } = useQuery({
         queryKey: ['tickets', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/tickets?email=${user?.email}`)
@@ -16,9 +20,9 @@ const MyAddedTickets = () => {
         }
     })
 
-    const handleTicketUpdate=(id)=>{
+    const handleTicketUpdate = (id) => {
         console.log(id)
-          Swal.fire({
+        Swal.fire({
             title: "Are you sure want to update this ticket?",
             text: "You won't be able to revert this!",
             icon: "warning",
@@ -29,17 +33,17 @@ const MyAddedTickets = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 axiosSecure.patch(`/tickets/${id}`)
-                .then(res=>{
-                    console.log(res.data)
-                    if(res.data.modifiedCount){
-                        refetch()
-                        Swal.fire({
-                            title: "Deleted!",
-                            text: "Your ticket has been deleted.",
-                            icon: "success"
-                        });
-                    }
-                })
+                    .then(res => {
+                        console.log(res.data)
+                        if (res.data.modifiedCount) {
+                            refetch()
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your ticket has been deleted.",
+                                icon: "success"
+                            });
+                        }
+                    })
             }
         });
 
@@ -58,17 +62,17 @@ const MyAddedTickets = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 axiosSecure.delete(`/tickets/${id}`)
-                .then(res=>{
-                    console.log(res.data)
-                    if(res.data.deletedCount){
-                        refetch()
-                        Swal.fire({
-                            title: "Deleted!",
-                            text: "Your ticket has been deleted.",
-                            icon: "success"
-                        });
-                    }
-                })
+                    .then(res => {
+                        console.log(res.data)
+                        if (res.data.deletedCount) {
+                            refetch()
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your ticket has been deleted.",
+                                icon: "success"
+                            });
+                        }
+                    })
             }
         });
 
@@ -83,7 +87,7 @@ const MyAddedTickets = () => {
                         key={ticket._id}
                         className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden
                          transform transition hover:-translate-y-1 hover:shadow-2xl bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100"
-                         >
+                    >
                         {/* Ticket Image */}
                         <div className="h-48 overflow-hidden">
                             <img
@@ -122,19 +126,19 @@ const MyAddedTickets = () => {
 
                             {/* Verification Status */}
                             <p className={`mt-3 font-semibold text-sm ${ticket.verificationStatus === "approved"
-                                    ? "text-green-600"
-                                    : ticket.verificationStatus === "rejected"
-                                        ? "text-red-600"
-                                        : "text-yellow-500"
+                                ? "text-green-600"
+                                : ticket.verificationStatus === "rejected"
+                                    ? "text-red-600"
+                                    : "text-yellow-500"
                                 }`}>
                                 Status: {ticket.verificationStatus || "pending"}
                             </p>
 
                             {/* Action Buttons */}
                             <div className="pt-3 flex justify-between">
-                                <button 
-                                onClick={()=>handleTicketUpdate(ticket._id)}
-                                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition">
+                                <button
+                                    onClick={() => setSelectedTicket(ticket)}
+                                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition">
                                     Update
                                 </button>
                                 <button
@@ -144,9 +148,167 @@ const MyAddedTickets = () => {
                                 </button>
                             </div>
                         </div>
+
+
+
                     </div>
                 ))}
+
             </div>
+
+            {selectedTicket && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                    <form
+                        onSubmit={(e) => handleTicketUpdate(e, selectedTicket._id)}
+                        className="bg-white p-6 rounded-xl w-[400px]"
+                    >
+                        <h2 className="text-xl font-bold mb-4">Update Ticket</h2>
+
+                        <h1 className='font-medium '>Ticket Title</h1>
+                        <input
+                            name="ticketTitle"
+                            defaultValue={selectedTicket.ticketTitle}
+                            className="input input-bordered w-full mb-3"
+                        />
+                        <h1 className='font-medium '>From</h1>
+                        <input
+                            name="from"
+                            defaultValue={selectedTicket.from}
+                            className="input input-bordered w-full mb-3"
+                        />
+                        <h1 className='font-medium'>To</h1>
+                        <input
+                            name="to"
+                            defaultValue={selectedTicket.to}
+                            className="input input-bordered w-full mb-3"
+                        />
+
+                        <h1 className='font-medium'>Transport</h1>
+                        <input
+                            name="price"
+                            defaultValue={selectedTicket.transport}
+                            className="input input-bordered w-full mb-3"
+                        />
+                        <h1 className='font-medium'> Date</h1>
+                        <input
+                            name="ticketQuantity"
+                            defaultValue={selectedTicket.date}
+                            className="input input-bordered w-full mb-3"
+                        />
+                        <h1 className='font-medium'> Time</h1>
+                        <input
+                            name="ticketQuantity"
+                            defaultValue={selectedTicket.time}
+                            className="input input-bordered w-full mb-3"
+                        />
+                        <h1 className='font-medium'> Quantity</h1>
+                        <input
+                            name="ticketQuantity"
+                            defaultValue={selectedTicket.ticketQuantity}
+                            className="input input-bordered w-full mb-3"
+                        />
+                        {/* <h1 className='font-medium'> Price</h1>
+                        <input
+                            name="ticketQuantity"
+                            defaultValue={selectedTicket.price}
+                            className="input input-bordered w-full mb-3"
+                        /> */}
+                       
+
+                        <div className="flex justify-end gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setSelectedTicket(null)}
+                                className="btn"
+                            >
+                                Cancel
+                            </button>
+
+                            <button className="btn btn-primary">
+                                Save
+                            </button>
+                        </div>
+                    </form>
+
+                    {/* <form onSubmit={handleSubmit(handleTicketUpdate)} className="card-body flex-1 w-full lg:w-1/2    ">
+                        <fieldset className="fieldset">
+                          
+                            <label className="label text-xl font-bold">Full name</label>
+                           
+
+                            {editMode ? (
+                                <input
+                                    type="text"
+                                    name="name"
+
+                                    onChange={name}
+                                    className="input input-bordered w-full"
+                                    placeholder="Enter your name"
+                                    required
+                                />
+                            ) : (
+                                <p className="text-lg font-semibold">{user?.displayName || "No Name Set"}</p>
+                            )}
+                          
+                            <label className="label font-bold text-xl ">Photo URL</label>
+                            <div className=''>
+                                {
+                                    editMode ? (
+                                        <input
+                                            type="text"
+                                            name='photo'
+
+                                            className='input input-bordered w-full mx-auto '
+                                            placeholder='Enter your photo url'
+                                        />
+                                    ) : (
+                                        <p className='text-lg font-semibold'>{user?.photoURL || "No phot url"} </p>
+                                    )
+                                }
+                            </div>
+
+                            <label className="label font-bold text-xl">Email</label>
+                            <div className='text-lg font-semibold'>
+                                {
+                                    user ? <span>{user.email}</span> : "No email found"
+                                }
+                            </div>
+
+
+                            <div className='mt-6 flex gap-6'>
+                                {editMode ? (
+                                    <>
+                                        <button type='submit' className='btn btn-success flex-1'>
+                                            Save Change
+                                        </button>
+                                        <button
+                                            type='button'
+                                            onClick={() => {
+                                                setEditMode(false)
+                                            }}
+                                            className='btn btn-ghost flex-1'
+                                        >
+                                            Cancel
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button type='button'
+                                        onClick={() => { setEditMode(true) }}
+                                        className='w-full btn btn-accent '
+                                    >
+                                        Update
+                                    </button>
+                                )}
+                            </div>
+
+
+
+
+
+                        </fieldset>
+                    </form> */}
+                </div>
+            )}
         </div>
 
     );
