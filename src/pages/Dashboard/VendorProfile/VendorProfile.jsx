@@ -1,9 +1,10 @@
 import React from 'react';
 import useAuth from '../../../hook/useAuth';
 
+
 const VendorProfile = () => {
     const { user } = useAuth();
-
+   
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100 p-6">
             <div className="backdrop-blur-xl bg-white/30 border border-white/40 shadow-2xl rounded-2xl p-10 max-w-xl w-full text-center 
@@ -21,7 +22,7 @@ const VendorProfile = () => {
 
                 {/* Title */}
                 <h2 className="text-4xl font-extrabold text-gray-800 tracking-wide mb-3">
-                    Vendor Profile
+                     Profile
                 </h2>
 
                 {/* Divider */}

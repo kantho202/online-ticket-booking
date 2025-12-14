@@ -20,7 +20,7 @@ const AdminProfile = () => {
 
                 {/* Title */}
                 <h2 className="text-4xl font-extrabold text-gray-800 tracking-wide mb-3">
-                    Vendor Profile
+                    Admin Profile
                 </h2>
 
                 {/* Divider */}
