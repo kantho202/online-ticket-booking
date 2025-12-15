@@ -9,7 +9,7 @@ import { LuMapPinned } from "react-icons/lu";
 import { BsClockFill } from "react-icons/bs";
 import { IoPricetagsSharp } from "react-icons/io5";
 import { RiArrowLeftCircleFill } from "react-icons/ri";
-import { useEffect, useRef, useState } from "react";
+import { useRef, } from "react";
 import { useForm } from "react-hook-form";
 import Countdown from "react-countdown";
 
@@ -68,24 +68,24 @@ const TicketDetails = () => {
 
 
   // countdown 
-// const targetDateTime = new Date(`${ticket.date}T${ticket.time}:00`)
-const convertTo24Hour = (timeStr) => {
-  if (!timeStr) return "00:00";
-  if (!timeStr.includes("AM") && !timeStr.includes("PM")) return timeStr;
+  // const targetDateTime = new Date(`${ticket.date}T${ticket.time}:00`)
+  // const convertTo24Hour = (timeStr) => {
+  //   if (!timeStr) return "00:00";
+  //   if (!timeStr.includes("AM") && !timeStr.includes("PM")) return timeStr;
 
-  const [time, modifier] = timeStr.split(" ");
-  let [hours, minutes] = time.split(":").map(Number);
+  //   const [time, modifier] = timeStr.split(" ");
+  //   let [hours, minutes] = time.split(":").map(Number);
 
-  if (modifier === "PM" && hours !== 12) hours += 12;
-  if (modifier === "AM" && hours === 12) hours = 0;
+  //   if (modifier === "PM" && hours !== 12) hours += 12;
+  //   if (modifier === "AM" && hours === 12) hours = 0;
 
-  return `${hours.toString().padStart(2,"0")}:${minutes.toString().padStart(2,"0")}`;
-};
+  //   return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+  // };
 
-const targetDateTime = ticket.date && ticket.time
-  ? new Date(`${ticket.date}T${convertTo24Hour(ticket.time)}:00`)
-  : null;
-
+  // const targetDateTime = ticket.date && ticket.time
+  //   ? new Date(`${ticket.date}T${convertTo24Hour(ticket.time)}:00`)
+  //   : null;
+  const targetDateTime=ticket.departureDateTime
   const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       return <span className="text-red-500 text-center font-bold">Expired</span>;
@@ -191,14 +191,14 @@ const targetDateTime = ticket.date && ticket.time
                 <p className="flex items-center gap-2">
                   <FaCalendar></FaCalendar>
                   {/* <Calendar size={18} className="text-primary" /> */}
-                  <span className="font-semibold">Date:</span> {ticket.date}
+                  <span className="font-semibold">Date:</span> {ticket.departureDateTime}
                 </p>
 
-                <p className="flex items-center gap-2">
+                {/* <p className="flex items-center gap-2">
                   <BsClockFill />
-                  {/* <Clock size={18} className="text-primary" /> */}
+                
                   <span className="font-semibold">Time:</span> {ticket.time}
-                </p>
+                </p> */}
 
               </div>
             </div>
@@ -237,13 +237,13 @@ const targetDateTime = ticket.date && ticket.time
               {/* {ticket.verificationStatus} */}
             </p>
 
-{targetDateTime && (
-  <Countdown
-    date={targetDateTime}
-    renderer={countdownRenderer}
-    className="font-bold text-2xl"
-  />
-)}
+            {targetDateTime && (
+              <Countdown
+                date={targetDateTime}
+                renderer={countdownRenderer}
+                className="font-bold text-2xl"
+              />
+            )}
 
             {/* <Countdown
              date={new Date(`${ticket.date}T${ticket.time || "00:00"}:00`)}

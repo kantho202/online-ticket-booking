@@ -142,8 +142,8 @@ const AddTicket = () => {
 
                                         <fieldset className="fieldset">
                             <label className="label font-medium text-[14px] text-[#0F172A]">Departure date & time</label>
-                            <input type="date"
-                                {...register('date', { required: true })}
+                            <input type="datetime-local"
+                                {...register('departureDateTime', { required: true })}
                                 className="input bg-white w-full outline-primary border-0"
                                 placeholder="Date and Time" />
                             {
@@ -205,7 +205,7 @@ const AddTicket = () => {
                         </fieldset>
 
 
-                        <div className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
+                        <div className=''>
 
                             <fieldset className='fieldset'>
                                 <label className="label font-medium text-[14px] text-[#0F172A]">Transport type</label>
@@ -227,7 +227,7 @@ const AddTicket = () => {
                             </fieldset>
 
 
-                            <fieldset className="fieldset">
+                            {/* <fieldset className="fieldset">
                                 <label className="label font-medium text-[14px] text-[#0F172A]"> Time</label>
                                 <input type="text" defaultValue={new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     {...register('time', { required: true })}
@@ -237,7 +237,7 @@ const AddTicket = () => {
                                     errors.time?.type === "required" &&
                                     <p className='text-red-600'> Time is required</p>
                                 }
-                            </fieldset>
+                            </fieldset> */}
                         </div>
 
 
