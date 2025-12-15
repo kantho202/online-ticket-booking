@@ -40,7 +40,7 @@ const TicketDetails = () => {
     
     const bookingInfo ={
       name:ticket.name,
-      email:ticket.email,
+      // email:ticket.email,
       ticket_title:ticket.ticketTitle,
       image:ticket.image,
       quantity:Number(data.ticketQuantity),

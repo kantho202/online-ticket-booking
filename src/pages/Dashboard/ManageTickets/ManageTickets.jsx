@@ -11,7 +11,7 @@ const ManageTickets = () => {
     const { data: tickets = [] ,refetch } = useQuery({
         queryKey: ['tickets', user?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/tickets?email=${user?.email}`)
+            const res = await axiosSecure.get(`/tickets`)
             return res.data;
 
         }

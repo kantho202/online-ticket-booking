@@ -17,7 +17,7 @@ const AllTickets = () => {
     const { data: tickets = [], isLoading } = useQuery({
         queryKey: ['tickets', searchText, currentPage,order,sort],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/tickets?status=approved&searchText=${searchText}&limit=${itemsPerPage}&skip=${skip}&sort=${sort}&order=${order}`)
+            const res = await axiosSecure.get(`/tickets/sort?status=approved&searchText=${searchText}&limit=${itemsPerPage}&skip=${skip}&sort=${sort}&order=${order}`)
             return res.data;
 
         },
