@@ -48,8 +48,8 @@ const TicketDetails = () => {
       total_price: ticket.price * Number(data.ticketQuantity),
       from: ticket.from,
       to: ticket.to,
-      date: ticket.date,
-      time: ticket.time,
+      departureDateTime: ticket.departureDateTime,
+      // time: ticket.time,
 
 
     }
