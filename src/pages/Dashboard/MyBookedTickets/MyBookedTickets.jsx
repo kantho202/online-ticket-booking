@@ -2,13 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import useAxiosSecure from '../../../hook/useAxiosecure';
 import { Link } from 'react-router';
+import useAuth from '../../../hook/useAuth';
 
 const MyBookedTickets = () => {
+    const {user}=useAuth()
     const axiosSecure = useAxiosSecure()
     const { data: bookings = [] } = useQuery({
-        queryKey: ['bookings'],
+        queryKey: ['bookings',user?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get('/bookings')
+            const res = await axiosSecure.get(`/bookings?email=${user?.email}`)
             return res.data;
         }
     })
