@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import useAxiosSecure from '../../hook/useAxiosecure';
 import { Link } from 'react-router';
 import { LuSearch } from "react-icons/lu";
+import Countdown from 'react-countdown';
 
 const AllTickets = () => {
     const axiosSecure = useAxiosSecure()
@@ -30,37 +31,7 @@ const AllTickets = () => {
         setOrder(sortText.split("-")[1])
     }
 
-    // countdown 
-
-    const targetDate = new Date("2025-12-31T23:59:59").getTime();
-
-    const [timeLeft, setTimeLeft] = useState({
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-    });
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const now = Date.now();
-            const diff = targetDate - now;
-
-            if (diff <= 0) {
-                clearInterval(interval);
-                return;
-            }
-
-            setTimeLeft({
-                days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-                hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-                minutes: Math.floor((diff / (1000 * 60)) % 60),
-                seconds: Math.floor((diff / 1000) % 60),
-            });
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, []);
+   
     return (
         <div className='bg-[#faf7f5] py-10 w-11/12 mx-auto'>
             {/* <h1>home ticket {homeTicket.length}</h1> */}
@@ -150,28 +121,7 @@ const AllTickets = () => {
                                         <p className="text-gray-700"><span className="font-semibold">Price:</span> ৳ {ticket.price}</p>
                                         {/* <p className="text-gray-700"><span className="font-semibold">Email:</span> {ticket.email}</p> */}
 
-                                        <div className="grid grid-flow-col gap-5 justify-center text-center auto-cols-max mt-10">
-                                            <TimeBox
-                                                label="days"
-                                                value={timeLeft.days}
-                                                className="bg-neutral text-neutral-content "
-                                            />
-                                            <TimeBox
-                                                label="hours"
-                                                value={timeLeft.hours}
-                                                className=" bg-neutral text-neutral-content"
-                                            />
-                                            <TimeBox
-                                                label="min"
-                                                value={timeLeft.minutes}
-                                                className="bg-neutral text-neutral-content"
-                                            />
-                                            <TimeBox
-                                                label="sec"
-                                                value={timeLeft.seconds}
-                                                className="bg-neutral text-neutral-content"
-                                            />
-                                        </div>
+                                       
                                         {/* Perks */}
                                         {ticket.perks && ticket.perks.length > 0 && (
                                             <div className="flex flex-wrap gap-2 pt-2">
@@ -301,15 +251,6 @@ const AllTickets = () => {
 };
 
 
-const TimeBox = ({ label, value, className = "" }) => (
-    <div
-        className={`flex flex-col p-3 rounded-box ${className}`}
-    >
-        <span className="countdown font-mono text-5xl">
-            <span style={{ "--value": value }}></span>
-        </span>
-        <span className="mt-1 text-sm font-semibold">{label}</span>
-    </div>
-);
+
 
 export default AllTickets;

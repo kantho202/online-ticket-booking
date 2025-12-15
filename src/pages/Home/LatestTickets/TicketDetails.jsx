@@ -9,15 +9,16 @@ import { LuMapPinned } from "react-icons/lu";
 import { BsClockFill } from "react-icons/bs";
 import { IoPricetagsSharp } from "react-icons/io5";
 import { RiArrowLeftCircleFill } from "react-icons/ri";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import Countdown from "react-countdown";
 
 const TicketDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
   const ticketModalRef = useRef(null)
-  const {register,handleSubmit}=useForm()
-  const navigate=useNavigate()
+  const { register, handleSubmit } = useForm()
+  const navigate = useNavigate()
   const { data: ticket = [], isLoading } = useQuery({
     queryKey: ["ticketDetails", id],
     queryFn: async () => {
@@ -35,35 +36,70 @@ const TicketDetails = () => {
   const handleModalRef = () => {
     ticketModalRef.current.showModal()
   }
-  
-  const handleTicketSubmit=(data)=>{
-    
-    const bookingInfo ={
-      name:ticket.name,
+
+  const handleTicketSubmit = (data) => {
+
+    const bookingInfo = {
+      name: ticket.name,
       // email:ticket.email,
-      ticket_title:ticket.ticketTitle,
-      image:ticket.image,
-      quantity:Number(data.ticketQuantity),
-      total_price:ticket.price*Number(data.ticketQuantity),
-      from:ticket.from,
-      to:ticket.to,
-      date:ticket.date,
-      time:ticket.time,
-      
+      ticket_title: ticket.ticketTitle,
+      image: ticket.image,
+      quantity: Number(data.ticketQuantity),
+      total_price: ticket.price * Number(data.ticketQuantity),
+      from: ticket.from,
+      to: ticket.to,
+      date: ticket.date,
+      time: ticket.time,
+
 
     }
-    console.log(data,bookingInfo)
-    axiosSecure.post('/bookings',bookingInfo)
-    .then(res=>{
-      ticketModalRef.current.close()
-      navigate('/dashboard/myBookedTickets')
-      console.log(res.data)
-    })
-    .catch(err=>{
-      console.log(err)
-    })
-    
+    console.log(data, bookingInfo)
+    axiosSecure.post('/bookings', bookingInfo)
+      .then(res => {
+        ticketModalRef.current.close()
+        navigate('/dashboard/myBookedTickets')
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
   }
+
+
+  // countdown 
+// const targetDateTime = new Date(`${ticket.date}T${ticket.time}:00`)
+const convertTo24Hour = (timeStr) => {
+  if (!timeStr) return "00:00";
+  if (!timeStr.includes("AM") && !timeStr.includes("PM")) return timeStr;
+
+  const [time, modifier] = timeStr.split(" ");
+  let [hours, minutes] = time.split(":").map(Number);
+
+  if (modifier === "PM" && hours !== 12) hours += 12;
+  if (modifier === "AM" && hours === 12) hours = 0;
+
+  return `${hours.toString().padStart(2,"0")}:${minutes.toString().padStart(2,"0")}`;
+};
+
+const targetDateTime = ticket.date && ticket.time
+  ? new Date(`${ticket.date}T${convertTo24Hour(ticket.time)}:00`)
+  : null;
+
+  const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
+    if (completed) {
+      return <span className="text-red-500 text-center font-bold">Expired</span>;
+    }
+
+    return (
+      <div className="flex gap-3 text-3xl font-bold justify-center">
+        <div>{days}d</div>
+        <div>{hours}h</div>
+        <div>{minutes}m</div>
+        <div>{seconds}s</div>
+      </div>
+    );
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100 py-10 px-4">
 
@@ -95,7 +131,7 @@ const TicketDetails = () => {
               className="w-full h-full object-cover"
             />
 
-            <div  className="absolute bottom-3 left-3 px-4 py-1 bg-black/50 text-white text-sm rounded-full">
+            <div className="absolute bottom-3 left-3 px-4 py-1 bg-black/50 text-white text-sm rounded-full">
               {ticket.transport}
             </div>
           </div>
@@ -127,7 +163,7 @@ const TicketDetails = () => {
                 <p className="flex items-center gap-2">
                   <FaTicket></FaTicket>
                   {/* <Ticket size={18} className="text-primary" /> */}
-                  <span className="font-semibold">Quantity:</span> {ticket.ticketQuantity }
+                  <span className="font-semibold">Quantity:</span> {ticket.ticketQuantity}
                 </p>
 
                 <p className="flex items-center gap-2">
@@ -189,7 +225,7 @@ const TicketDetails = () => {
 
             {/* Verification */}
             <p
-            //  {...register('status')}
+              //  {...register('status')}
               className={`font-semibold text-sm ${ticket.status === "approved"
                 ? "text-green-600"
                 : ticket.status === "rejected"
@@ -198,9 +234,21 @@ const TicketDetails = () => {
                 }`}
             >
               Status: Pending
-               {/* {ticket.verificationStatus} */}
+              {/* {ticket.verificationStatus} */}
             </p>
 
+{targetDateTime && (
+  <Countdown
+    date={targetDateTime}
+    renderer={countdownRenderer}
+    className="font-bold text-2xl"
+  />
+)}
+
+            {/* <Countdown
+             date={new Date(`${ticket.date}T${ticket.time || "00:00"}:00`)}
+              renderer={countdownRenderer}
+              className="font-bold text-2xl" /> */}
 
             <div className="pt-4">
               <button
@@ -224,14 +272,14 @@ const TicketDetails = () => {
                 <form onSubmit={handleSubmit(handleTicketSubmit)}>
 
 
-                <fieldset className="fieldset space-y-4">
-                  <legend className="fieldset-legend"></legend>
-                  <input type="number"
-                    {...register('ticketQuantity',{required:true})}
-                  className="input w-full" placeholder="Ticket Quantity" />
-                  <button className="btn btn-primary">Submit</button>
+                  <fieldset className="fieldset space-y-4">
+                    <legend className="fieldset-legend"></legend>
+                    <input type="number"
+                      {...register('ticketQuantity', { required: true })}
+                      className="input w-full" placeholder="Ticket Quantity" />
+                    <button className="btn btn-primary">Submit</button>
 
-                </fieldset>
+                  </fieldset>
                 </form>
 
                 <div className="modal-action">
@@ -257,4 +305,15 @@ const TicketDetails = () => {
   );
 };
 
+
+// const TimeBox = ({ label, value, className = "" }) => (
+//     <div
+//         className={`flex flex-col p-3 rounded-box ${className}`}
+//     >
+//         <span className="countdown font-mono text-5xl">
+//             <span style={{ "--value": value }}></span>
+//         </span>
+//         <span className="mt-1 text-sm font-semibold">{label}</span>
+//     </div>
+// );
 export default TicketDetails;
