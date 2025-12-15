@@ -68,23 +68,7 @@ const TicketDetails = () => {
 
 
   // countdown 
-  // const targetDateTime = new Date(`${ticket.date}T${ticket.time}:00`)
-  // const convertTo24Hour = (timeStr) => {
-  //   if (!timeStr) return "00:00";
-  //   if (!timeStr.includes("AM") && !timeStr.includes("PM")) return timeStr;
-
-  //   const [time, modifier] = timeStr.split(" ");
-  //   let [hours, minutes] = time.split(":").map(Number);
-
-  //   if (modifier === "PM" && hours !== 12) hours += 12;
-  //   if (modifier === "AM" && hours === 12) hours = 0;
-
-  //   return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
-  // };
-
-  // const targetDateTime = ticket.date && ticket.time
-  //   ? new Date(`${ticket.date}T${convertTo24Hour(ticket.time)}:00`)
-  //   : null;
+  const isExpired=new Date(ticket.departureDateTime) < new Date();
   const targetDateTime=ticket.departureDateTime
   const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
@@ -252,9 +236,11 @@ const TicketDetails = () => {
 
             <div className="pt-4">
               <button
+              disabled={isExpired}
                 onClick={handleModalRef}
-                className="w-full py-3 bg-primary text-white rounded-xl font-semibold
-                 text-lg hover:bg-primary/80 transition">
+                className={`w-full py-3   rounded-xl font-semibold
+                 text-lg ${isExpired ? " bg-gray-400 cursor-not-allowed" 
+                 : "bg-primary hover:bg-primary/80 text-white"}  transition`}>
                 Book This Ticket
               </button>
             </div>
