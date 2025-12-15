@@ -66,7 +66,7 @@ const TicketDetails = () => {
 
   }
 
-
+ const isSoldOut =ticket.ticketQuantity===0;
   // countdown 
   const isExpired=new Date(ticket.departureDateTime) < new Date();
   const targetDateTime=ticket.departureDateTime
@@ -236,10 +236,10 @@ const TicketDetails = () => {
 
             <div className="pt-4">
               <button
-              disabled={isExpired}
+              disabled={isExpired || isSoldOut}
                 onClick={handleModalRef}
                 className={`w-full py-3   rounded-xl font-semibold
-                 text-lg ${isExpired ? " bg-gray-400 cursor-not-allowed" 
+                 text-lg ${(isExpired || isSoldOut) ? " bg-primary cursor-not-allowed" 
                  : "bg-primary hover:bg-primary/80 text-white"}  transition`}>
                 Book This Ticket
               </button>
