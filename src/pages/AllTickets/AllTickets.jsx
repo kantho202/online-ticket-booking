@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useAxiosSecure from '../../hook/useAxiosecure';
 import { Link } from 'react-router';
 import { LuSearch } from "react-icons/lu";
@@ -8,14 +8,14 @@ const AllTickets = () => {
     const axiosSecure = useAxiosSecure()
     const [searchText, setSearchText] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const [sort,setSort]=useState('price')
-    const [order,setOrder]=useState("asc")
+    const [sort, setSort] = useState('price')
+    const [order, setOrder] = useState("asc")
     const itemsPerPage = 6;
     const skip = (currentPage - 1) * itemsPerPage;
     // const hasNextPage = tickets.length === itemsPerPage;
 
     const { data: tickets = [], isLoading } = useQuery({
-        queryKey: ['tickets', searchText, currentPage,order,sort],
+        queryKey: ['tickets', searchText, currentPage, order, sort],
         queryFn: async () => {
             const res = await axiosSecure.get(`/tickets/sort?status=approved&searchText=${searchText}&limit=${itemsPerPage}&skip=${skip}&sort=${sort}&order=${order}`)
             return res.data;
@@ -23,12 +23,44 @@ const AllTickets = () => {
         },
         keepPreviousData: true,
     })
-    const handleSelect=(e)=>{
+    const handleSelect = (e) => {
         console.log(e.target.value)
-        const sortText=e.target.value;
+        const sortText = e.target.value;
         setSort(sortText.split("-")[0])
         setOrder(sortText.split("-")[1])
     }
+
+    // countdown 
+
+    const targetDate = new Date("2025-12-31T23:59:59").getTime();
+
+    const [timeLeft, setTimeLeft] = useState({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+    });
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const now = Date.now();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                clearInterval(interval);
+                return;
+            }
+
+            setTimeLeft({
+                days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+                hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+                minutes: Math.floor((diff / (1000 * 60)) % 60),
+                seconds: Math.floor((diff / 1000) % 60),
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
     return (
         <div className='bg-[#faf7f5] py-10 w-11/12 mx-auto'>
             {/* <h1>home ticket {homeTicket.length}</h1> */}
@@ -51,7 +83,7 @@ const AllTickets = () => {
                                 <path d="m21 21-4.3-4.3"></path>
                             </g>
                         </svg> */}
-                        <LuSearch className='text-gray-500' size={24}/>
+                        <LuSearch className='text-gray-500' size={24} />
 
                         <input onChange={(e) => {
                             setSearchText(e.target.value);
@@ -64,8 +96,8 @@ const AllTickets = () => {
                     </label>
 
                     <form className='flex justify-end '>
-                        <select  defaultValue="low-asc"
-                        onChange={handleSelect} className="select outline-0 border-0 font-semibold
+                        <select defaultValue="low-asc"
+                            onChange={handleSelect} className="select outline-0 border-0 font-semibold
                          focus-within:border-primary focus-within:ring-1 focus-within:ring-primary " required>
                             <option disabled selected value="">Sort by price:</option>
                             <option value={"low-asc"}>Low to High</option>
@@ -118,6 +150,28 @@ const AllTickets = () => {
                                         <p className="text-gray-700"><span className="font-semibold">Price:</span> ৳ {ticket.price}</p>
                                         {/* <p className="text-gray-700"><span className="font-semibold">Email:</span> {ticket.email}</p> */}
 
+                                        <div className="grid grid-flow-col gap-5 justify-center text-center auto-cols-max mt-10">
+                                            <TimeBox
+                                                label="days"
+                                                value={timeLeft.days}
+                                                className="bg-neutral text-neutral-content "
+                                            />
+                                            <TimeBox
+                                                label="hours"
+                                                value={timeLeft.hours}
+                                                className=" bg-neutral text-neutral-content"
+                                            />
+                                            <TimeBox
+                                                label="min"
+                                                value={timeLeft.minutes}
+                                                className="bg-neutral text-neutral-content"
+                                            />
+                                            <TimeBox
+                                                label="sec"
+                                                value={timeLeft.seconds}
+                                                className="bg-neutral text-neutral-content"
+                                            />
+                                        </div>
                                         {/* Perks */}
                                         {ticket.perks && ticket.perks.length > 0 && (
                                             <div className="flex flex-wrap gap-2 pt-2">
@@ -155,6 +209,8 @@ const AllTickets = () => {
                                         Delete
                                     </button> */}
                                         </div>
+
+
                                     </div>
                                 </div>
                             ))}
@@ -204,8 +260,56 @@ const AllTickets = () => {
                 }
 
             </div>
+
+            {/* For TSX uncomment the commented types below */}
+            {/* <div className="grid grid-flow-col gap-5 justify-center btn-primary text-center auto-cols-max">
+                <TimeBox className="bg-primary" label="days" value={timeLeft.days} />
+                <TimeBox label="hours" value={timeLeft.hours} />
+                <TimeBox label="min" value={timeLeft.minutes} />
+                <TimeBox label="sec" value={timeLeft.seconds} />
+            </div> */}
+
+            {/* <div className="grid grid-flow-col gap-5 justify-center text-center auto-cols-max mt-10">
+                <TimeBox
+                    label="days"
+                    value={timeLeft.days}
+                    className="bg-primary "
+                />
+                <TimeBox
+                    label="hours"
+                    value={timeLeft.hours}
+                    className="bg-primary "
+                />
+                <TimeBox
+                    label="min"
+                    value={timeLeft.minutes}
+                    className="bg-primary "
+                />
+                <TimeBox
+                    label="sec"
+                    value={timeLeft.seconds}
+                    className="bg-primary "
+                />
+            </div> */}
+
+
+
+
+
         </div>
     );
 };
+
+
+const TimeBox = ({ label, value, className = "" }) => (
+    <div
+        className={`flex flex-col p-3 rounded-box ${className}`}
+    >
+        <span className="countdown font-mono text-5xl">
+            <span style={{ "--value": value }}></span>
+        </span>
+        <span className="mt-1 text-sm font-semibold">{label}</span>
+    </div>
+);
 
 export default AllTickets;
