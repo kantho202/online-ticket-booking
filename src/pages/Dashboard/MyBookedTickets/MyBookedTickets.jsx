@@ -6,46 +6,46 @@ import useAuth from '../../../hook/useAuth';
 import Countdown from 'react-countdown';
 
 const MyBookedTickets = () => {
-    const {user}=useAuth()
+    const { user } = useAuth()
     const axiosSecure = useAxiosSecure()
     const { data: bookings = [] } = useQuery({
-        queryKey: ['bookings',user?.email],
+        queryKey: ['bookings', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/bookings?email=${user?.email}`)
             return res.data;
         }
     })
 
-   
-    const handlePayment=async(ticket)=>{
-        const paymentInfo={
-            total_price:ticket.total_price,
-            ticketId:ticket._id,
+
+    const handlePayment = async (ticket) => {
+        const paymentInfo = {
+            total_price: ticket.total_price,
+            ticketId: ticket._id,
             // email:bookings.email,
-            ticket_title:ticket.ticket_title
+            ticket_title: ticket.ticket_title
         }
-        const res =await axiosSecure.post('/create-checkout-session',paymentInfo)
+        const res = await axiosSecure.post('/create-checkout-session', paymentInfo)
         console.log(res);
         window.location.assign(res.data.url);
     }
 
-     // countdown 
-  const isExpired=new Date(bookings.departureDateTime) < new Date();
-//   const targetDateTime=bookings.departureDateTime
-  const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
-    if (completed) {
-      return <span className="text-red-500 text-center font-bold">Expired</span>;
-    }
+    // countdown 
+    //   const isExpired=new Date(book.departureDateTime) < new Date();
+    //   const targetDateTime=bookings.departureDateTime
+    const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
+        if (completed) {
+            return <span className="text-red-500 text-center font-bold">Expired</span>;
+        }
 
-    return (
-      <div className="flex gap-3 text-3xl font-bold justify-center">
-        <div>{days}d</div>
-        <div>{hours}h</div>
-        <div>{minutes}m</div>
-        <div>{seconds}s</div>
-      </div>
-    );
-  };
+        return (
+            <div className="flex gap-3 text-3xl font-bold justify-center">
+                <div>{days}d</div>
+                <div>{hours}h</div>
+                <div>{minutes}m</div>
+                <div>{seconds}s</div>
+            </div>
+        );
+    };
     return (
         <div>
             {/* <h1>bookings{bookings.length}</h1> */}
@@ -96,26 +96,26 @@ const MyBookedTickets = () => {
                                 )}
 
                                 {/* Verification Status */}
-                                <p disabled={book.status==='paid'} className={`mt-3 font-semibold text-sm 
+                                <p disabled={book.status === 'paid'} className={`mt-3 font-semibold text-sm 
                                 ${book.status === "paid"
-                                    ? "text-green-600"
-                                    : book.status === "accepted"
-                                    ? "text-green-600"
-                                    : book.status === "rejected"
-                                        ? "text-red-600"
-                                        : "text-yellow-500" } 
+                                        ? "text-green-600"
+                                        : book.status === "accepted"
+                                            ? "text-green-600"
+                                            : book.status === "rejected"
+                                                ? "text-red-600"
+                                                : "text-yellow-500"} 
                                        
                                     }`}>
                                     Status: {book.status || "pending"}
                                 </p>
 
-                                        {book?.departureDateTime && (
-                                                      <Countdown
-                                                        date={book.departureDateTime}
-                                                        renderer={countdownRenderer}
-                                                        className="font-bold text-2xl"
-                                                      />
-                                                    )}
+                                {book?.departureDateTime && (
+                                    <Countdown
+                                        date={book.departureDateTime}
+                                        renderer={countdownRenderer}
+                                        className="font-bold text-2xl"
+                                    />
+                                )}
                                 {/* Action Buttons */}
                                 <div className="pt-3 flex justify-between">
                                     {
@@ -124,13 +124,13 @@ const MyBookedTickets = () => {
                                             rounded-lg hover:bg-primary hover:text-white transition">
                                                 Paid
                                             </button> :
-                                            <button 
-                                            
-                                                onClick={()=>handlePayment(book)}
-                                                disabled={book.status !=="accepted" || isExpired}
+                                            <button
+
+                                                onClick={() => handlePayment(book)}
+                                                disabled={book.status !== "accepted" }
                                                 className={`px-4 py-2 btn bg-primary text-white rounded-lg 
                                                 hover:bg-primary/80 transition
-                                                 ${book.status !=='accepted' ? "opacity-50 " : ""}`}>
+                                                 ${book.status !== 'accepted' ? "opacity-50 " : ""}`}>
                                                 Pay now
                                             </button>
                                     }

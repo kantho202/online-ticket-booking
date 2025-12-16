@@ -22,7 +22,7 @@
 @plugin "daisyui/theme" {
   name: "dark";
   default: true;
-  --color-primary: green;
+  --color-primary: orange;
   --color-secondary: skyblue;
   
   

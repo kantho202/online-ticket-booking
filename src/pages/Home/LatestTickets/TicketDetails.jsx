@@ -211,7 +211,7 @@ const TicketDetails = () => {
             <p
               //  {...register('status')}
               className={`font-semibold text-sm ${ticket.status === "approved"
-                ? "text-green-600"
+                ? "text-primary"
                 : ticket.status === "rejected"
                   ? "text-red-600"
                   : "text-yellow-600"
