@@ -208,8 +208,8 @@ const TicketDetails = () => {
             <div className="border-t border-dashed border-gray-400 my-4"></div>
 
             {/* Verification */}
-            <p
-              //  {...register('status')}
+            {/* <p
+             
               className={`font-semibold text-sm ${ticket.status === "approved"
                 ? "text-primary"
                 : ticket.status === "rejected"
@@ -218,8 +218,8 @@ const TicketDetails = () => {
                 }`}
             >
               Status: Pending
-              {/* {ticket.verificationStatus} */}
-            </p>
+              
+            </p> */}
 
             {targetDateTime && (
               <Countdown
