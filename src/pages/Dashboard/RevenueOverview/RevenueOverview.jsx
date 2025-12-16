@@ -34,7 +34,7 @@ const RevenueOverview = () => {
                     <div className="stat-title text-2xl">{rev._id}</div>
                     <div className="stat-value">{rev.count}</div>
                    
-                    <div className="stat-desc">Jan 1st - Feb 1st</div>
+                    {/* <div className="stat-desc">Jan 1st - Feb 1st</div> */}
                 </div>)
             }
 
