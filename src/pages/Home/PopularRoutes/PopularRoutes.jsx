@@ -6,8 +6,8 @@ const PopularRoutes = () => {
   const routes = [
     { icon: <FaBus />, from: "Dhaka", to: "Chittagong", type: "Bus" },
     { icon: <FaTrain />, from: "Sylhet", to: "Dhaka", type: "Train" },
-    { icon: <FaPlaneDeparture />, from: "Dhaka", to: "Cox's Bazar", type: "Flight" },
-    { icon: <FaShip/>, from: "Dhaka", to: "Cox's Bazar", type: "Flight" }
+    { icon: <FaPlaneDeparture />, from: "Dhaka", to: "Rajshahi", type: "Bus" },
+    { icon: <FaShip/>, from: "Dhaka", to: "Sylhet", type: "Flight" }
   ];
 
   return (

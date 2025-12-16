@@ -7,9 +7,9 @@ import { LuLogOut } from 'react-icons/lu';
 const Navbar = () => {
     const { user, signOutUser } = useAuth()
     const links = <>
-        <li><NavLink to="/">Home</NavLink></li>
-        <li><NavLink to="/allTickets">All Tickets</NavLink></li>
-        <li><NavLink to="/dashboard/vendorProfile">Dashboard</NavLink></li>
+        <li><NavLink className={"font-medium text-base"} to="/">Home</NavLink></li>
+        <li><NavLink className={"font-medium text-base"} to="/allTickets">All Tickets</NavLink></li>
+        <li><NavLink className={"font-medium text-base"} to="/dashboard/vendorProfile">Dashboard</NavLink></li>
     </>
     const handleLogout = () => {
         signOutUser()
