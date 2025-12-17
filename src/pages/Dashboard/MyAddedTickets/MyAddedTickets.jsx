@@ -77,6 +77,8 @@ const MyAddedTickets = () => {
         });
 
     }
+
+
     return (
         <div className="p-6 bg-gray-50 min-h-screen  bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100">
             <h1 className="text-2xl font-bold text-gray-800 mb-8 text-center">My Added Tickets</h1>
@@ -125,18 +127,37 @@ const MyAddedTickets = () => {
                             )}
 
                             {/* Verification Status */}
-                            <p className={`mt-3 font-semibold text-sm ${ticket.verificationStatus === "approved"
+                            <p className={`mt-3 font-semibold text-sm ${ticket.status === "approved"
                                 ? "text-green-600"
-                                : ticket.verificationStatus === "rejected"
+                                : ticket.status === "reject"
                                     ? "text-red-600"
                                     : "text-yellow-500"
                                 }`}>
-                                Status: {ticket.verificationStatus || "pending"}
+                                Status: {ticket.status || "pending"}
                             </p>
 
                             {/* Action Buttons */}
                             <div className="pt-3 flex justify-between">
+
                                 <button
+                                    disabled={ticket.status === 'reject'}
+                                    onClick={() => setSelectedTicket(ticket)}
+                                    className={`px-4 py-2 bg-primary text-white rounded-lg 
+                                        ${ticket.status === 'reject' ? " cursor-not-allowed" : ""}
+                                    hover:bg-primary/80 transition `}>
+                                    Update
+                                </button>
+                                <button
+                                    disabled={ticket.status === 'reject' ? 'cursor not allow' : ''}
+                                    onClick={() => handleTicketRemove(ticket._id)}
+                                    className={`px-4 py-2 border border-primary text-primary rounded-lg
+                                        ${ticket.status === 'reject' ? "cursor-not-allowed" : ""}
+                                         hover:bg-primary hover:text-white transition`}>
+                                    Delete
+                                </button>
+
+                                {/* <button
+                                
                                     onClick={() => setSelectedTicket(ticket)}
                                     className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition">
                                     Update
@@ -145,7 +166,10 @@ const MyAddedTickets = () => {
                                     onClick={() => handleTicketRemove(ticket._id)}
                                     className="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition">
                                     Delete
-                                </button>
+                                </button> */}
+
+
+
                             </div>
                         </div>
 
@@ -213,7 +237,7 @@ const MyAddedTickets = () => {
                             defaultValue={selectedTicket.price}
                             className="input input-bordered w-full mb-3"
                         /> */}
-                       
+
 
                         <div className="flex justify-end gap-3">
                             <button

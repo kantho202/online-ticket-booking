@@ -115,10 +115,10 @@ const AllTickets = () => {
                                         <p className="text-gray-700"><span className="font-semibold">From:</span> {ticket.from}</p>
                                         <p className="text-gray-700"><span className="font-semibold">To:</span> {ticket.to}</p>
                                         <p className="text-gray-700"><span className="font-semibold">Transport :</span> {ticket.transport}</p>
-                                        <p className="text-gray-700"><span className="font-semibold">Date:</span> {ticket.date}</p>
-                                        <p className="text-gray-700"><span className="font-semibold">Time:</span> {ticket.time}</p>
+                                        {/* <p className="text-gray-700"><span className="font-semibold">Time:</span> {ticket.time}</p> */}
                                         <p className="text-gray-700"><span className="font-semibold">Quantity:</span> {ticket.ticketQuantity}</p>
                                         <p className="text-gray-700"><span className="font-semibold">Price:</span> ৳ {ticket.price}</p>
+                                        <p className="text-gray-700"><span className="font-semibold"> Date & Time :</span> {ticket.departureDateTime}</p>
                                         {/* <p className="text-gray-700"><span className="font-semibold">Email:</span> {ticket.email}</p> */}
 
                                        
