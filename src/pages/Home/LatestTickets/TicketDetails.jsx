@@ -12,12 +12,14 @@ import { RiArrowLeftCircleFill } from "react-icons/ri";
 import { useRef, } from "react";
 import { useForm } from "react-hook-form";
 import Countdown from "react-countdown";
+import useAuth from "../../../hook/useAuth";
 
 const TicketDetails = () => {
   const { id } = useParams();
+  const {user}=useAuth()
   const axiosSecure = useAxiosSecure();
   const ticketModalRef = useRef(null)
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, formState: { errors } } = useForm()
   const navigate = useNavigate()
   const { data: ticket = [], isLoading } = useQuery({
     queryKey: ["ticketDetails", id],
@@ -40,12 +42,13 @@ const TicketDetails = () => {
   const handleTicketSubmit = (data) => {
 
     const bookingInfo = {
-      name: ticket.name,
+      name: user.displayName,
       // email:ticket.email,
       ticket_title: ticket.ticketTitle,
       image: ticket.image,
-      quantity: Number(data.ticketQuantity),
-      total_price: ticket.price * Number(data.ticketQuantity),
+      bookingQuantity: Number(data.bookingQuantity),
+      ticketQuantity: Number(ticket.ticketQuantity),
+      total_price: ticket.price * Number(data.bookingQuantity),
       from: ticket.from,
       to: ticket.to,
       departureDateTime: ticket.departureDateTime,
@@ -66,10 +69,11 @@ const TicketDetails = () => {
 
   }
 
- const isSoldOut =ticket.ticketQuantity===0;
+  const isSoldOut = ticket.ticketQuantity === 0;
+  //  const isBookingOverLimit=ticket.ticketQuantity>ticketQuantity
   // countdown 
-  const isExpired=new Date(ticket.departureDateTime) < new Date();
-  const targetDateTime=ticket.departureDateTime
+  const isExpired = new Date(ticket.departureDateTime) < new Date();
+  const targetDateTime = ticket.departureDateTime
   const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       return <span className="text-red-500 text-center font-bold">Expired</span>;
@@ -236,11 +240,11 @@ const TicketDetails = () => {
 
             <div className="pt-4">
               <button
-              disabled={isExpired || isSoldOut}
+                disabled={isExpired || isSoldOut}
                 onClick={handleModalRef}
                 className={`w-full py-3   rounded-xl font-semibold
-                 text-lg ${(isExpired || isSoldOut) ? " bg-primary cursor-not-allowed" 
-                 : "bg-primary hover:bg-primary/80 text-white"}  transition`}>
+                 text-lg ${(isExpired || isSoldOut) ? " bg-primary cursor-not-allowed"
+                    : "bg-primary hover:bg-primary/80 text-white"}  transition`}>
                 Book This Ticket
               </button>
             </div>
@@ -254,15 +258,31 @@ const TicketDetails = () => {
 
             <dialog ref={ticketModalRef} className="modal modal-bottom sm:modal-middle">
               <div className="modal-box">
-                <h3 className="font-bold text-lg">Ticket Quantity</h3>
+                <h3 className="font-bold text-lg">Booking Quantity</h3>
                 <form onSubmit={handleSubmit(handleTicketSubmit)}>
 
 
                   <fieldset className="fieldset space-y-4">
                     <legend className="fieldset-legend"></legend>
+
                     <input type="number"
-                      {...register('ticketQuantity', { required: true })}
-                      className="input w-full" placeholder="Ticket Quantity" />
+                      {...register('bookingQuantity', {
+                        required: true,
+                        min: {
+                          value: 1,
+                          message: "Minimum quantity is 1"
+                        },
+                        max: {
+                          value: ticket.ticketQuantity,
+                          message: "Booking quantity can’t be greater than ticket quantity"
+                        }
+                      })}
+                      className="input w-full" placeholder="Booking Quantity" />
+                    {
+                      errors.bookingQuantity && (
+                        <p className="text-red-500 mt-1 text-sm font-bold">{errors.bookingQuantity.message}</p>
+                      )
+                    }
                     <button className="btn btn-primary">Submit</button>
 
                   </fieldset>

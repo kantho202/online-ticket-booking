@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import useAxiosSecure from '../../hook/useAxiosecure';
 import { Link } from 'react-router';
 import { LuSearch } from "react-icons/lu";
-import Countdown from 'react-countdown';
+
 
 const AllTickets = () => {
     const axiosSecure = useAxiosSecure()
@@ -137,14 +137,14 @@ const AllTickets = () => {
                                         )}
 
                                         {/* Verification Status */}
-                                        <p className={`mt-3 font-semibold text-sm ${ticket.verificationStatus === "approved"
+                                        {/* <p className={`mt-3 font-semibold text-sm ${ticket.status === "approved"
                                             ? "text-green-600"
-                                            : ticket.verificationStatus === "rejected"
+                                            : ticket.status === "rejected"
                                                 ? "text-red-600"
                                                 : "text-yellow-500"
                                             }`}>
-                                            Status: {ticket.verificationStatus || "pending"}
-                                        </p>
+                                            Status: {ticket.status || "pending"}
+                                        </p> */}
 
                                         {/* Action Buttons */}
                                         <div className="pt-3 flex justify-between">

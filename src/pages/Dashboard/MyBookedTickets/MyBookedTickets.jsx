@@ -17,15 +17,17 @@ const MyBookedTickets = () => {
     })
 
 
-    const handlePayment = async (ticket) => {
+    const handlePayment = async (book) => {
         const paymentInfo = {
-            total_price: ticket.total_price,
-            ticketId: ticket._id,
+            total_price: book.total_price,
+            ticketId: book._id,
             // email:bookings.email,
-            ticket_title: ticket.ticket_title
+            ticket_title: book.ticket_title,
+            bookingQuantity:book.bookingQuantity,
+            ticketQuantity:book.ticketQuantity,
         }
         const res = await axiosSecure.post('/create-checkout-session', paymentInfo)
-        console.log(res);
+        console.log(res.data,paymentInfo);
         window.location.assign(res.data.url);
     }
 
@@ -75,10 +77,10 @@ const MyBookedTickets = () => {
                                 <p className="text-gray-700"><span className="font-semibold">From:</span> {book.from}</p>
                                 <p className="text-gray-700"><span className="font-semibold">To:</span> {book.to}</p>
                                 {/* <p className="text-gray-700"><span className="font-semibold">Transport:</span> {ticket.transport}</p> */}
-                                <p className="text-gray-700"><span className="font-semibold">Date:</span> {book.date}</p>
-                                <p className="text-gray-700"><span className="font-semibold">Time:</span> {book.time}</p>
-                                <p className="text-gray-700"><span className="font-semibold">Quantity:</span> {book.quantity}</p>
+                                {/* <p className="text-gray-700"><span className="font-semibold">Time:</span> {book.time}</p> */}
+                                <p className="text-gray-700"><span className="font-semibold">Quantity:</span> {book.bookingQuantity}</p>
                                 <p className="text-gray-700"><span className="font-semibold">Total Price:</span> ৳ {book.total_price}Tk</p>
+                                <p className="text-gray-700"><span className="font-semibold">Date & Time:</span> {book.departureDateTime}</p>
                                 {/* <p className="text-gray-700"><span className="font-semibold">Email:</span> {ticket.email}</p> */}
 
                                 {/* Perks */}

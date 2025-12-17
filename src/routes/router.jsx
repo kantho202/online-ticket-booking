@@ -26,6 +26,7 @@ import AdvertiseTickets from "../pages/Dashboard/AdvertiseTickets/AdvertiseTicke
 import AdminRoute from "./AdminRoute";
 import UserProfile from "../pages/Dashboard/UserProfile/UserProfile";
 import AdminProfile from "../pages/Dashboard/AdminProfile/AdminProfile";
+import VendorRoute from "./VendorRoute";
 // import TicketDetails from "../pages/Home/LatestTickets/TicketDetails";
 
 export const router = createBrowserRouter([
@@ -45,7 +46,7 @@ export const router = createBrowserRouter([
       },
       {
         path:'/seeDetails/:id',
-        element:<TicketDetails></TicketDetails>
+        element:<PrivateRoute><TicketDetails></TicketDetails></PrivateRoute>
       },
       {
         path:'*',
@@ -91,11 +92,7 @@ export const router = createBrowserRouter([
         path: 'adminProfile',
         Component: AdminProfile
       },
-      {
-        path: 'addTicket',
-        loader: () => fetch('/serviceCenter.json').then(res => res.json()),
-        Component: AddTicket
-      },
+      
       {
         path: 'myBookedTickets',
         Component: MyBookedTickets
@@ -104,32 +101,7 @@ export const router = createBrowserRouter([
         path: 'transactionHistory',
         Component: TransactionHistory
       },
-      {
-        path: 'myAddedTickets',
-        Component: MyAddedTickets
-      },
-      {
-        path: 'RequestedBooking',
-        Component: RequestedBooking
-      },
-      {
-        path: 'RevenueOverview',
-        Component: RevenueOverview
-      },
-      {
-        path: 'manageTickets',
-        Component: ManageTickets
-      },
-      {
-        path: 'mangeUsers',
-        // Component:ManageUsers
-        element:<AdminRoute><ManageUsers></ManageUsers> </AdminRoute>
-      },
-      {
-        path: 'advertiseTickets',
-        Component:AdvertiseTickets
-      },
-      {
+       {
         path:'payment/:ticketId',
         Component:Payment
       },
@@ -140,7 +112,38 @@ export const router = createBrowserRouter([
       {
         path:'payment-canceled',
         Component:PaymentCancel
-      }
+      },
+      {
+        path: 'addTicket',
+        loader: () => fetch('/serviceCenter.json').then(res => res.json()),
+       element:<VendorRoute><AddTicket></AddTicket> </VendorRoute>
+      },
+      {
+        path: 'myAddedTickets',
+        element:<VendorRoute><MyAddedTickets></MyAddedTickets></VendorRoute>
+      },
+      {
+        path: 'RequestedBooking',
+        element:<VendorRoute><RequestedBooking></RequestedBooking> </VendorRoute>
+      },
+      {
+        path: 'RevenueOverview',
+        element:<VendorRoute><RevenueOverview></RevenueOverview> </VendorRoute>
+      },
+      {
+        path: 'manageTickets',
+        element:<AdminRoute><ManageTickets></ManageTickets> </AdminRoute>
+      },
+      {
+        path: 'mangeUsers',
+        // Component:ManageUsers
+        element:<AdminRoute><ManageUsers></ManageUsers> </AdminRoute>
+      },
+      {
+        path: 'advertiseTickets',
+        element:<AdminRoute><AdvertiseTickets></AdvertiseTickets></AdminRoute>
+      },
+     
 
     ]
   }

@@ -2,12 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import useAxiosSecure from '../../../hook/useAxiosecure';
 import { Link } from 'react-router';
-import useAuth from '../../../hook/useAuth';
 import { FaTicket } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
 const RequestedBooking = () => {
-    const { user: booking } = useAuth()
+    // const { user: booking } = useAuth()
     const axiosSecure = useAxiosSecure()
     const { data: bookings = [] } = useQuery({
         queryKey: ['bookings'],
@@ -156,18 +155,18 @@ const RequestedBooking = () => {
 
             {/* mobile view  */}
             <div className="grid gap-4 md:hidden mt-4">
-                {bookings.map((p, i) => (
-                    <div key={p._id} className=" p-4 rounded-lg shadow-md">
+                {bookings.map((booking, i) => (
+                    <div key={booking._id} className=" p-4 rounded-lg shadow-md">
                         <div className="flex justify-between">
                             <p className="font-bold text-primary text-xl">#{i + 1} </p>
                             <p className="font-semibold text-primary"> <FaTicket size={23}></FaTicket></p>
                         </div>
                         <div className='py-5 '>
-                            <p className='text-2xl font-extrabold'><span className='text-primary  font-bold'>Ticket Title:</span> {p.ticket_title}</p>
+                            <p className='text-2xl font-extrabold'><span className='text-primary  font-bold'>Ticket Title:</span> {booking.ticket_title}</p>
                             <p className='font-semibold'><span className='text-primary font-bold'>Name:</span> {booking.displayName}</p>
                             <p className='font-semibold'><span className='text-primary font-bold'>Email:</span> {booking.email}</p>
-                            <p className='font-semibold'><span className='text-primary font-bold'>Quantity:</span> <span className="break-all">{p.quantity}</span></p>
-                            <p className='font-semibold'><span className='text-primary font-bold'>Total Price:</span> {p.total_price}</p>
+                            <p className='font-semibold'><span className='text-primary font-bold'>Quantity:</span> <span className="break-all">{booking.quantity}</span></p>
+                            <p className='font-semibold'><span className='text-primary font-bold'>Total Price:</span> {booking.total_price}</p>
                         </div>
                         <div className="flex justify-between">
                             <button onClick={() => handleApproved(booking._id)} className="btn btn-primary">Accept</button>
