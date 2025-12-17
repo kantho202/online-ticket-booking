@@ -138,7 +138,7 @@ const RequestedBooking = () => {
                                 <td className='font-medium text-base'>{booking.name}</td>
                                 <td className='font-medium text-base'>{booking.email}</td>
                                 <td className='font-medium text-base'>{booking.ticket_title}</td>
-                                <td className='font-medium text-base'>{booking.quantity}</td>
+                                <td className='font-medium text-base'>{booking.bookingQuantity}</td>
                                 <td className='font-medium text-base'>{booking.total_price}Tk</td>
                                 <td className='font-medium text-base space-x-3'>
                                     <button onClick={() => handleApproved(booking._id)} className="btn btn-primary btn-outline">Accept</button>

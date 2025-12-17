@@ -16,11 +16,12 @@ const MyBookedTickets = () => {
         }
     })
 
-
+    
     const handlePayment = async (book) => {
         const paymentInfo = {
             total_price: book.total_price,
-            ticketId: book._id,
+            ticketId: book.ticketId,
+            bookingId: book._id,
             // email:bookings.email,
             ticket_title: book.ticket_title,
             bookingQuantity:book.bookingQuantity,
@@ -32,7 +33,10 @@ const MyBookedTickets = () => {
     }
 
     // countdown 
+    const expired=bookings.map(book=>book.departureDateTime)
+    const isExpired =new Date(expired) < new Date();
     //   const isExpired=new Date(book.departureDateTime) < new Date();
+    
     //   const targetDateTime=bookings.departureDateTime
     const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
         if (completed) {
@@ -56,6 +60,7 @@ const MyBookedTickets = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {bookings.map(book => (
+                        
                         <div
                             key={book._id}
                             className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden
@@ -115,9 +120,10 @@ const MyBookedTickets = () => {
                                     <Countdown
                                         date={book.departureDateTime}
                                         renderer={countdownRenderer}
-                                        className="font-bold text-2xl"
+                                        className={`font-bold text-2xl ${book.status === "paid" ? "hidden"  :"" }`}
                                     />
                                 )}
+                                
                                 {/* Action Buttons */}
                                 <div className="pt-3 flex justify-between">
                                     {
@@ -129,7 +135,7 @@ const MyBookedTickets = () => {
                                             <button
 
                                                 onClick={() => handlePayment(book)}
-                                                disabled={book.status !== "accepted" }
+                                                disabled={book.status !== "accepted" || isExpired }
                                                 className={`px-4 py-2 btn bg-primary text-white rounded-lg 
                                                 hover:bg-primary/80 transition
                                                  ${book.status !== 'accepted' ? "opacity-50 " : ""}`}>

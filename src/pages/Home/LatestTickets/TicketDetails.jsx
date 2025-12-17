@@ -42,6 +42,7 @@ const TicketDetails = () => {
   const handleTicketSubmit = (data) => {
 
     const bookingInfo = {
+      ticketId: ticket._id,
       name: user.displayName,
       // email:ticket.email,
       ticket_title: ticket.ticketTitle,
