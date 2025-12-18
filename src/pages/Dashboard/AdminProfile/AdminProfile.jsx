@@ -5,7 +5,7 @@ const AdminProfile = () => {
     const {user}=useAuth()
     return (
         <div className="min-h-screen flex items-center justify-center text-base-content p-6">
-            <div className="backdrop-blur-xl bg-white/30 border border-white/40 shadow-2xl rounded-2xl p-10 max-w-xl w-full text-center 
+            <div className="backdrop-blur-xl  border border-white/40 shadow-2xl rounded-2xl p-10 max-w-xl w-full text-center 
                             transform transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
 
                 {/* Profile Image */}

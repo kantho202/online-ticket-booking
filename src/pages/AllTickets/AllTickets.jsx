@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import useAxiosSecure from '../../hook/useAxiosecure';
 import { Link } from 'react-router';
 import { LuSearch } from "react-icons/lu";
@@ -9,6 +9,7 @@ const AllTickets = () => {
     const axiosSecure = useAxiosSecure()
     const [searchText, setSearchText] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
+    const [transportType, setTransportType] = useState("")
     const [sort, setSort] = useState('price')
     const [order, setOrder] = useState("asc")
     const itemsPerPage = 6;
@@ -16,14 +17,15 @@ const AllTickets = () => {
     // const hasNextPage = tickets.length === itemsPerPage;
 
     const { data: tickets = [], isLoading } = useQuery({
-        queryKey: ['tickets', searchText, currentPage, order, sort],
+        queryKey: ['tickets', searchText, transportType, currentPage, order, sort],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/tickets/sort?status=approved&searchText=${searchText}&limit=${itemsPerPage}&skip=${skip}&sort=${sort}&order=${order}`)
+            const res = await axiosSecure.get(`/tickets/sort?status=approved&searchText=${searchText}&transport=${transportType}&limit=${itemsPerPage}&skip=${skip}&sort=${sort}&order=${order}`)
             return res.data;
 
         },
         keepPreviousData: true,
     })
+
     const handleSelect = (e) => {
         console.log(e.target.value)
         const sortText = e.target.value;
@@ -31,18 +33,20 @@ const AllTickets = () => {
         setOrder(sortText.split("-")[1])
     }
 
-   
+
     return (
         <div className=' py-10 w-11/12 mx-auto text-base-content'>
             {/* <h1>home ticket {homeTicket.length}</h1> */}
             <div className="p-6 min-h-screen ">
                 <h1 className="text-2xl font-bold  mb-8 text-center">All Tickets</h1>
 
-                <div className='flex justify-between py-10'>
+                <div className='flex justify-between items-center py-10'>
                     <div></div>
-                    <label className="input input-bordered w-2xl rounded-full h-14
+                    <div className='flex justify-center items-center gap-3'>
+
+                        <label className="input input-bordered w-2xl rounded-full h-14
                     focus-within:border-primary focus-within:ring-1 focus-within:ring-primary outline-0  ">
-                        {/* <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            {/* <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <g
                                 strokeLinejoin="round"
                                 strokeLinecap="round"
@@ -54,17 +58,34 @@ const AllTickets = () => {
                                 <path d="m21 21-4.3-4.3"></path>
                             </g>
                         </svg> */}
-                        <LuSearch className='text-gray-500' size={24} />
+                            <LuSearch className='text-gray-500' size={24} />
 
-                        <input onChange={(e) => {
-                            setSearchText(e.target.value);
-                            setCurrentPage(1)
-                        }
-                        }
-                            type="search"
-                            className="grow border-0 outline-none border-none " placeholder="Search" />
+                            <input onChange={(e) => {
+                                setSearchText(e.target.value);
+                                setCurrentPage(1)
+                            }
+                            }
+                                type="search"
+                                className="grow border-0 outline-none border-none " placeholder="Search" />
 
-                    </label>
+                        </label>
+                        <select
+                            className="select w-30 outline-primary border-0  font-semibold"
+                            value={transportType}
+                            onChange={(e) => {
+                                setTransportType(e.target.value);
+                                setCurrentPage(1);
+                            }}
+                        >
+                            <option value="">All Transport</option>
+                            <option value="Bus">Bus</option>
+                            <option value="Train">Train</option>
+                            <option value="Plane">Plane</option>
+                            <option value="Launch">Launch</option>
+                        </select>
+
+                    </div>
+
 
                     <form className='flex justify-end '>
                         <select defaultValue="low-asc"
@@ -121,7 +142,7 @@ const AllTickets = () => {
                                         <p className=""><span className="font-semibold"> Date & Time :</span> {ticket.departureDateTime}</p>
                                         {/* <p className="text-gray-700"><span className="font-semibold">Email:</span> {ticket.email}</p> */}
 
-                                       
+
                                         {/* Perks */}
                                         {ticket.perks && ticket.perks.length > 0 && (
                                             <div className="flex flex-wrap gap-2 pt-2">
