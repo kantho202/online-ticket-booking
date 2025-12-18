@@ -39,7 +39,7 @@ const LogIn = () => {
     }
 
     return (
-        <div className="card  w-full max-w-lg pt-14   bg-white ">
+        <div className="card  w-full max-w-lg pt-14   ">
             <div className="card-body">
                 <h1 className="text-2xl lg:text-3xl font-extrabold text-center text-[42px]">Welcome Back</h1>
                 {/* <p className='text-base font-normal'>Login with ZapShift  </p> */}
@@ -53,7 +53,7 @@ const LogIn = () => {
                         <label className="label text-black">Email Address</label>
                         <div className=' '>
                             <input type="email"  {...register("email", { required: true })}
-                                className="input bg-white w-full" name='email'
+                                className="input w-full outline-primary border-0" name='email'
                                 placeholder="Email Address" />
                             {
                                 errors.email?.type === "required" &&
@@ -70,7 +70,7 @@ const LogIn = () => {
                                     minLength: 6,
                                     pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
                                 })}
-                            className="input bg-white w-full"
+                            className="input outline-primary border-0 w-full"
                             placeholder="Password" />
                         {
                             errors.password?.type === "required" &&

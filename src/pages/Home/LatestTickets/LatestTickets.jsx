@@ -17,9 +17,9 @@ const LatestTickets = () => {
         console.log('clicked')
     }
     return (
-        <div className='bg-[#faf7f5] py-10'>
+        <div className=' py-10 w-11/12 mx-auto'>
             {/* <h1>home ticket {homeTicket.length}</h1> */}
-            <div className="p-6 min-h-screen bg-[#faf7f5]">
+            <div className="p-6 min-h-screen ">
                 <h1 className="text-2xl font-bold text-gray-800 mb-8 text-center">Latest Tickets</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -27,7 +27,7 @@ const LatestTickets = () => {
                         <div
                             key={ticket._id}
                             className="rounded-2xl shadow-lg border border-gray-200 overflow-hidden
-                         transform transition hover:-translate-y-1 hover:shadow-2xl bg-[#faf7f5] "
+                         transform transition hover:-translate-y-1 hover:shadow-2xl  "
                         >
                             {/* Ticket Image */}
                             <div className="h-48 overflow-hidden">

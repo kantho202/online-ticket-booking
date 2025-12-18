@@ -17,14 +17,15 @@
   default: true;
   --color-primary: orange;
   --color-secondary: teal;
-  
+  --color-base-100:#faf7f5;
+   /* --linear-gradient(135deg, #dbeafe, #ffedd5, #fce7f3); */
 }
 @plugin "daisyui/theme" {
   name: "dark";
   default: true;
   --color-primary: orange;
   --color-secondary: skyblue;
-  
+   --color-base-100: #000000;
   
 }
 

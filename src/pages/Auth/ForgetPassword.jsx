@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 const ForgetPassword = () => {
     return (
-        <div className="card  w-full max-w-lg pt-14   bg-white">
+        <div className="card  w-full max-w-lg pt-14   ">
                     <div className="card-body">
                         <h1 className="text-2xl lg:text-3xl font-extrabold text-[42px]">Forgot Password</h1>
                         <p className='text-base font-normal'>Enter your email address and we’ll send you a reset link.  </p>
@@ -18,7 +18,7 @@ const ForgetPassword = () => {
                                 <label className="label text-black">Email Address</label>
                                 <div className=' '>
                                     <input type="email"  
-                                        className="input bg-white w-full" name='email' 
+                                        className="input  w-full" name='email' 
                                         placeholder="Email Address" />
                                        
                                 </div>

@@ -61,10 +61,10 @@ const Register = () => {
             })
     }
     return (
-        <div className="card  w-full max-w-lg pt-14   bg-white">
+        <div className="card  w-full max-w-lg pt-14   ">
             <div className="card-body">
                 <h1 className="text-2xl lg:text-3xl font-extrabold text-center text-[42px]"> Create an new Account</h1>
-                <p className='text-base font-normal'>Register now and step into a smarter travel experience! </p>
+                <p className='text-base text-center  font-medium'>Register now and step into a smarter travel experience! </p>
 
                 <form onSubmit={handleSubmit(handleRegister)}>
 
@@ -75,7 +75,7 @@ const Register = () => {
                         <label className="label text-black">Name</label>
                         <div className=' '>
                             <input type="text"  {...register('name', { required: true })}
-                                className="input bg-white w-full"
+                                className="input outline-primary border-0 w-full"
                                 placeholder="Name" />
                             {
                                 errors.name?.type === "required" &&
@@ -86,7 +86,7 @@ const Register = () => {
                         <label className="label text-black">Photo Url</label>
                         <div className=' '>
                             <input type="text"  {...register('photo', { required: true })}
-                                className="input bg-white w-full"
+                                className="input outline-primary border-0 w-full"
                                 placeholder="Photo url" />
                             {
                                 errors.photo?.type === "required" &&
@@ -98,7 +98,7 @@ const Register = () => {
                         <div className=' '>
                             <input type="email"  {...register('email',
                                 { required: true })}
-                                className="input bg-white w-full"
+                                className="input outline-primary border-0 w-full"
                                 placeholder="Email Address" />
                             {
                                 errors.email?.type === "required" &&
@@ -114,7 +114,7 @@ const Register = () => {
                                 minLength: 6,
                                 pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
                             })}
-                            className="input bg-white w-full"
+                            className="input outline-primary border-0 w-full"
                             placeholder="Password" />
 
 

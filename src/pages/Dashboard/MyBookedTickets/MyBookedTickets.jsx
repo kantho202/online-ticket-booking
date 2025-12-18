@@ -33,8 +33,7 @@ const MyBookedTickets = () => {
     }
 
     // countdown 
-    const expired=bookings.map(book=>book.departureDateTime)
-    const isExpired =new Date(expired) < new Date();
+   
     //   const isExpired=new Date(book.departureDateTime) < new Date();
     
     //   const targetDateTime=bookings.departureDateTime
@@ -59,13 +58,15 @@ const MyBookedTickets = () => {
                 <h1 className="text-2xl font-bold text-gray-800 mb-8 text-center">My Booked Tickets</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {bookings.map(book => (
-                        
-                        <div
+                    {bookings.map(book => {
+                        const isExpired=new Date(book.departureDateTime) < new Date();
+                        const isReject =book.status === "rejected"
+                        return(
+                            <div
                             key={book._id}
                             className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden
                          transform transition hover:-translate-y-1 hover:shadow-2xl bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100"
-                        >
+                            >
                             {/* Ticket Image */}
                             <div className="h-48 overflow-hidden">
                                 <img
@@ -116,11 +117,11 @@ const MyBookedTickets = () => {
                                     Status: {book.status || "pending"}
                                 </p>
 
-                                {book?.departureDateTime && (
+                                {book?.departureDateTime && !isReject && book.paymentStatus !== "paid" && (
                                     <Countdown
                                         date={book.departureDateTime}
                                         renderer={countdownRenderer}
-                                        className={`font-bold text-2xl ${book.status === "paid" ? "hidden"  :"" }`}
+                                        className={`font-bold text-2xl `}
                                     />
                                 )}
                                 
@@ -138,7 +139,7 @@ const MyBookedTickets = () => {
                                                 disabled={book.status !== "accepted" || isExpired }
                                                 className={`px-4 py-2 btn bg-primary text-white rounded-lg 
                                                 hover:bg-primary/80 transition
-                                                 ${book.status !== 'accepted' ? "opacity-50 " : ""}`}>
+                                                 ${(book.status !== 'accepted' || isExpired) ? "opacity-50 cursor-not-allowed" : ""}`}>
                                                 Pay now
                                             </button>
                                     }
@@ -147,7 +148,9 @@ const MyBookedTickets = () => {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                        )
+                        
+})}
                 </div>
             </div>
         </div>

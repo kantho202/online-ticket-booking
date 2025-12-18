@@ -10,7 +10,7 @@ const Footer = () => {
 <footer>
 
 
-       <div className="footer sm:footer-horizontal bg-[#faf7f5] text-base-content p-10">
+       <div className="footer sm:footer-horizontal  text-base-content p-10">
   <nav>
     <h6 className="footer"><Logo></Logo></h6>
     <p>Experience seamless travel bookings with  <br />
@@ -44,7 +44,7 @@ const Footer = () => {
  
 
 </div>
- <div className="footer sm:footer-horizontal footer-center bg-base-200 text-base-content p-4">
+ <div className="footer sm:footer-horizontal footer-center  text-base-content p-4">
   <aside>
     <p>Copyright © {new Date().getFullYear()} - All right reserved by EasyTripTicket Ltd</p>
   </aside>

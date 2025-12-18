@@ -9,7 +9,7 @@ import { BsArrowUpRightCircleFill } from 'react-icons/bs';
 
 const Banner = () => {
     return (
-        <Carousel className='pt-9'
+        <Carousel className=''
             autoPlay={true}
             infiniteLoop={true}
         >

@@ -8,13 +8,13 @@ import Advertisement from '../Advertisement/Advertisement';
 
 const Home = () => {
     return (
-        <div className='w-11/12 mx-auto bg-[#faf7f5]'>
+        <div>
             
             <Banner></Banner>
-            <Advertisement></Advertisement>
-            <LatestTickets></LatestTickets>
-          <PopularRoutes></PopularRoutes>
-          <WhyChooseUs></WhyChooseUs>
+            <Advertisement ></Advertisement>
+            <LatestTickets ></LatestTickets>
+          <PopularRoutes ></PopularRoutes>
+          <WhyChooseUs ></WhyChooseUs>
         </div>
     );
 };
