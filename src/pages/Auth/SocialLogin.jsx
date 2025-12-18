@@ -2,12 +2,13 @@ import React from 'react';
 import useAuth from '../../hook/useAuth';
 import { useNavigate } from 'react-router';
 import useAxiosSecure from '../../hook/useAxiosecure';
+import Loader from '../../components/Loading/Loading';
 
 
 // import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const SocialLogin = () => {
-    const {googleSigInUser}=useAuth();
+    const {googleSigInUser,loading}=useAuth();
     const axiosSecure =useAxiosSecure()
     const navigate =useNavigate()
     // const axiosSecure =useAxiosSecure()
@@ -32,6 +33,9 @@ const SocialLogin = () => {
         .catch(error=>{
             console.log(error)
         })
+    }
+    if(loading){
+        return <Loader></Loader>
     }
     return (
         <div>

@@ -28,13 +28,14 @@ import UserProfile from "../pages/Dashboard/UserProfile/UserProfile";
 import AdminProfile from "../pages/Dashboard/AdminProfile/AdminProfile";
 import VendorRoute from "./VendorRoute";
 import Loader from "../components/Loading/Loading";
+import UserRoute from "./userRoute";
 // import TicketDetails from "../pages/Home/LatestTickets/TicketDetails";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
-    hydrateFallbackElement:Loader,
+    hydrateFallbackElement: Loader,
     children: [
       {
         index: true,
@@ -47,12 +48,12 @@ export const router = createBrowserRouter([
         </PrivateRoute>
       },
       {
-        path:'/seeDetails/:id',
-        element:<PrivateRoute><TicketDetails></TicketDetails></PrivateRoute>
+        path: '/seeDetails/:id',
+        element: <PrivateRoute><TicketDetails></TicketDetails></PrivateRoute>
       },
       {
-        path:'*',
-        Component:Error
+        path: '*',
+        Component: Error
       }
     ]
   },
@@ -94,58 +95,58 @@ export const router = createBrowserRouter([
         path: 'adminProfile',
         Component: AdminProfile
       },
-      
+
       {
         path: 'myBookedTickets',
-        Component: MyBookedTickets
+        element: <UserRoute><MyBookedTickets></MyBookedTickets></UserRoute>
       },
       {
         path: 'transactionHistory',
-        Component: TransactionHistory
-      },
-       {
-        path:'payment/:ticketId',
-        Component:Payment
+        element: <UserRoute><TransactionHistory></TransactionHistory></UserRoute>
       },
       {
-        path:'payment-success',
-        Component:PaymentSuccess
+        path: 'payment/:ticketId',
+        element: <UserRoute><Payment></Payment></UserRoute>
       },
       {
-        path:'payment-canceled',
-        Component:PaymentCancel
+        path: 'payment-success',
+        element: <UserRoute><PaymentSuccess></PaymentSuccess></UserRoute>
+      },
+      {
+        path: 'payment-canceled',
+        element: <UserRoute><PaymentCancel></PaymentCancel></UserRoute>
       },
       {
         path: 'addTicket',
         loader: () => fetch('/serviceCenter.json').then(res => res.json()),
-       element:<VendorRoute><AddTicket></AddTicket> </VendorRoute>
+        element: <VendorRoute><AddTicket></AddTicket> </VendorRoute>
       },
       {
         path: 'myAddedTickets',
-        element:<VendorRoute><MyAddedTickets></MyAddedTickets></VendorRoute>
+        element: <VendorRoute><MyAddedTickets></MyAddedTickets></VendorRoute>
       },
       {
         path: 'RequestedBooking',
-        element:<VendorRoute><RequestedBooking></RequestedBooking> </VendorRoute>
+        element: <VendorRoute><RequestedBooking></RequestedBooking> </VendorRoute>
       },
       {
         path: 'RevenueOverview',
-        element:<VendorRoute><RevenueOverview></RevenueOverview> </VendorRoute>
+        element: <VendorRoute><RevenueOverview></RevenueOverview> </VendorRoute>
       },
       {
         path: 'manageTickets',
-        element:<AdminRoute><ManageTickets></ManageTickets> </AdminRoute>
+        element: <AdminRoute><ManageTickets></ManageTickets> </AdminRoute>
       },
       {
         path: 'mangeUsers',
         // Component:ManageUsers
-        element:<AdminRoute><ManageUsers></ManageUsers> </AdminRoute>
+        element: <AdminRoute><ManageUsers></ManageUsers> </AdminRoute>
       },
       {
         path: 'advertiseTickets',
-        element:<AdminRoute><AdvertiseTickets></AdvertiseTickets></AdminRoute>
+        element: <AdminRoute><AdvertiseTickets></AdvertiseTickets></AdminRoute>
       },
-     
+
 
     ]
   }
