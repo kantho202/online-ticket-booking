@@ -27,12 +27,14 @@ import AdminRoute from "./AdminRoute";
 import UserProfile from "../pages/Dashboard/UserProfile/UserProfile";
 import AdminProfile from "../pages/Dashboard/AdminProfile/AdminProfile";
 import VendorRoute from "./VendorRoute";
+import Loader from "../components/Loading/Loading";
 // import TicketDetails from "../pages/Home/LatestTickets/TicketDetails";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
+    hydrateFallbackElement:Loader,
     children: [
       {
         index: true,

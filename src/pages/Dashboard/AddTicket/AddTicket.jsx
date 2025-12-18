@@ -87,7 +87,7 @@ const AddTicket = () => {
 
     return (
         <div className=' px-5 py-5  lg:px-26  lg:py-20 text-base-content'>
-            <h1 className='font-extrabold text-[56px] text-primary logo'>Add Ticket</h1>
+            <h1 className='font-extrabold text-[56px] text-primary text-center pb-4 logo'>Add Ticket</h1>
             <form onSubmit={handleSubmit(handleAddTicket)}>
 
 

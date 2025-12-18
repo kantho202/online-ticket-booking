@@ -142,7 +142,7 @@ const MyAddedTickets = () => {
                                 <button
                                     disabled={ticket.status === 'reject'}
                                     onClick={() => setSelectedTicket(ticket)}
-                                    className={`px-4 py-2 bg-primary text-white rounded-lg 
+                                    className={`px-4 py-2 bg-primary btn text-white rounded-lg 
                                         ${ticket.status === 'reject' ? " cursor-not-allowed" : ""}
                                     hover:bg-primary/80 transition `}>
                                     Update
@@ -150,7 +150,7 @@ const MyAddedTickets = () => {
                                 <button
                                     disabled={ticket.status === 'reject' ? 'cursor not allow' : ''}
                                     onClick={() => handleTicketRemove(ticket._id)}
-                                    className={`px-4 py-2 border border-primary text-primary rounded-lg
+                                    className={`px-4 py-2 border btn border-primary text-primary rounded-lg
                                         ${ticket.status === 'reject' ? "cursor-not-allowed" : ""}
                                          hover:bg-primary hover:text-white transition`}>
                                     Delete
