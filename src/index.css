@@ -19,6 +19,7 @@
   --color-secondary: teal;
   --color-base-100:#faf7f5;
    /* --linear-gradient(135deg, #dbeafe, #ffedd5, #fce7f3); */
+   --color-base-content: #1f2937;
 }
 @plugin "daisyui/theme" {
   name: "dark";
@@ -26,6 +27,7 @@
   --color-primary: orange;
   --color-secondary: skyblue;
    --color-base-100: #000000;
+   --color-base-content: #ffffff;
   
 }
 

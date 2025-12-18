@@ -80,15 +80,15 @@ const MyAddedTickets = () => {
 
 
     return (
-        <div className="p-6 bg-gray-50 min-h-screen  bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100">
-            <h1 className="text-2xl font-bold text-gray-800 mb-8 text-center">My Added Tickets</h1>
+        <div className="p-6 text-base-content px-10">
+            <h1 className="text-2xl font-bold  mb-8 text-center">My Added Tickets</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {tickets.map(ticket => (
                     <div
                         key={ticket._id}
-                        className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden
-                         transform transition hover:-translate-y-1 hover:shadow-2xl bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100"
+                        className="rounded-2xl shadow-lg border border-gray-200 overflow-hidden
+                         transform transition hover:-translate-y-1 hover:shadow-2xl "
                     >
                         {/* Ticket Image */}
                         <div className="h-48 overflow-hidden">
@@ -101,16 +101,16 @@ const MyAddedTickets = () => {
 
                         {/* Ticket Content */}
                         <div className="p-5 space-y-3">
-                            <h2 className="text-[28px] font-bold logo text-gray-900">{ticket.ticketTitle}</h2>
-                            <p className="text-gray-700"><span className="font-semibold">Name:</span> {ticket.name}</p>
-                            <p className="text-gray-700"><span className="font-semibold">From:</span> {ticket.from}</p>
-                            <p className="text-gray-700"><span className="font-semibold">To:</span> {ticket.to}</p>
-                            <p className="text-gray-700"><span className="font-semibold">Transport:</span> {ticket.transport}</p>
-                            {/* <p className="text-gray-700"><span className="font-semibold">Time:</span> {ticket.time}</p> */}
-                            <p className="text-gray-700"><span className="font-semibold">Quantity:</span> {ticket.ticketQuantity}</p>
-                            <p className="text-gray-700"><span className="font-semibold">Price:</span> ৳ {ticket.price}</p>
-                            <p className="text-gray-700"><span className="font-semibold">Email:</span> {ticket.email}</p>
-                            <p className="text-gray-700"><span className="font-semibold">Date & Time:</span> {ticket.departureDateTime}</p>
+                            <h2 className="text-[28px] font-bold logo ">{ticket.ticketTitle}</h2>
+                            <p className=""><span className="font-semibold">Name:</span> {ticket.name}</p>
+                            <p className=""><span className="font-semibold">From:</span> {ticket.from}</p>
+                            <p className=""><span className="font-semibold">To:</span> {ticket.to}</p>
+                            <p className=""><span className="font-semibold">Transport:</span> {ticket.transport}</p>
+                            {/* <p className=""><span className="font-semibold">Time:</span> {ticket.time}</p> */}
+                            <p className=""><span className="font-semibold">Quantity:</span> {ticket.ticketQuantity}</p>
+                            <p className=""><span className="font-semibold">Price:</span> ৳ {ticket.price}</p>
+                            <p className=""><span className="font-semibold">Email:</span> {ticket.email}</p>
+                            <p className=""><span className="font-semibold">Date & Time:</span> {ticket.departureDateTime}</p>
 
                             {/* Perks */}
                             {ticket.perks && ticket.perks.length > 0 && (
@@ -184,7 +184,7 @@ const MyAddedTickets = () => {
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <form
                         onSubmit={(e) => handleTicketUpdate(e, selectedTicket._id)}
-                        className="bg-white p-6 rounded-xl w-[400px]"
+                        className="bg-base-100 p-6 rounded-xl w-[400px]"
                     >
                         <h2 className="text-xl font-bold mb-4">Update Ticket</h2>
 

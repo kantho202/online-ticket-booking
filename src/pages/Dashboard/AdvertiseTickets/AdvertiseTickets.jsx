@@ -58,12 +58,12 @@ const AdvertiseTickets = () => {
         handleToggleAdvertise(id, 'unadvertised')
     }
     return (
-        <div className='bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100 min-h-screen p-4'>
+        <div className='min-h-screen pt-5'>
             {/* <h1 className='text-xl font-bold mb-4'>  transaction :{payments.length}</h1> */}
-            <div className="hidden md:block overflow-x-auto rounded-lg  ">
+            <div className="hidden md:block overflow-x-auto rounded-lg  px-10">
                 <table className="table table-zebra w-full text-base ">
                     {/* head */}
-                    <thead className=' bg-gray-200'>
+                    <thead className=' '>
                         <tr>
                             <th>#</th>
 
@@ -87,7 +87,7 @@ const AdvertiseTickets = () => {
 
                                 {/* <td className='font-medium text-base'>{user.displayName}</td> */}
                                 <td className='font-medium text-base'>{ticket.email}</td>
-                                <td className='font-medium text-base'>{ticket.date}</td>
+                                <td className='font-medium text-base'>{ticket.departureDateTime}</td>
                                 {/* <td className='font-medium text-base'>{user.from}</td>
                                        <td className='font-medium text-base'>{user.to}</td> */}
                                 <td className='font-medium text-base space-x-3 text-center'>
@@ -117,7 +117,7 @@ const AdvertiseTickets = () => {
             </div>
 
             {/* mobile view  */}
-            <div className="grid gap-4 md:hidden mt-4">
+            <div className="grid gap-4 md:hidden px-10 mt-4">
                 {tickets.map((ticket, i) => (
                     <div key={ticket._id} className=" p-4 rounded-lg shadow-md">
                         <div className="flex justify-between">
@@ -126,14 +126,18 @@ const AdvertiseTickets = () => {
                         </div>
                         <div className='py-5 '>
                             {/* <p className='text-2xl font-extrabold'><span className='text-primary  font-bold'>Ticket Title:</span> {p.ticket_title}</p> */}
-                            <p className='font-semibold'><span className='text-primary font-bold'>Name:</span> {ticket.displayName}</p>
-                            <p className='font-semibold'><span className='text-primary font-bold'>Email:</span> {ticket.email}</p>
-                            <p className='font-semibold'><span className='text-primary font-bold'>Role:</span> <span className="break-all">{ticket.role}</span></p>
+                            <p className='font-semibold'><span className='text-primary font-bold'>Name:</span>
+                             {ticket.displayName}</p>
+                            <p className='font-semibold'><span className='text-primary font-bold'>Email:</span> 
+                            {ticket.email}</p>
+                            <p className='font-semibold'><span className='text-primary font-bold'>Role:</span>
+                             <span className="break-all">{ticket.createAt}</span></p>
                         </div>
                         <div className="flex justify-between">
                             <button onClick={() => handleToggleAdvertise(ticket)}
                                 className="btn btn-primary btn-outline">Make Admin</button>
-                            <button onClick={() => handleUnAdvertise(ticket)} className="btn btn-primary">Make Vendor</button>
+                            <button onClick={() => handleUnAdvertise(ticket)} className="btn btn-primary">
+                                Make Vendor</button>
                         </div>
                     </div>
                 ))}

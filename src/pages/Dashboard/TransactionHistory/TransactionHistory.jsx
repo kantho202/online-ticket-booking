@@ -14,12 +14,12 @@ const TransactionHistory = () => {
         }
     })
     return (
-        <div className='bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100 min-h-screen p-4'>
+        <div className='text-base-content min-h-screen pt-5 px-10'>
             {/* <h1 className='text-xl font-bold mb-4'>  transaction :{payments.length}</h1> */}
             <div className="hidden md:block overflow-x-auto rounded-lg  ">
                 <table className="table table-zebra w-full text-base">
                     {/* head */}
-                    <thead className='text-center bg-gray-200'>
+                    <thead className='text-center '>
                         <tr>
                             <th>#</th>
 

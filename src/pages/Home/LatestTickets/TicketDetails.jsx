@@ -90,7 +90,7 @@ const TicketDetails = () => {
     );
   };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100 py-10 px-4">
+    <div className="min-h-screen  py-10 px-4 text-base-content">
 
       <div className="max-w-4xl mx-auto">
 
@@ -110,7 +110,7 @@ const TicketDetails = () => {
 
         {/* <form onSubmit={handleSubmit(handleTicketSubmit)}> */}
 
-        <div className="bg-white/70 backdrop-blur-lg border border-white/40 shadow-xl rounded-2xl overflow-hidden">
+        <div className=" border border-white/40 shadow-xl rounded-2xl overflow-hidden">
 
           {/* Header Image */}
           <div className="h-64 w-full overflow-hidden relative">
@@ -120,7 +120,7 @@ const TicketDetails = () => {
               className="w-full h-full object-cover"
             />
 
-            <div className="absolute bottom-3 left-3 px-4 py-1 bg-black/50 text-white text-sm rounded-full">
+            <div className="absolute bottom-3 left-3 px-4 py-1 bg-black/50  text-sm rounded-full">
               {ticket.transport}
             </div>
           </div>
@@ -129,12 +129,12 @@ const TicketDetails = () => {
           <div className="p-6 space-y-6">
 
             {/* Title */}
-            <h1 className="text-3xl font-bold text-gray-900 logo">
+            <h1 className="text-3xl font-bold  logo">
               {ticket.ticketTitle}
             </h1>
 
             {/* Info Grid */}
-            <div className="grid sm:grid-cols-2 gap-6 text-gray-800">
+            <div className="grid sm:grid-cols-2 gap-6 ">
 
               <div className="space-y-3">
                 <p className="flex items-center gap-2">

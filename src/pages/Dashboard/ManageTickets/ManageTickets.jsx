@@ -19,30 +19,7 @@ const ManageTickets = () => {
 
     const updateTicketStatus=(id,status)=>{
         console.log(id)
-        //   Swal.fire({
-        //     title: "Are you sure want to update this ticket?",
-        //     text: "You won't be able to revert this!",
-        //     icon: "warning",
-        //     showCancelButton: true,
-        //     confirmButtonColor: "#3085d6",
-        //     cancelButtonColor: "#d33",
-        //     confirmButtonText: "Yes, delete it!"
-        // }).then((result) => {
-        //     if (result.isConfirmed) {
-        //         axiosSecure.patch(`/tickets/${id}`)
-        //         .then(res=>{
-        //             console.log(res.data)
-        //             if(res.data.modifiedCount){
-        //                 refetch()
-        //                 Swal.fire({
-        //                     title: "Deleted!",
-        //                     text: "Your ticket has been deleted.",
-        //                     icon: "success"
-        //                 });
-        //             }
-        //         })
-        //     }
-        // });
+        
          Swal.fire({
                     title: `Are you sure manage ticket ${status}?`,
                     text: "",
@@ -74,34 +51,7 @@ const ManageTickets = () => {
                 });
     }
 
-    // const handleTicketRemove = (id) => {
-    //     console.log(id)
-    //     Swal.fire({
-    //         title: "Are you sure want to delete this ticket?",
-    //         text: "You won't be able to revert this!",
-    //         icon: "warning",
-    //         showCancelButton: true,
-    //         confirmButtonColor: "#3085d6",
-    //         cancelButtonColor: "#d33",
-    //         confirmButtonText: "Yes, delete it!"
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             axiosSecure.delete(`/tickets/${id}`)
-    //             .then(res=>{
-    //                 console.log(res.data)
-    //                 if(res.data.deletedCount){
-    //                     refetch()
-    //                     Swal.fire({
-    //                         title: "Deleted!",
-    //                         text: "Your ticket has been deleted.",
-    //                         icon: "success"
-    //                     });
-    //                 }
-    //             })
-    //         }
-    //     });
 
-    // }
     const handleApprovedTicket=(id)=>{
         console.log('clicked',id)
         updateTicketStatus(id,'approved')
@@ -112,12 +62,12 @@ const ManageTickets = () => {
     }
     
     return (
-             <div className='bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100 min-h-screen p-4'>
+             <div className=' min-h-screen pt-5 text-base-content px-10 '>
             {/* <h1 className='text-xl font-bold mb-4'>  transaction :{payments.length}</h1> */}
             <div className="hidden md:block overflow-x-auto rounded-lg  ">
                 <table className="table table-zebra w-full text-base">
                     {/* head */}
-                    <thead className='text-center bg-gray-200'>
+                    <thead className='text-center '>
                         <tr>
                             <th>#</th>
 

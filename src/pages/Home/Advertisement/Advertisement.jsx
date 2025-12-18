@@ -14,10 +14,10 @@ const Advertisement = () => {
     })
    
     return (
-        <div className=' py-10 w-11/12 mx-auto '>
+        <div className=' py-10 w-11/12 mx-auto text-base-content'>
             {/* <h1>home ticket {homeTicket.length}</h1> */}
             <div className="p-6 min-h-screen ">
-                <h1 className="text-2xl font-bold text-gray-800 mb-8 text-center">Advertisement</h1>
+                <h1 className="text-2xl font-bold  text-base-content mb-8 text-center">Advertisement</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {advertise.map(ticket => (
@@ -37,15 +37,15 @@ const Advertisement = () => {
 
                             {/* Ticket Content */}
                             <div className="p-5 space-y-3">
-                                <h2 className="text-[28px] font-bold logo text-gray-900">{ticket.ticketTitle}</h2>
-                                <p className="text-gray-700"><span className="font-semibold">Name:</span> {ticket.name}</p>
+                                <h2 className="text-[28px] font-bold logo ">{ticket.ticketTitle}</h2>
+                                <p className=""><span className="font-semibold">Name:</span> {ticket.name}</p>
                                 {/* <p className="text-gray-700"><span className="font-semibold">From:</span> {ticket.from}</p> */}
                                 {/* <p className="text-gray-700"><span className="font-semibold">To:</span> {ticket.to}</p> */}
-                                <p className="text-gray-700"><span className="font-semibold">Transport:</span> {ticket.transport}</p>
+                                <p className=""><span className="font-semibold">Transport:</span> {ticket.transport}</p>
                                 {/* <p className="text-gray-700"><span className="font-semibold">Date:</span> {ticket.date}</p> */}
                                 {/* <p className="text-gray-700"><span className="font-semibold">Time:</span> {ticket.time}</p> */}
-                                <p className="text-gray-700"><span className="font-semibold">Quantity:</span> {ticket.ticketQuantity}</p>
-                                <p className="text-gray-700"><span className="font-semibold">Price:</span> ৳ {ticket.price}</p>
+                                <p className=""><span className="font-semibold">Quantity:</span> {ticket.ticketQuantity}</p>
+                                <p className=""><span className="font-semibold">Price:</span> ৳ {ticket.price}</p>
                                 {/* <p className="text-gray-700"><span className="font-semibold">Email:</span> {ticket.email}</p> */}
 
                                 {/* Perks */}

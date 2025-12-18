@@ -91,12 +91,12 @@ const ManageUsers = () => {
 
     }
     return (
-        <div className='bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100 min-h-screen p-4'>
+        <div className=' min-h-screen '>
             {/* <h1 className='text-xl font-bold mb-4'>  transaction :{payments.length}</h1> */}
-            <div className="hidden md:block overflow-x-auto rounded-lg  ">
+            <div className="hidden md:block overflow-x-auto rounded-lg px-10 pt-5 ">
                 <table className="table table-zebra w-full text-base ">
                     {/* head */}
-                    <thead className=' bg-gray-200'>
+                    <thead className=' '>
                         <tr>
                             <th>#</th>
 
@@ -150,7 +150,7 @@ const ManageUsers = () => {
             </div>
 
             {/* mobile view  */}
-            <div className="grid gap-4 md:hidden mt-4">
+            <div className="grid gap-4 md:hidden mt-4 px-10 pt-5">
                 {mangeUsers.map((user, i) => (
                     <div key={user._id} className=" p-4 rounded-lg shadow-md">
                         <div className="flex justify-between">

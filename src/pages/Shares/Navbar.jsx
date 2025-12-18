@@ -33,7 +33,7 @@ const Navbar = () => {
     }
     return (
         <div className="navbar sticky top-0 z-50   bg-base-100 px-10 ">
-            <div className="lg:hidden">
+            {/* <div className="lg:hidden ">
                 <input id="my-drawer-1" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content">
 
@@ -52,18 +52,43 @@ const Navbar = () => {
                         <Link to="/register" className="btn btn-sm w-full my-btn ">Register</Link>
                     </ul>
                 </div>
-            </div>
+            </div> */}
+            <div className="lg:hidden pr-3">
+                    <input id="my-drawer-1" type="checkbox" className="drawer-toggle" />
+                    <div className="drawer-content">
 
-            <div className="navbar-start">
+
+                        <label htmlFor="my-drawer-1" className="">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
+
+                        </label>
+                    </div>
+                    <div className="drawer-side space-y-">
+                        <label htmlFor="my-drawer-1" aria-label="close sidebar" className="drawer-overlay"></label>
+                        <ul className="menu bg-base-200 min-h-full text-center space-y-1.5 w-80 p-4">
+
+                            {links}
+                            <Link to="/login" className="btn btn-sm mr-4 mb-3 btn-outline w-full mt-1.5">LogIn</Link>
+                            <Link to="/register" className="btn btn-sm w-full my-btn ">Register</Link>
+                        </ul>
+                    </div>
+                </div>
+
+            <div className="navbar-start hidden lg:flex">
               
-                <Logo></Logo>
-            </div>
-            <div className="navbar-center hidden lg:flex">
+                
                 <ul className="menu menu-horizontal px-1">
                     {links}
                 </ul>
             </div>
+            <div className="navbar-center ">
+                <Logo></Logo>
+                {/* <ul className="menu menu-horizontal px-1">
+                    {links}
+                </ul> */}
+            </div>
             <div className="navbar-end space-x-2.5 flex items-center ">
+                
                 {
                     user ?
                         //  <button onClick={handleLogout} className='btn btn-primary btn-outline'>Logout</button>

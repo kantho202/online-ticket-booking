@@ -12,7 +12,7 @@ const RevenueOverview = () => {
         }
     })
     return (
-        <div className="stats shadow">
+        <div className="stats shadow w-full px-10 pt-5">
             {/* <h1>{revenue.length}</h1> */}
             {
                 revenue.map((rev) => <div key={rev._id} className="stat">

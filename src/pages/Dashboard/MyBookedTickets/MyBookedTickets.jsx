@@ -54,8 +54,8 @@ const MyBookedTickets = () => {
     return (
         <div>
             {/* <h1>bookings{bookings.length}</h1> */}
-            <div className="p-6 bg-gray-50 min-h-screen  bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100">
-                <h1 className="text-2xl font-bold text-gray-800 mb-8 text-center">My Booked Tickets</h1>
+            <div className="pt-5  min-h-screen px-10 text-base-content">
+                <h1 className="text-2xl font-bold  mb-8 text-center">My Booked Tickets</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {bookings.map(book => {
@@ -64,8 +64,8 @@ const MyBookedTickets = () => {
                         return(
                             <div
                             key={book._id}
-                            className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden
-                         transform transition hover:-translate-y-1 hover:shadow-2xl bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100"
+                            className=" rounded-2xl shadow-lg border border-gray-200 overflow-hidden
+                         transform transition hover:-translate-y-1 hover:shadow-2xl "
                             >
                             {/* Ticket Image */}
                             <div className="h-48 overflow-hidden">
@@ -78,16 +78,16 @@ const MyBookedTickets = () => {
 
                             {/* Ticket Content */}
                             <div className="p-5 space-y-3">
-                                <h2 className="text-[28px] font-bold logo text-gray-900">{book.ticket_title}</h2>
+                                <h2 className="text-[28px] font-bold logo ">{book.ticket_title}</h2>
                                 {/* <p className="text-gray-700"><span className="font-semibold">Name:</span> {ticket.name}</p> */}
-                                <p className="text-gray-700"><span className="font-semibold">From:</span> {book.from}</p>
-                                <p className="text-gray-700"><span className="font-semibold">To:</span> {book.to}</p>
-                                {/* <p className="text-gray-700"><span className="font-semibold">Transport:</span> {ticket.transport}</p> */}
-                                {/* <p className="text-gray-700"><span className="font-semibold">Time:</span> {book.time}</p> */}
-                                <p className="text-gray-700"><span className="font-semibold">Quantity:</span> {book.bookingQuantity}</p>
-                                <p className="text-gray-700"><span className="font-semibold">Total Price:</span> ৳ {book.total_price}Tk</p>
-                                <p className="text-gray-700"><span className="font-semibold">Date & Time:</span> {book.departureDateTime}</p>
-                                {/* <p className="text-gray-700"><span className="font-semibold">Email:</span> {ticket.email}</p> */}
+                                <p className=""><span className="font-semibold">From:</span> {book.from}</p>
+                                <p className=""><span className="font-semibold">To:</span> {book.to}</p>
+                                {/* <p className=""><span className="font-semibold">Transport:</span> {ticket.transport}</p> */}
+                                {/* <p className=""><span className="font-semibold">Time:</span> {book.time}</p> */}
+                                <p className=""><span className="font-semibold">Quantity:</span> {book.bookingQuantity}</p>
+                                <p className=""><span className="font-semibold">Total Price:</span> ৳ {book.total_price}Tk</p>
+                                <p className=""><span className="font-semibold">Date & Time:</span> {book.departureDateTime}</p>
+                                {/* <p className=""><span className="font-semibold">Email:</span> {ticket.email}</p> */}
 
                                 {/* Perks */}
                                 {book.perks && book.perks.length > 0 && (

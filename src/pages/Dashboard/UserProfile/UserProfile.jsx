@@ -4,8 +4,8 @@ import useAuth from '../../../hook/useAuth';
 const UserProfile = () => {
     const { user } = useAuth()
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100 p-6">
-            <div className="backdrop-blur-xl bg-white/30 border border-white/40 shadow-2xl rounded-2xl p-10 max-w-xl w-full text-center 
+        <div className="min-h-screen flex items-center justify-center text-base-content p-6">
+            <div className="backdrop-blur-xl  border border-white/40 shadow-2xl rounded-2xl p-10 max-w-xl w-full text-center 
                             transform transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
 
                 {/* Profile Image */}
@@ -19,7 +19,7 @@ const UserProfile = () => {
                 </div>
 
                 {/* Title */}
-                <h2 className="text-4xl font-extrabold text-gray-800 tracking-wide mb-3">
+                <h2 className="text-4xl font-extrabold  tracking-wide mb-3">
                     User Profile
                 </h2>
 
@@ -28,11 +28,11 @@ const UserProfile = () => {
 
                 {/* Profile Information */}
                 <div className="space-y-3">
-                    <p className="text-xl font-semibold text-gray-700">
+                    <p className="text-xl font-semibold ">
                         Name: <span className="font-normal">{user.displayName || user.name}</span>
                     </p>
 
-                    <p className="text-xl font-semibold text-gray-700">
+                    <p className="text-xl font-semibold ">
                         Email: <span className="font-normal">{user.email}</span>
                     </p>
                 </div>

@@ -114,12 +114,12 @@ const RequestedBooking = () => {
         // </div>
         // </div>
 
-        <div className='bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100 min-h-screen p-4'>
+        <div className=' min-h-screen px-10 pt-4'>
             {/* <h1 className='text-xl font-bold mb-4'>  transaction :{payments.length}</h1> */}
             <div className="hidden md:block overflow-x-auto rounded-lg  ">
                 <table className="table table-zebra w-full text-base">
                     {/* head */}
-                    <thead className='text-center bg-gray-200'>
+                    <thead className='text-center '>
                         <tr>
                             <th>#</th>
 

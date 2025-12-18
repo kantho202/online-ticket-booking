@@ -86,7 +86,7 @@ const AddTicket = () => {
     }
 
     return (
-        <div className='bg-white px-5 py-5  lg:px-26  lg:py-20 bg-gradient-to-br from-blue-100 via-orange-100 to-pink-100'>
+        <div className=' px-5 py-5  lg:px-26  lg:py-20 text-base-content'>
             <h1 className='font-extrabold text-[56px] text-primary logo'>Add Ticket</h1>
             <form onSubmit={handleSubmit(handleAddTicket)}>
 
@@ -102,10 +102,10 @@ const AddTicket = () => {
                     <div className='space-y-5 pt-7'>
 
                         <fieldset className="fieldset">
-                            <label className="label font-medium text-[14px] text-[#0F172A]"> Name</label>
+                            <label className="label font-medium text-[14px] "> Name</label>
                             <input type="text" defaultValue={user?.displayName} readOnly
                                 {...register('name', { required: true })}
-                                className="input bg-white w-full  outline-primary border-0"
+                                className="input  w-full  outline-primary border-0"
                                 placeholder=" Name" />
                             {
                                 errors.name?.type === "required" &&
@@ -113,11 +113,11 @@ const AddTicket = () => {
                             }
                         </fieldset>
                         <fieldset className="fieldset ">
-                            <label className="label font-medium text-[14px] text-[#0F172A]">Ticket title</label>
+                            <label className="label font-medium text-[14px] ">Ticket title</label>
                             <input type="text"
                                 {...register('ticketTitle', { required: true })}
 
-                                className="input bg-white w-full outline-primary border-0"
+                                className="input  w-full outline-primary border-0"
                                 placeholder="Ticket title" />
                             {
                                 errors.ticketTitle?.type === "required" && <p className='text-red-600'>Ticket title is required</p>
@@ -129,10 +129,10 @@ const AddTicket = () => {
 
 
                         {/* <fieldset className="fieldset">
-                            <label className="label font-medium text-[14px] text-[#0F172A]">Image</label>
+                            <label className="label font-medium text-[14px] ">Image</label>
                             <input type="file"
                                 {...register('image', { required: true })}
-                                className="file-input bg-white w-full outline-primary border-0"
+                                className="file-input  w-full outline-primary border-0"
                                 placeholder="image" />
                             {
                                 errors.image?.type === "required" &&
@@ -141,10 +141,10 @@ const AddTicket = () => {
                         </fieldset> */}
 
                                         <fieldset className="fieldset">
-                            <label className="label font-medium text-[14px] text-[#0F172A]">Departure date & time</label>
+                            <label className="label font-medium text-[14px] ">Departure date & time</label>
                             <input type="datetime-local"
                                 {...register('departureDateTime', { required: true })}
-                                className="input bg-white w-full outline-primary border-0"
+                                className="input  w-full outline-primary border-0"
                                 placeholder="Date and Time" />
                             {
                                 errors.date?.type === "required" &&
@@ -153,10 +153,10 @@ const AddTicket = () => {
                         </fieldset>
 
                         <fieldset className='fieldset'>
-                            <label className="label font-medium text-[14px] text-[#0F172A]">From</label>
+                            <label className="label font-medium text-[14px] ">From</label>
                             <select defaultValue="Pick a font"
                                 {...register('from', { required: "Select your region" })}
-                                className="select bg-white w-full outline-primary border-0">
+                                className="select  w-full outline-primary border-0">
                                 <option value="">Select your region</option>
                                 {
                                     regions.map((r, i) => <option key={i} value={r}>{r}</option>)
@@ -169,10 +169,10 @@ const AddTicket = () => {
                         </fieldset>
 
                         <fieldset className="fieldset">
-                            <label className="label font-medium text-[14px] text-[#0F172A]">Price</label>
+                            <label className="label font-medium text-[14px] ">Price</label>
                             <input type="number"
                                 {...register('price', { required: true })}
-                                className="input bg-white w-full outline-primary border-0"
+                                className="input  w-full outline-primary border-0"
                                 placeholder="Price" />
                             {
                                 errors.price?.type === "required" && <p className='text-red-600'>Price is required</p>
@@ -193,10 +193,10 @@ const AddTicket = () => {
 
 
                         <fieldset className="fieldset">
-                            <label className="label font-medium text-[14px] text-[#0F172A]"> Email</label>
+                            <label className="label font-medium text-[14px] "> Email</label>
                             <input type="text" defaultValue={user?.email} readOnly
                                 {...register('email', { required: true })}
-                                className="input bg-white w-full outline-primary border-0"
+                                className="input  w-full outline-primary border-0"
                                 placeholder="sender Email" />
                             {
                                 errors.email?.type === "required" &&
@@ -208,10 +208,10 @@ const AddTicket = () => {
                         <div className=''>
 
                             <fieldset className='fieldset'>
-                                <label className="label font-medium text-[14px] text-[#0F172A]">Transport type</label>
+                                <label className="label font-medium text-[14px] ">Transport type</label>
                                 <select 
                                     {...register('transport', { required: "Select a transport" })}
-                                    className="select bg-white w-full outline-primary border-0">
+                                    className="select  w-full outline-primary border-0">
                                     <option value="">Select Transport </option>
                                     <option >Bus</option>
                                     <option >Train</option>
@@ -228,10 +228,10 @@ const AddTicket = () => {
 
 
                             {/* <fieldset className="fieldset">
-                                <label className="label font-medium text-[14px] text-[#0F172A]"> Time</label>
+                                <label className="label font-medium text-[14px] "> Time</label>
                                 <input type="text" defaultValue={new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     {...register('time', { required: true })}
-                                    className="input bg-white w-full outline-primary border-0"
+                                    className="input  w-full outline-primary border-0"
                                     placeholder="sender Email" />
                                 {
                                     errors.time?.type === "required" &&
@@ -243,10 +243,10 @@ const AddTicket = () => {
 
 
                                      <fieldset className="fieldset">
-                            <label className="label font-medium text-[14px] text-[#0F172A]">Image</label>
+                            <label className="label font-medium text-[14px] ">Image</label>
                             <input type="file"
                                 {...register('image', { required: true })}
-                                className="file-input bg-white w-full outline-primary border-0"
+                                className="file-input  w-full outline-primary border-0"
                                 placeholder="image" />
                             {
                                 errors.image?.type === "required" &&
@@ -255,10 +255,10 @@ const AddTicket = () => {
                         </fieldset>
 
                         {/* <fieldset className="fieldset">
-                            <label className="label font-medium text-[14px] text-[#0F172A]">Departure date & time</label>
+                            <label className="label font-medium text-[14px] ">Departure date & time</label>
                             <input type="date"
                                 {...register('date', { required: true })}
-                                className="input bg-white w-full outline-primary border-0"
+                                className="input  w-full outline-primary border-0"
                                 placeholder="Date and Time" />
                             {
                                 errors.date?.type === "required" &&
@@ -267,10 +267,10 @@ const AddTicket = () => {
                         </fieldset> */}
 
                         <fieldset className='fieldset'>
-                            <label className="label font-medium text-[14px] text-[#0F172A]">To</label>
+                            <label className="label font-medium text-[14px] ">To</label>
                             <select  defaultValue=""
                                 {...register('to', { required: 'Please select a region' })}
-                                className="select bg-white w-full outline-primary border-0">
+                                className="select  w-full outline-primary border-0">
                                 <option value="" >Select your region</option>
                                 {
                                     regions.map((r, i) => <option key={i} value={r}>{r}</option>)
@@ -283,20 +283,20 @@ const AddTicket = () => {
                         </fieldset>
 
                         {/* <fieldset className="fieldset">
-                            <label className="label font-medium text-[14px] text-[#0F172A]">Perks  </label>
+                            <label className="label font-medium text-[14px] ">Perks  </label>
                             <input type="text"
                                 {...register('perks', { required: true })}
-                                className="input bg-white w-full outline-primary border-0"
+                                className="input  w-full outline-primary border-0"
                                 placeholder="Perks" />
                             {
                                 errors.perks?.type === "required" && <p className='text-red-600'> Perks is required</p>
                             }
                         </fieldset> */}
                         <fieldset className="fieldset">
-                            <label className="label font-medium text-[14px] text-[#0F172A]">Ticket Quantity</label>
+                            <label className="label font-medium text-[14px] ">Ticket Quantity</label>
                             <input type="number"
                                 {...register('ticketQuantity', { required: true })}
-                                className="input bg-white w-full outline-primary border-0"
+                                className="input  w-full outline-primary border-0"
                                 placeholder="Ticket Quantity" />
                             {
                                 errors.ticketQuantity?.type === "required" &&
@@ -311,7 +311,7 @@ const AddTicket = () => {
                 </div>
                
                 <div className="space-y-2 pb-20">
-                    <h1 className='font-medium text-[14px] text-[#0F172A]'>Perks</h1>
+                    <h1 className='font-medium text-[14px] '>Perks</h1>
                     {perks.map((perk, i) => (
                         <label key={i} className="flex items-center gap-2 cursor-pointer">
 
