@@ -8,11 +8,7 @@ import useRole from '../../hook/useRole';
 const Navbar = () => {
     const { user, signOutUser } = useAuth()
     const {role}=useRole()
-    const links = <>
-        <li><NavLink className={"font-medium text-base"} to="/">Home</NavLink></li>
-        <li><NavLink className={"font-medium text-base"} to="/allTickets">All Tickets</NavLink></li>
-        <li><NavLink className={"font-medium text-base"} to="/dashboard/vendorProfile">Dashboard</NavLink></li>
-    </>
+   
     const handleLogout = () => {
         signOutUser()
             .then(res => {
@@ -30,7 +26,7 @@ const Navbar = () => {
         localStorage.setItem("theme", theme)
     }, [theme])
     const handleTheme = (checked) => {
-        console.log(checked)
+        
         setTheme(checked ? "dark" : "light")
     }
     const getDashboardRoute=()=>{
@@ -38,6 +34,12 @@ const Navbar = () => {
         if(role === "admin") return "/dashboard/adminProfile"
         return "/dashboard/userProfile"
     }
+     const links = <>
+        <li><NavLink className={"font-medium text-base"} to="/">Home</NavLink></li>
+        <li><NavLink className={"font-medium text-base"} to="/allTickets">All Tickets</NavLink></li>
+        <li><NavLink className={"font-medium text-base"} to={getDashboardRoute()}>
+        Dashboard</NavLink></li>
+    </>
     return (
         <div className="navbar sticky top-0 z-50   bg-base-100 px-10 ">
             {/* <div className="lg:hidden ">

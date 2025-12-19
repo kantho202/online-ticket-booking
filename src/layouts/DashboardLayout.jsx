@@ -11,7 +11,7 @@ import useRole from '../hook/useRole';
 
 const DashboardLayout = () => {
     const { role } = useRole()
-    // console.log('role in dashboard',role)
+    
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />

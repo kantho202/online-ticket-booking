@@ -57,7 +57,7 @@ const TicketDetails = () => {
 
 
     }
-    console.log(data, bookingInfo)
+    // console.log(data, bookingInfo)
     axiosSecure.post('/bookings', bookingInfo)
       .then(res => {
         ticketModalRef.current.close()

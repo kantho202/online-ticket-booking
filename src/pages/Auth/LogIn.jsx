@@ -14,9 +14,8 @@ const LogIn = () => {
     const { signInUser } = useAuth();
     const location = useLocation()
     const navigate = useNavigate()
-    // console.log(location)
     const handleLogIn = (data) => {
-        console.log(data)
+       
         signInUser(data.email, data.password)
             .then(result => {
                 console.log(result.user)

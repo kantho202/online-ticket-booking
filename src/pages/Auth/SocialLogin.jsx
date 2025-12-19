@@ -15,7 +15,7 @@ const SocialLogin = () => {
     const handleGoogleSignIn =()=>{
         googleSigInUser()
         .then(result=>{
-            console.log(result.user)
+           
             
              
               // create user in database 

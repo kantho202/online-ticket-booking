@@ -13,7 +13,7 @@ const Register = () => {
     const location = useLocation()
     const axiosSecure =useAxiosSecure()
     const handleRegister = (data) => {
-        console.log(data)
+       
 
 
         createUser(data.email, data.password)
@@ -31,7 +31,7 @@ const Register = () => {
                 .then(res=>{
                     if(res.data.insertedId){
                         //   navigate(location.state || "/");
-                        console.log('user  created in the database',res.data)
+                        // console.log('user  created in the database',res.data)
                     }
                 })
 
@@ -41,7 +41,7 @@ const Register = () => {
                 }
                 updateUserProfile(userProfile)
                     .then(() => {
-                        console.log("Profile Updated!");
+                        // console.log("Profile Updated!");
                         navigate(location.state || "/");
                     })
             })

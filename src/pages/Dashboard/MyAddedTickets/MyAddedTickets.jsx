@@ -22,7 +22,7 @@ const MyAddedTickets = () => {
     })
 
     const handleTicketUpdate = (id) => {
-        console.log(id)
+        
         Swal.fire({
             title: "Are you sure want to update this ticket?",
             text: "You won't be able to revert this!",
@@ -35,7 +35,7 @@ const MyAddedTickets = () => {
             if (result.isConfirmed) {
                 axiosSecure.patch(`/tickets/${id}`)
                     .then(res => {
-                        console.log(res.data)
+                       
                         if (res.data.modifiedCount) {
                             refetch()
                             Swal.fire({
@@ -51,7 +51,7 @@ const MyAddedTickets = () => {
     }
 
     const handleTicketRemove = (id) => {
-        console.log(id)
+        
         Swal.fire({
             title: "Are you sure want to delete this ticket?",
             text: "You won't be able to revert this!",
@@ -64,7 +64,7 @@ const MyAddedTickets = () => {
             if (result.isConfirmed) {
                 axiosSecure.delete(`/tickets/${id}`)
                     .then(res => {
-                        console.log(res.data)
+                    
                         if (res.data.deletedCount) {
                             refetch()
                             Swal.fire({

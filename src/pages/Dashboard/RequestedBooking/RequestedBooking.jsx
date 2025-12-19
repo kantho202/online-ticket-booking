@@ -35,7 +35,7 @@ const RequestedBooking = () => {
                 const updateInfo = { status }
                 axiosSecure.patch(`/bookings/${id}`, updateInfo)
                     .then(res => {
-                        console.log(res)
+                        
                         if (res.data.modifiedCount) {
                             Swal.fire({
                                 position: "top-end",
@@ -54,7 +54,7 @@ const RequestedBooking = () => {
     }
     const handleApproved = (id) => {
         updateBookingStatus(id, 'accepted')
-        console.log(id)
+       
 
 
     }

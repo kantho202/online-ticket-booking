@@ -23,7 +23,7 @@ const AddTicket = () => {
     const { user,loading } = useAuth()
     const { register, handleSubmit, formState: { errors } } = useForm()
     const handleAddTicket = (data) => {
-        console.log(data)
+        
 
         Swal.fire({
             title: "Are you sure to added ticket ?",
@@ -55,7 +55,7 @@ const AddTicket = () => {
             )
 
                 .then(res => {
-                    console.log('after image upload', res.data.data.url)
+                    // console.log('after image upload', res.data.data.url)
                     const imageUrl = res.data.data.url;
                     data.image = imageUrl
                     data.createAt=new Date()

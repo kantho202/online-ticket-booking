@@ -34,7 +34,7 @@ const ManageUsers = () => {
                
                 axiosSecure.patch(`/users/${user._id}/role`, roleInfo)
                     .then(res => {
-                        console.log(res.data)
+                      
                         if (res.data.modifiedCount) {
                             refetch()
                             Swal.fire({
@@ -72,7 +72,7 @@ const ManageUsers = () => {
                 
                 axiosSecure.patch(`/users/${user._id}/role`, roleInfo)
                     .then(res => {
-                        console.log(res.data)
+                        
                         if (res.data.modifiedCount) {
                             refetch()
                             Swal.fire({
@@ -109,7 +109,7 @@ const ManageUsers = () => {
                 
                 axiosSecure.patch(`/users/mark-fraud/${user._id}`, roleInfo)
                     .then(res => {
-                        console.log(res.data)
+                       
                         if (res.data.fraudUser.modifiedCount > 0) {
                             refetch()
                             Swal.fire({

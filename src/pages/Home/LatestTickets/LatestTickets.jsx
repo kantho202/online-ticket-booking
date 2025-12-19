@@ -15,7 +15,7 @@ const LatestTickets = () => {
     })
 
     const handleSeeDetails=()=>{
-        console.log('clicked')
+        
     }
     return (
         <div className=' py-10 w-11/12 mx-auto text-base-content'>

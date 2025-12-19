@@ -21,7 +21,7 @@ const ManageTickets = () => {
         return <Loader></Loader>
     }
     const updateTicketStatus=(id,status)=>{
-        console.log(id)
+      
         
          Swal.fire({
                     title: `Are you sure manage ticket ${status}?`,
@@ -37,7 +37,7 @@ const ManageTickets = () => {
                         const updateInfo = { status }
                         axiosSecure.patch(`/tickets/${id}`, updateInfo)
                             .then(res => {
-                                console.log(res)
+                             
                                 if (res.data.modifiedCount) {
                                     Swal.fire({
                                         position: "top-end",
@@ -56,7 +56,7 @@ const ManageTickets = () => {
 
 
     const handleApprovedTicket=(id)=>{
-        console.log('clicked',id)
+      
         updateTicketStatus(id,'approved')
     }
 

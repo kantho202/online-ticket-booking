@@ -30,7 +30,6 @@ const AllTickets = () => {
     })
 
     const handleSelect = (e) => {
-        console.log(e.target.value)
         const sortText = e.target.value;
         setSort(sortText.split("-")[0])
         setOrder(sortText.split("-")[1])

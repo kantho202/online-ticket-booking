@@ -31,7 +31,7 @@ const MyBookedTickets = () => {
             ticketQuantity:book.ticketQuantity,
         }
         const res = await axiosSecure.post('/create-checkout-session', paymentInfo)
-        console.log(res.data,paymentInfo);
+        // console.log(res.data,paymentInfo);
         window.location.assign(res.data.url);
     }
 

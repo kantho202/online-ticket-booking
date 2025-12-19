@@ -19,7 +19,7 @@ const AdvertiseTickets = () => {
         return <Loader></Loader>
     }
     const handleToggleAdvertise = (ticket,isAdvertised) => {
-        console.log(ticket)
+        
         Swal.fire({
             title: `Are you sure to  ${isAdvertised}?`,
             text: "",
@@ -34,7 +34,7 @@ const AdvertiseTickets = () => {
                 const updateInfo = { isAdvertised }
                 axiosSecure.patch(`/tickets/${ticket._id}`, updateInfo)
                     .then(res => {
-                        console.log(res.data.modifiedCount)
+                       
                         if (res.data.modifiedCount) {
                             refetch()
                             Swal.fire({
@@ -52,12 +52,12 @@ const AdvertiseTickets = () => {
         });
     }
     const handleAdvertise=(id)=>{
-        console.log(id)
+        
         handleToggleAdvertise(id,'advertise')
 
     }
     const handleUnAdvertise=(id)=>{
-        console.log(id)
+       
         handleToggleAdvertise(id, 'unadvertised')
     }
     return (
