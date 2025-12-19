@@ -2,17 +2,21 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import useAxiosSecure from '../../../hook/useAxiosecure';
 import useAuth from '../../../hook/useAuth';
+import Loader from '../../../components/Loading/Loading';
 
 const TransactionHistory = () => {
     const axiosSecure = useAxiosSecure()
     const { user } = useAuth()
-    const { data: payments = [] } = useQuery({
+    const { data: payments = [] ,isLoading} = useQuery({
         queryKey: ['payments', user.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/payments?email=${user.email}`)
             return res.data
         }
     })
+    if(isLoading){
+        return <Loader></Loader>
+    }
     return (
         <div className='text-base-content min-h-screen pt-5 px-10'>
             {/* <h1 className='text-xl font-bold mb-4'>  transaction :{payments.length}</h1> */}

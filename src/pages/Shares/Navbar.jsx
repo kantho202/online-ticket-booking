@@ -4,8 +4,10 @@ import { Link, NavLink } from 'react-router';
 import Logo from '../../components/Logo/Logo';
 import useAuth from '../../hook/useAuth';
 import { LuLogOut } from 'react-icons/lu';
+import useRole from '../../hook/useRole';
 const Navbar = () => {
     const { user, signOutUser } = useAuth()
+    const {role}=useRole()
     const links = <>
         <li><NavLink className={"font-medium text-base"} to="/">Home</NavLink></li>
         <li><NavLink className={"font-medium text-base"} to="/allTickets">All Tickets</NavLink></li>
@@ -30,6 +32,11 @@ const Navbar = () => {
     const handleTheme = (checked) => {
         console.log(checked)
         setTheme(checked ? "dark" : "light")
+    }
+    const getDashboardRoute=()=>{
+        if(role === "vendor") return "/dashboard/vendorProfile"
+        if(role === "admin") return "/dashboard/adminProfile"
+        return "/dashboard/userProfile"
     }
     return (
         <div className="navbar sticky top-0 z-50   bg-base-100 px-10 ">
@@ -94,7 +101,8 @@ const Navbar = () => {
                         //  <button onClick={handleLogout} className='btn btn-primary btn-outline'>Logout</button>
                         <div className="flex gap-2 mr-4">
 
-                            <div className="dropdown dropdown-end">
+                            <div className="dropdown dropdown-end tooltip tooltip-bottom" 
+                            data-tip={user?.displayName || user}>
                                 <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                                     <div className="w-10 rounded-full">
                                         <img 
@@ -106,7 +114,7 @@ const Navbar = () => {
                                     tabIndex="-1"
                                     className="menu menu-md dropdown-content bg-base-100 rounded-box z-2 mt-3 w-70 p-2 shadow">
                                     <li className=''>
-                                        <Link to="/dashboard/vendorProfile" className="justify-between mb-3 ">
+                                        <Link to={getDashboardRoute()} className="justify-between mb-3 ">
                                             <h2>My Profile</h2>
                                             {/* {user?.displayName} */}
                                             {/* <span className="badge">New</span> */}

@@ -4,11 +4,12 @@ import useAuth from '../../../hook/useAuth';
 import useAxiosSecure from '../../../hook/useAxiosecure';
 import Swal from 'sweetalert2';
 import { FaTicket } from 'react-icons/fa6';
+import Loader from '../../../components/Loading/Loading';
 
 const ManageTickets = () => {
     const { user } = useAuth()
     const axiosSecure = useAxiosSecure()
-    const { data: tickets = [] ,refetch } = useQuery({
+    const { data: tickets = [] ,refetch ,isLoading} = useQuery({
         queryKey: ['tickets', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/tickets`)
@@ -16,7 +17,9 @@ const ManageTickets = () => {
 
         }
     })
-
+    if(isLoading){
+        return <Loader></Loader>
+    }
     const updateTicketStatus=(id,status)=>{
         console.log(id)
         

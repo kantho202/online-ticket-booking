@@ -1,8 +1,13 @@
 import React from 'react';
 import useAuth from '../../../hook/useAuth';
+import Loader from '../../../components/Loading/Loading';
 
-const AdminProfile = () => {
-    const {user}=useAuth()
+
+const VendorProfile = () => {
+    const { user,loading } = useAuth();
+   if(loading){
+    return <Loader></Loader>
+   }
     return (
         <div className="min-h-screen flex items-center justify-center text-base-content p-6">
             <div className="backdrop-blur-xl  border border-white/40 shadow-2xl rounded-2xl p-10 max-w-xl w-full text-center 
@@ -20,7 +25,7 @@ const AdminProfile = () => {
 
                 {/* Title */}
                 <h2 className="text-4xl font-extrabold  tracking-wide mb-3">
-                    Admin Profile
+                     Profile
                 </h2>
 
                 {/* Divider */}
@@ -41,4 +46,4 @@ const AdminProfile = () => {
     );
 };
 
-export default AdminProfile;
+export default VendorProfile;

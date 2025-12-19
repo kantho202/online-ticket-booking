@@ -8,7 +8,6 @@ import Register from "../pages/Auth/Register";
 import ForgetPassword from "../pages/Auth/ForgetPassword";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
-import VendorProfile from "../pages/Dashboard/VendorProfile/VendorProfile";
 import AddTicket from "../pages/Dashboard/AddTicket/AddTicket";
 import MyAddedTickets from "../pages/Dashboard/MyAddedTickets/MyAddedTickets";
 import RequestedBooking from "../pages/Dashboard/RequestedBooking/RequestedBooking";
@@ -24,11 +23,12 @@ import ManageTickets from "../pages/Dashboard/ManageTickets/ManageTickets";
 import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
 import AdvertiseTickets from "../pages/Dashboard/AdvertiseTickets/AdvertiseTickets";
 import AdminRoute from "./AdminRoute";
-import UserProfile from "../pages/Dashboard/UserProfile/UserProfile";
-import AdminProfile from "../pages/Dashboard/AdminProfile/AdminProfile";
 import VendorRoute from "./VendorRoute";
 import Loader from "../components/Loading/Loading";
 import UserRoute from "./userRoute";
+import VendorProfile from "../pages/Dashboard/DashboardProfile/VendorProfile";
+import UserProfile from "../pages/Dashboard/DashboardProfile/UserProfile";
+import AdminProfile from "../pages/Dashboard/DashboardProfile/AdminProfile";
 // import TicketDetails from "../pages/Home/LatestTickets/TicketDetails";
 
 export const router = createBrowserRouter([

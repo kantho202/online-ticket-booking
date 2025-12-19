@@ -1,8 +1,12 @@
 import React from 'react';
 import useAuth from '../../../hook/useAuth';
+import Loader from '../../../components/Loading/Loading';
 
 const UserProfile = () => {
-    const { user } = useAuth()
+    const { user,loading } = useAuth()
+    if(loading){
+        return <Loader></Loader>
+    }
     return (
         <div className="min-h-screen flex items-center justify-center text-base-content p-6">
             <div className="backdrop-blur-xl  border border-white/40 shadow-2xl rounded-2xl p-10 max-w-xl w-full text-center 

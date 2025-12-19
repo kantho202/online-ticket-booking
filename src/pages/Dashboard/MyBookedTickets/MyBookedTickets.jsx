@@ -4,11 +4,12 @@ import useAxiosSecure from '../../../hook/useAxiosecure';
 import { Link } from 'react-router';
 import useAuth from '../../../hook/useAuth';
 import Countdown from 'react-countdown';
+import Loader from '../../../components/Loading/Loading';
 
 const MyBookedTickets = () => {
     const { user } = useAuth()
     const axiosSecure = useAxiosSecure()
-    const { data: bookings = [] } = useQuery({
+    const { data: bookings = [],isLoading } = useQuery({
         queryKey: ['bookings', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/bookings?email=${user?.email}`)
@@ -16,7 +17,9 @@ const MyBookedTickets = () => {
         }
     })
 
-    
+    if(isLoading){
+        return <Loader></Loader>
+    }
     const handlePayment = async (book) => {
         const paymentInfo = {
             total_price: book.total_price,
@@ -139,7 +142,8 @@ const MyBookedTickets = () => {
                                                 disabled={book.status !== "accepted" || isExpired }
                                                 className={`px-4 py-2 btn bg-primary text-white rounded-lg 
                                                 hover:bg-primary/80 transition
-                                                 ${(book.status !== 'accepted' || isExpired) ? "opacity-50 cursor-not-allowed" : ""}`}>
+                                                 ${(book.status !== 'accepted' || isExpired) ? 
+                                                 "opacity-50 cursor-not-allowed" : ""}`}>
                                                 Pay now
                                             </button>
                                     }

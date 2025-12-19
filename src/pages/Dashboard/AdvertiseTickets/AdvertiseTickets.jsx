@@ -2,11 +2,12 @@ import React from 'react';
 import useAxiosSecure from '../../../hook/useAxiosecure';
 import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
+import Loader from '../../../components/Loading/Loading';
 
 const AdvertiseTickets = () => {
     const axiosSecure = useAxiosSecure()
 
-    const { data: tickets = [], refetch } = useQuery({
+    const { data: tickets = [], refetch,isLoading } = useQuery({
         queryKey: ['tickets',],
         queryFn: async () => {
             const res = await axiosSecure.get(`/tickets?status=approved`)
@@ -14,7 +15,9 @@ const AdvertiseTickets = () => {
 
         }
     })
-
+    if(isLoading){
+        return <Loader></Loader>
+    }
     const handleToggleAdvertise = (ticket,isAdvertised) => {
         console.log(ticket)
         Swal.fire({

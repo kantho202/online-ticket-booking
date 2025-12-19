@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import useAuth from '../../../hook/useAuth';
 import useAxiosSecure from '../../../hook/useAxiosecure';
 import Swal from 'sweetalert2';
+import Loader from '../../../components/Loading/Loading';
 // import { useForm } from 'react-hook-form';
 
 const MyAddedTickets = () => {
@@ -11,7 +12,7 @@ const MyAddedTickets = () => {
     const [selectedTicket, setSelectedTicket] = useState(null)
     // const [editMode, setEditMode] = useState(false)
     // const { register, handleSubmit, formState: { errors } } = useForm()
-    const { data: tickets = [], refetch } = useQuery({
+    const { data: tickets = [], refetch,isLoading } = useQuery({
         queryKey: ['tickets', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/tickets?email=${user?.email}`)
@@ -78,7 +79,9 @@ const MyAddedTickets = () => {
 
     }
 
-
+    if(isLoading){
+        return <Loader></Loader>
+    }
     return (
         <div className="p-6 text-base-content px-10">
             <h1 className="text-2xl font-bold  mb-8 text-center">My Added Tickets</h1>

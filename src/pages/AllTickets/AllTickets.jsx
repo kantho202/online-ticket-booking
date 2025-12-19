@@ -4,6 +4,8 @@ import useAxiosSecure from '../../hook/useAxiosecure';
 import { Link } from 'react-router';
 import { LuSearch } from "react-icons/lu";
 import styled from 'styled-components';
+import Loader from '../../components/Loading/Loading';
+import useRole from '../../hook/useRole';
 
 
 const AllTickets = () => {
@@ -34,7 +36,30 @@ const AllTickets = () => {
         setOrder(sortText.split("-")[1])
     }
 
-
+    // if(isLoading){
+    //     return <Loader></Loader>
+    // }
+    // const fraudUser =()=>{
+    //     const res =axiosSecure.get('/user')
+    //     console.log(res.data)
+    //     return res.data;
+    // }
+//     const {role}=useRole()
+//     if (role === 'fraud') {
+//   return (
+//     <div className="min-h-screen flex items-center justify-center">
+//       <div className="text-center p-10 bg-red-100 rounded-xl">
+//         <h2 className="text-2xl font-bold text-red-600">
+//           Access Restricted 🚫
+//         </h2>
+//         <p className="text-gray-700 mt-2">
+//           Your account is marked as fraud.  
+//           You are not allowed to view tickets.
+//         </p>
+//       </div>
+//     </div>
+//   )
+// }
     return (
         <div className=' py-10 w-11/12 mx-auto text-base-content'>
             {/* <h1>home ticket {homeTicket.length}</h1> */}

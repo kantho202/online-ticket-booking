@@ -4,17 +4,21 @@ import useAxiosSecure from '../../../hook/useAxiosecure';
 import { Link } from 'react-router';
 import { FaTicket } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
+import Loader from '../../../components/Loading/Loading';
 
 const RequestedBooking = () => {
     // const { user: booking } = useAuth()
     const axiosSecure = useAxiosSecure()
-    const { data: bookings = [] } = useQuery({
+    const { data: bookings = [] ,isLoading} = useQuery({
         queryKey: ['bookings'],
         queryFn: async () => {
             const res = await axiosSecure.get('/bookings')
             return res.data;
         }
     })
+    if(isLoading){
+        return <Loader></Loader>
+    }
     const updateBookingStatus = (id, status) => {
 
         Swal.fire({

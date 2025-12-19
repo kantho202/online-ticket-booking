@@ -7,6 +7,7 @@ import useAuth from '../../../hook/useAuth';
 import axios from 'axios';
 import useAxiosSecure from '../../../hook/useAxiosecure';
 import { toast } from 'react-toastify';
+import Loader from '../../../components/Loading/Loading';
 
 
 // import useAxiosSecure from '../../hooks/useAxiosSecure';
@@ -19,7 +20,7 @@ const AddTicket = () => {
     const navigate =useNavigate()
     const axiosSecure = useAxiosSecure()
     const perks = ["AC", "Breakfast", "WiFi", "TV", "Parking"];
-    const { user, } = useAuth()
+    const { user,loading } = useAuth()
     const { register, handleSubmit, formState: { errors } } = useForm()
     const handleAddTicket = (data) => {
         console.log(data)
@@ -84,10 +85,12 @@ const AddTicket = () => {
         });
 
     }
-
+    if(loading){
+        return <Loader></Loader>
+    }
     return (
         <div className=' px-5 py-5  lg:px-26  lg:py-20 text-base-content'>
-            <h1 className='font-extrabold text-[56px] text-primary text-center pb-4 logo'>Add Ticket</h1>
+            <h1 className='font-extrabold text-[56px] text-primary text-center pb-4  logo'>Add Ticket</h1>
             <form onSubmit={handleSubmit(handleAddTicket)}>
 
 
@@ -215,7 +218,7 @@ const AddTicket = () => {
                                     <option value="">Select Transport </option>
                                     <option >Bus</option>
                                     <option >Train</option>
-                                    <option >Plain</option>
+                                    <option >Plane</option>
                                     <option >Launch</option>
 
 

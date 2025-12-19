@@ -3,17 +3,20 @@ import useAxiosSecure from '../../../hook/useAxiosecure';
 import { useQuery } from '@tanstack/react-query';
 import { FaUser } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import Loader from '../../../components/Loading/Loading';
 
 const ManageUsers = () => {
     const axiosSecure = useAxiosSecure()
-    const { refetch, data: mangeUsers = [] } = useQuery({
+    const { refetch, data: mangeUsers = [] ,isLoading} = useQuery({
         queryKey: ['mangeUsers'],
         queryFn: async () => {
             const res = await axiosSecure.get('/users')
             return res.data;
         }
     })
-
+    if(isLoading){
+        return <Loader></Loader>
+    }
     const handleMakeAdmin = (user) => {
 
          const roleInfo = { role: 'admin' }
@@ -90,6 +93,40 @@ const ManageUsers = () => {
 
 
     }
+    const handleMakeFraud=(user)=>{
+          const roleInfo = { role: 'fraud' }
+        Swal.fire({
+            title: `Are you sure make fraud?`,
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Make fraud!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                
+                axiosSecure.patch(`/users/mark-fraud/${user._id}`, roleInfo)
+                    .then(res => {
+                        console.log(res.data)
+                        if (res.data.fraudUser.modifiedCount > 0) {
+                            refetch()
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: `${user.displayName} marked as a fraud`,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+
+
+                        }
+                    })
+
+            }
+        });
+    }
     return (
         <div className=' min-h-screen '>
             {/* <h1 className='text-xl font-bold mb-4'>  transaction :{payments.length}</h1> */}
@@ -137,8 +174,14 @@ const ManageUsers = () => {
                                 <td className='font-medium text-base space-x-3 text-center'>
                                     <button onClick={() => handleMakeAdmin(user)}
                                         className="btn btn-primary btn-outline">Make Admin</button>
-                                    <button onClick={() => handleMakeVendor(user)}
-                                        className="btn btn-primary">Make Vendor</button>
+                                    {/* <button onClick={() => handleMakeVendor(user)}
+                                        className="btn btn-primary">Make Vendor</button> */}
+                                        {
+                                    user?.role=== 'vendor' ? 
+                                    <button onClick={()=>handleMakeFraud(user)} className="btn btn-primary ">Make Fraud </button>
+                                    : 
+                                    <button onClick={()=>handleMakeVendor(user)} className="btn btn-primary">Make Vendor</button>
+                                }
                                 </td>
                             </tr>)
                         }
@@ -166,7 +209,13 @@ const ManageUsers = () => {
                         <div className="flex justify-between">
                             <button onClick={()=>handleMakeAdmin(user)}
                                 className="btn btn-primary btn-outline">Make Admin</button>
-                            <button onClick={()=>handleMakeVendor(user)} className="btn btn-primary">Make Vendor</button>
+                                {
+                                    user?.role=== 'vendor' ? 
+                                    // <button onClick={()=>handleMakeVendor(user)} 
+                                    // className="btn btn-primary">Make Vendor</button>
+                                    <button className="btn btn-primary">Make Fraud </button>
+                                    : ""
+                                }
                         </div>
                     </div>
                 ))}
