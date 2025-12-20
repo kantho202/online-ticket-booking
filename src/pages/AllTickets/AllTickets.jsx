@@ -71,18 +71,7 @@ const AllTickets = () => {
 
                         <label className="input input-bordered w-2xl rounded-full h-14
                     focus-within:border-primary focus-within:ring-1 focus-within:ring-primary outline-0  ">
-                            {/* <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <g
-                                strokeLinejoin="round"
-                                strokeLinecap="round"
-                                strokeWidth="2.5"
-                                fill="none"
-                                stroke="currentColor"
-                            >
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <path d="m21 21-4.3-4.3"></path>
-                            </g>
-                        </svg> */}
+                            
                             <LuSearch className='text-gray-500' size={24} />
 
                             <input onChange={(e) => {
@@ -126,7 +115,7 @@ const AllTickets = () => {
                 </div>
                 {
                     isLoading ? (
-                        <div className='text-center py-20 text-lg font-semibold'>Loading...</div>
+                        <div className='text-center py-20 text-lg font-semibold'><Loader></Loader></div>
                     ) : tickets.length === 0 ? (
                         <div className="text-center py-20">
                             <h2 className="text-2xl font-bold text-gray-600">
