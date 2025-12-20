@@ -174,8 +174,7 @@ const ManageUsers = () => {
                                 <td className='font-medium text-base space-x-3 text-center'>
                                     <button onClick={() => handleMakeAdmin(user)}
                                         className="btn btn-primary btn-outline">Make Admin</button>
-                                    {/* <button onClick={() => handleMakeVendor(user)}
-                                        className="btn btn-primary">Make Vendor</button> */}
+                                   
                                         {
                                     user?.role=== 'vendor' ? 
                                     <button onClick={()=>handleMakeFraud(user)} className="btn btn-primary ">Make Fraud </button>
@@ -198,7 +197,16 @@ const ManageUsers = () => {
                     <div key={user._id} className=" p-4 rounded-lg shadow-md">
                         <div className="flex justify-between">
                             <p className="font-bold text-xl text-primary">#{i + 1} </p>
-                            <p className="font-semibold text-primary"> <FaUser size={23}></FaUser></p>
+                            {/* <p className="font-semibold text-primary"> 
+                                <img src={user.photoURL} className='h-22 w-22' alt="" />
+                            </p> */}
+                            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                    <div className="w-10 rounded-full">
+                                        <img 
+                                            alt=""
+                                            src={user?.photoURL} />
+                                    </div>
+                                </div>
                         </div>
                         <div className='py-5 '>
                             {/* <p className='text-2xl font-extrabold'><span className='text-primary  font-bold'>Ticket Title:</span> {p.ticket_title}</p> */}
@@ -209,12 +217,11 @@ const ManageUsers = () => {
                         <div className="flex justify-between">
                             <button onClick={()=>handleMakeAdmin(user)}
                                 className="btn btn-primary btn-outline">Make Admin</button>
-                                {
+                                  {
                                     user?.role=== 'vendor' ? 
-                                    // <button onClick={()=>handleMakeVendor(user)} 
-                                    // className="btn btn-primary">Make Vendor</button>
-                                    <button className="btn btn-primary">Make Fraud </button>
-                                    : ""
+                                    <button onClick={()=>handleMakeFraud(user)} className="btn btn-primary ">Make Fraud </button>
+                                    : 
+                                    <button onClick={()=>handleMakeVendor(user)} className="btn btn-primary">Make Vendor</button>
                                 }
                         </div>
                     </div>

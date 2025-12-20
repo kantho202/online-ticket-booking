@@ -10,7 +10,7 @@ const Footer = () => {
     <footer className='px-10 '>
 
 
-      <div className="footer sm:footer-horizontal flex justify-between text-base-content p-10">
+      <div className="footer sm:footer-horizontal text-base-content p-10">
         <nav>
           <h6 className="footer"><Logo></Logo></h6>
           <p>Experience seamless travel bookings with  <br />

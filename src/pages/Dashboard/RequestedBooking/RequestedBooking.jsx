@@ -167,9 +167,9 @@ const RequestedBooking = () => {
                         </div>
                         <div className='py-5 '>
                             <p className='text-2xl font-extrabold'><span className='text-primary  font-bold'>Ticket Title:</span> {booking.ticket_title}</p>
-                            <p className='font-semibold'><span className='text-primary font-bold'>Name:</span> {booking.displayName}</p>
+                            <p className='font-semibold'><span className='text-primary font-bold'>Name:</span> {booking.name}</p>
                             <p className='font-semibold'><span className='text-primary font-bold'>Email:</span> {booking.email}</p>
-                            <p className='font-semibold'><span className='text-primary font-bold'>Quantity:</span> <span className="break-all">{booking.quantity}</span></p>
+                            <p className='font-semibold'><span className='text-primary font-bold'>Quantity:</span> <span className="break-all">{booking.bookingQuantity}</span></p>
                             <p className='font-semibold'><span className='text-primary font-bold'>Total Price:</span> {booking.total_price}</p>
                         </div>
                         <div className="flex justify-between">

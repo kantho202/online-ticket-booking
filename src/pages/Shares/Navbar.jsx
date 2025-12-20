@@ -41,7 +41,7 @@ const Navbar = () => {
         Dashboard</NavLink></li>
     </>
     return (
-        <div className="navbar sticky top-0 z-50   bg-base-100 px-10 ">
+        <div className="navbar sticky top-0 z-50  px-10 bg-base-100 ">
             {/* <div className="lg:hidden ">
                 <input id="my-drawer-1" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content">
@@ -77,8 +77,8 @@ const Navbar = () => {
                         <ul className="menu bg-base-200 min-h-full text-center space-y-1.5 w-80 p-4">
 
                             {links}
-                            <Link to="/login" className="btn btn-sm mr-4 mb-3 btn-outline w-full mt-1.5">LogIn</Link>
-                            <Link to="/register" className="btn btn-sm w-full my-btn ">Register</Link>
+                            <Link to="/login" className="btn btn-sm mr-4 mb-3 btn-primary btn-outline w-full mt-1.5">LogIn</Link>
+                            <Link to="/register" className="btn btn-sm w-full btn-primary ">Register</Link>
                         </ul>
                     </div>
                 </div>
@@ -132,8 +132,8 @@ const Navbar = () => {
                         </div>
                         :
                         <>
-                            <Link to="/login"><button className='btn btn-primary btn-outline'>Log in</button></Link>
-                            <Link to="/register"><button className='btn btn-primary'>Register</button></Link>
+                            <Link to="/login"><button className='btn btn-primary btn-outline hidden lg:flex'>Log in</button></Link>
+                            <Link to="/register"><button className='btn btn-primary hidden lg:flex'>Register</button></Link>
                         </>
                 }
 
