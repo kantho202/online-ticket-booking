@@ -118,7 +118,7 @@ const RequestedBooking = () => {
         // </div>
         // </div>
 
-        <div className=' min-h-screen px-10 pt-4'>
+        <div className=' min-h-screen px-5 lg:px-10 pt-4'>
             {/* <h1 className='text-xl font-bold mb-4'>  transaction :{payments.length}</h1> */}
             <div className="hidden md:block overflow-x-auto rounded-lg  ">
                 <table className="table table-zebra w-full text-base">

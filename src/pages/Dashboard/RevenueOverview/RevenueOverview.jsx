@@ -36,7 +36,7 @@ const RevenueOverview = () => {
     return (
         <div>
 
-            <div className="stats shadow w-full px-10 pt-5 text-base-content">
+            <div className="stats shadow w-full px-5 lg:px-10 pt-5 text-base-content">
                 {/* <h1>{revenue.length}</h1> */}
 
                 <div className="stats shadow flex">

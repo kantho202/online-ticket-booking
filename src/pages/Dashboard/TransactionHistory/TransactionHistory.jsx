@@ -18,7 +18,7 @@ const TransactionHistory = () => {
         return <Loader></Loader>
     }
     return (
-        <div className='text-base-content min-h-screen pt-5 px-10'>
+        <div className='text-base-content min-h-screen pt-5 px-5 lg:px-10'>
             {/* <h1 className='text-xl font-bold mb-4'>  transaction :{payments.length}</h1> */}
             <div className="hidden md:block overflow-x-auto rounded-lg  ">
                 <table className="table table-zebra w-full text-base">

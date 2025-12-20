@@ -104,10 +104,7 @@ const AdvertiseTickets = () => {
                                         }
                                       
                                        
-                                    {/* <button onClick={() => handleToggleAdvertise(ticket)}
-                                        className={`btn btn-primary 
-                                                ${ticket.isAdvertised ? 'btn-outline' : ''}`}>
-                                                    {ticket.isAdvertised ? " Unadvertised" : "Advertise"}</button> */}
+                                   
 
                                 </td>
                             </tr>)
@@ -120,7 +117,7 @@ const AdvertiseTickets = () => {
             </div>
 
             {/* mobile view  */}
-            <div className="grid gap-4 md:hidden px-10 mt-4">
+            <div className="grid gap-4 md:hidden px-5 mt-4">
                 {tickets.map((ticket, i) => (
                     <div key={ticket._id} className=" p-4 rounded-lg shadow-md">
                         <div className="flex justify-between">

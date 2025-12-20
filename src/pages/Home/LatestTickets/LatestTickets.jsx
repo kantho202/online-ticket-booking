@@ -20,7 +20,7 @@ const LatestTickets = () => {
     return (
         <div className=' py-10 w-11/12 mx-auto text-base-content'>
             {/* <h1>home ticket {homeTicket.length}</h1> */}
-            <div className="p-6 min-h-screen ">
+            <div className="p-0 lg:p-6 min-h-screen ">
                 <h1 className="text-2xl font-bold  mb-8 text-center">Latest Tickets</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

@@ -83,7 +83,7 @@ const MyAddedTickets = () => {
         return <Loader></Loader>
     }
     return (
-        <div className="p-6 text-base-content px-10">
+        <div className="p-6 text-base-content px-0 lg:px-10">
             <h1 className="text-2xl font-bold  mb-8 text-center">My Added Tickets</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

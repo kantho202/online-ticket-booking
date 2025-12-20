@@ -38,40 +38,36 @@ const AllTickets = () => {
     // if(isLoading){
     //     return <Loader></Loader>
     // }
-    // const fraudUser =()=>{
-    //     const res =axiosSecure.get('/user')
-    //     console.log(res.data)
-    //     return res.data;
-    // }
-//     const {role}=useRole()
-//     if (role === 'fraud') {
-//   return (
-//     <div className="min-h-screen flex items-center justify-center">
-//       <div className="text-center p-10 bg-red-100 rounded-xl">
-//         <h2 className="text-2xl font-bold text-red-600">
-//           Access Restricted 🚫
-//         </h2>
-//         <p className="text-gray-700 mt-2">
-//           Your account is marked as fraud.  
-//           You are not allowed to view tickets.
-//         </p>
-//       </div>
-//     </div>
-//   )
-// }
+
+    const { role } = useRole()
+    if (role === 'fraud') {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center p-10 bg-red-100 rounded-xl">
+                    <h2 className="text-2xl font-bold text-red-600">
+                        Access Restricted 🚫
+                    </h2>
+                    <p className="text-gray-700 mt-2">
+                        Your account is marked as fraud.
+                        You are not allowed to view tickets.
+                    </p>
+                </div>
+            </div>
+        )
+    }
     return (
         <div className=' py-10 w-11/12 mx-auto text-base-content'>
             {/* <h1>home ticket {homeTicket.length}</h1> */}
-            <div className="p-6 min-h-screen ">
+            <div className="p-0 lg:p-6 min-h-screen ">
                 <h1 className="text-2xl font-bold  mb-8 text-center">All Tickets</h1>
 
                 <div className='flex justify-between items-center py-10'>
                     <div></div>
                     <div className='flex justify-center items-center gap-3'>
 
-                        <label className="input input-bordered w-2xl rounded-full h-14
+                        <label className="input input-bordered lg:w-2xl rounded-full h-14
                     focus-within:border-primary focus-within:ring-1 focus-within:ring-primary outline-0  ">
-                            
+
                             <LuSearch className='text-gray-500' size={24} />
 
                             <input onChange={(e) => {
@@ -83,7 +79,7 @@ const AllTickets = () => {
                                 type="search"
                                 className="grow border-0 outline-none border-none " placeholder="Search" />
                             <select
-                                className="select  w-40 outline-none border-none font-semibold"
+                                className="select  lg:w-40  outline-none border-none font-semibold"
                                 value={transportType}
                                 onChange={(e) => {
                                     setTransportType(e.target.value);
@@ -172,35 +168,20 @@ const AllTickets = () => {
                                             </div>
                                         )}
 
-                                        {/* Verification Status */}
-                                        {/* <p className={`mt-3 font-semibold text-sm ${ticket.status === "approved"
-                                            ? "text-green-600"
-                                            : ticket.status === "rejected"
-                                                ? "text-red-600"
-                                                : "text-yellow-500"
-                                            }`}>
-                                            Status: {ticket.status || "pending"}
-                                        </p> */}
-
                                         {/* Action Buttons */}
                                         <div className="pt-3 flex justify-between">
                                             <Link to={`/seeDetails/${ticket._id}`}
-                                                // onClick={handleSeeDetails}
-                                               >
-                                                  <StyledWrapper>
-                                            <button className="learn-more">
-                                                <span className="circle" aria-hidden="true">
-                                                    <span className="icon arrow" />
-                                                </span>
-                                                <span className="button-text">See details</span>
-                                            </button>
-                                        </StyledWrapper>
+                                            // onClick={handleSeeDetails}
+                                            >
+                                                <StyledWrapper>
+                                                    <button className="learn-more">
+                                                        <span className="circle" aria-hidden="true">
+                                                            <span className="icon arrow" />
+                                                        </span>
+                                                        <span className="button-text">See details</span>
+                                                    </button>
+                                                </StyledWrapper>
                                             </Link>
-                                            {/* <button
-                                        // onClick={() => handleTicketRemove(ticket._id)}
-                                        className="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition">
-                                        Delete
-                                    </button> */}
                                         </div>
 
 
@@ -209,20 +190,6 @@ const AllTickets = () => {
                             ))}
                         </div>)
                 }
-
-                {/* <div className="join flex justify-center pt-10">
-                    {[1, 2, 3, 4].map(page => (
-                        <button
-                            key={page}
-                            className={`join-item btn btn-square 
-        ${currentPage === page ? 'btn-active btn-primary' : ''}`}
-                            onClick={() => setCurrentPage(page)}
-                        >
-                            {page}
-                        </button>
-                    ))}
-                </div> */}
-
 
                 {
                     tickets.length > 0 && (
@@ -254,36 +221,7 @@ const AllTickets = () => {
 
             </div>
 
-            {/* For TSX uncomment the commented types below */}
-            {/* <div className="grid grid-flow-col gap-5 justify-center btn-primary text-center auto-cols-max">
-                <TimeBox className="bg-primary" label="days" value={timeLeft.days} />
-                <TimeBox label="hours" value={timeLeft.hours} />
-                <TimeBox label="min" value={timeLeft.minutes} />
-                <TimeBox label="sec" value={timeLeft.seconds} />
-            </div> */}
 
-            {/* <div className="grid grid-flow-col gap-5 justify-center text-center auto-cols-max mt-10">
-                <TimeBox
-                    label="days"
-                    value={timeLeft.days}
-                    className="bg-primary "
-                />
-                <TimeBox
-                    label="hours"
-                    value={timeLeft.hours}
-                    className="bg-primary "
-                />
-                <TimeBox
-                    label="min"
-                    value={timeLeft.minutes}
-                    className="bg-primary "
-                />
-                <TimeBox
-                    label="sec"
-                    value={timeLeft.seconds}
-                    className="bg-primary "
-                />
-            </div> */}
 
 
 

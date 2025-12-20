@@ -57,7 +57,7 @@ const MyBookedTickets = () => {
     return (
         <div>
             {/* <h1>bookings{bookings.length}</h1> */}
-            <div className="pt-5  min-h-screen px-10 text-base-content">
+            <div className="pt-5  min-h-screen px-5 lg:px-10 text-base-content">
                 <h1 className="text-2xl font-bold  mb-8 text-center">My Booked Tickets</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -82,15 +82,11 @@ const MyBookedTickets = () => {
                             {/* Ticket Content */}
                             <div className="p-5 space-y-3">
                                 <h2 className="text-[28px] font-bold logo ">{book.ticket_title}</h2>
-                                {/* <p className="text-gray-700"><span className="font-semibold">Name:</span> {ticket.name}</p> */}
                                 <p className=""><span className="font-semibold">From:</span> {book.from}</p>
                                 <p className=""><span className="font-semibold">To:</span> {book.to}</p>
-                                {/* <p className=""><span className="font-semibold">Transport:</span> {ticket.transport}</p> */}
-                                {/* <p className=""><span className="font-semibold">Time:</span> {book.time}</p> */}
                                 <p className=""><span className="font-semibold">Quantity:</span> {book.bookingQuantity}</p>
                                 <p className=""><span className="font-semibold">Total Price:</span> ৳ {book.total_price}Tk</p>
                                 <p className=""><span className="font-semibold">Date & Time:</span> {book.departureDateTime}</p>
-                                {/* <p className=""><span className="font-semibold">Email:</span> {ticket.email}</p> */}
 
                                 {/* Perks */}
                                 {book.perks && book.perks.length > 0 && (

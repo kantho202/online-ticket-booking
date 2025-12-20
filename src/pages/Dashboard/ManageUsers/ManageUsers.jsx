@@ -192,7 +192,7 @@ const ManageUsers = () => {
             </div>
 
             {/* mobile view  */}
-            <div className="grid gap-4 md:hidden mt-4 px-10 pt-5">
+            <div className="grid gap-4 md:hidden mt-4 px-5 pt-5">
                 {mangeUsers.map((user, i) => (
                     <div key={user._id} className=" p-4 rounded-lg shadow-md">
                         <div className="flex justify-between">

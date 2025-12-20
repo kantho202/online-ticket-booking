@@ -7,7 +7,7 @@ import stripImage from '../../assets/Stripe_icon_-_square.svg'
 import { MdEmail } from 'react-icons/md';
 const Footer = () => {
   return (
-    <footer className='px-10 '>
+    <footer className='px-0 lg:px-10 '>
 
 
       <div className="footer sm:footer-horizontal text-base-content p-10">
