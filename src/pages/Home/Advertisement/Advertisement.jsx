@@ -42,18 +42,14 @@ const Advertisement = () => {
                             {/* Ticket Content */}
                             <div className="p-5 space-y-3">
                                 <h2 className="text-[28px] font-bold logo ">{ticket.ticketTitle}</h2>
-                                <p className=""><span className="font-semibold">Name:</span> {ticket.name}</p>
-                                {/* <p className="text-gray-700"><span className="font-semibold">From:</span> {ticket.from}</p> */}
-                                {/* <p className="text-gray-700"><span className="font-semibold">To:</span> {ticket.to}</p> */}
-                                <p className=""><span className="font-semibold">Transport:</span> {ticket.transport}</p>
-                                {/* <p className="text-gray-700"><span className="font-semibold">Date:</span> {ticket.date}</p> */}
-                                {/* <p className="text-gray-700"><span className="font-semibold">Time:</span> {ticket.time}</p> */}
-                                <p className=""><span className="font-semibold">Quantity:</span> {ticket.ticketQuantity}</p>
-                                <p className=""><span className="font-semibold">Price:</span> ৳ {ticket.price}</p>
-                                {/* <p className="text-gray-700"><span className="font-semibold">Email:</span> {ticket.email}</p> */}
+                                <p><span className="font-semibold">Name:</span> {ticket.name}</p>
+                                <p><span className="font-semibold">Transport:</span> {ticket.transport}</p>
+                                <p><span className="font-semibold">Quantity:</span> {ticket.ticketQuantity}</p>
+                                <p><span className="font-semibold">Price:</span> ৳ {ticket.price}</p>
+                               
 
                                 {/* Perks */}
-                                {ticket.perks && ticket.perks.length > 0 && (
+                                {ticket.perks && ticket.perks?.length > 0 && (
                                     <div className="flex flex-wrap gap-2 pt-2">
                                         {ticket.perks.map((perk, index) => (
                                             <span
@@ -66,36 +62,21 @@ const Advertisement = () => {
                                     </div>
                                 )}
 
-                                {/* Verification Status */}
-                                {/* <p className={`mt-3 font-semibold text-sm ${ticket.verificationStatus === "approved"
-                                    ? "text-green-600"
-                                    : ticket.verificationStatus === "rejected"
-                                        ? "text-red-600"
-                                        : "text-yellow-500"
-                                    }`}>
-                                    Status: {ticket.verificationStatus || "pending"}
-                                </p> */}
-
                                 {/* Action Buttons */}
                                 <div className="pt-3 flex justify-between">
                                     <Link to={`/seeDetails/${ticket._id}`}
-                                    // onClick={handleSeeDetails}
+                                    
                                     >
                                         <StyledWrapper>
-                                            <button className="learn-more">
+                                            <div className="learn-more">
                                                 <span className="circle" aria-hidden="true">
                                                     <span className="icon arrow" />
                                                 </span>
                                                 <span className="button-text">See details</span>
-                                            </button>
+                                            </div>
                                         </StyledWrapper>
                                     </Link>
 
-                                    {/* <button
-                                        // onClick={() => handleTicketRemove(ticket._id)}
-                                        className="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition">
-                                        Delete
-                                    </button> */}
                                 </div>
                             </div>
                         </div>

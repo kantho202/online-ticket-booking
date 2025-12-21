@@ -88,11 +88,7 @@ const LatestTickets = () => {
                                             </button>
                                         </StyledWrapper>
                                     </Link>
-                                    {/* <button
-                                        // onClick={() => handleTicketRemove(ticket._id)}
-                                        className="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition">
-                                        Delete
-                                    </button> */}
+                                   
                                 </div>
                             </div>
                         </div>
