@@ -14,9 +14,7 @@ const LatestTickets = () => {
         }
     })
 
-    const handleSeeDetails=()=>{
-        
-    }
+    
     return (
         <div className=' py-10 w-11/12 mx-auto text-base-content'>
             {/* <h1>home ticket {homeTicket.length}</h1> */}
@@ -79,7 +77,7 @@ const LatestTickets = () => {
                                 {/* Action Buttons */}
                                 <div className="pt-3 flex justify-between">
                                     <Link to={`/seeDetails/${ticket._id}`}
-                                        onClick={handleSeeDetails}
+                                        
                                        >
                                         <StyledWrapper>
                                             <button className="learn-more">
