@@ -4,7 +4,7 @@ import useAuth from './useAuth';
 import { useNavigate } from 'react-router';
 
 const axiosSecure =axios.create({
-  baseURL:'https://online-ticket-booking-4cc7f.web.app'  
+  baseURL:'http://localhost:3000'  
 })
 const useAxiosSecure = () => {
   const {user,signOutUser}=useAuth()

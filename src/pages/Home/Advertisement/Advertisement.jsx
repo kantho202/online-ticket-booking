@@ -11,6 +11,7 @@ const Advertisement = () => {
         queryKey: ['advertise'],
         queryFn: async () => {
             const res = await axiosSecure.get('/tickets?isAdvertised=advertise')
+            console.log(res)
             return res.data
         }
     })
