@@ -41,7 +41,7 @@ const Navbar = () => {
         Dashboard</NavLink></li>
     </>
     return (
-        <div className="navbar sticky top-0 z-50  px-10 bg-base-100 ">
+        <div className="navbar sticky top-0 z-50  lg:px-10 bg-base-100 ">
             {/* <div className="lg:hidden ">
                 <input id="my-drawer-1" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content">
@@ -96,7 +96,7 @@ const Navbar = () => {
                     {links}
                 </ul> */}
             </div>
-            <div className="navbar-end space-x-2.5 flex items-center ">
+            <div className="navbar-end space-x-0 lg:space-x-2.5 flex  items-center ">
                 
                 {
                     user ?
@@ -114,7 +114,8 @@ const Navbar = () => {
                                 </div>
                                 <ul
                                     tabIndex="-1"
-                                    className="menu menu-md dropdown-content bg-base-100 rounded-box z-2 mt-3 w-70 p-2 shadow">
+                                    className="menu menu-md dropdown-content 
+                                    bg-base-100 rounded-box z-2 mt-3 w-70 p-2 shadow">
                                     <li className=''>
                                         <Link to={getDashboardRoute()} className="justify-between mb-3 ">
                                             <h2>My Profile</h2>
@@ -139,7 +140,8 @@ const Navbar = () => {
 
                 <label className="swap swap-rotate text-gray-600 ">
                     {/* this hidden checkbox controls the state */}
-                    <input type="checkbox" onChange={(e) => handleTheme(e.target.checked)} className="theme-controller" value="synthwave" />
+                    <input type="checkbox" onChange={(e) => handleTheme(e.target.checked)}
+                     className="theme-controller" value="synthwave" />
 
                     {/* sun icon */}
                     <svg

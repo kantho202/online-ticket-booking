@@ -25,7 +25,7 @@ const MyBookedTickets = () => {
             total_price: book.total_price,
             ticketId: book.ticketId,
             bookingId: book._id,
-            // email:bookings.email,
+            email:book.email,
             ticket_title: book.ticket_title,
             bookingQuantity:book.bookingQuantity,
             ticketQuantity:book.ticketQuantity,

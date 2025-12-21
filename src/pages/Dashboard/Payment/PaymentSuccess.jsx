@@ -19,9 +19,9 @@ const PaymentSuccess = () => {
         }
     },[sessionId,axiosSecure])
     return (
-        <div className='flex flex-col justify-center items-center min-h-screen'>
-            <h1 className="text-3xl font-bold text-primary">Payment Successfully</h1>
-            <h1 className="text-xl font-bold text-primary">TransactionId :{paymentInfo?.transactionId}</h1>
+        <div className='flex flex-col justify-center px-3 space-y-3 items-center min-h-screen'>
+            <h1 className="text-2xl lg:text-3xl font-bold text-primary">Payment Successfully</h1>
+            <h1 className="text-[18px] lg:text-xl font-bold text-center text-primary">TransactionId : {paymentInfo?.transactionId}</h1>
             <Link to="/"><button className="btn btn-primary">Back</button></Link>
             {/* <h2>Trancaction id:{paymentInfo?.transactionId}</h2> */}
         </div>
