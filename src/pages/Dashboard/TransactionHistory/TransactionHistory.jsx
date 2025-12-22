@@ -57,7 +57,7 @@ const TransactionHistory = () => {
                 {payments.map((p, i) => (
                     <div key={p._id} className=" p-4 rounded-lg shadow-md">
                         <div className="flex justify-between">
-                            <p className="font-bold text-lg">#{i + 1}</p>
+                            <p className="font-bold text-lg text-primary">#{i + 1}</p>
                             <p className="font-semibold text-primary">{p.amount} Tk</p>
                                 </div>
                         <p><span className='text-primary font-bold'>Ticket:</span> {p.ticketName}</p>
