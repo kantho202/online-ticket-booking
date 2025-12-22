@@ -9,7 +9,7 @@ const LatestTickets = () => {
     const { data: homeTicket = [] } = useQuery({
         queryKey: ['homeTicket'],
         queryFn: async () => {
-            const res = await axiosSecure.get('/tickets?status=approved');
+            const res = await axiosSecure.get('/tickets?status=approved&limit=6');
             return res.data;
         }
     })
