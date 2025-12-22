@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router';
 
@@ -7,6 +7,8 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import useAuth from '../../hook/useAuth';
 import SocialLogin from './SocialLogin';
 import { Bounce, toast } from 'react-toastify';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 // import Loading from '../../components/Loading/Loading';
 
 const LogIn = () => {
@@ -15,7 +17,7 @@ const LogIn = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const handleLogIn = (data) => {
-       
+
         signInUser(data.email, data.password)
             .then(result => {
                 console.log(result.user)
@@ -36,7 +38,11 @@ const LogIn = () => {
                 });
             })
     }
-
+    const [showPassword,setShowPassword]=useState(false)
+    const handleTogglePasswordShow=(event)=>{
+        event.preventDefault()
+        setShowPassword(!showPassword)
+    }
     return (
         <div className="card  w-full max-w-lg pt-14   ">
             <div className="card-body">
@@ -61,8 +67,11 @@ const LogIn = () => {
                         </div>
 
                         {/* password */}
+                        <div className='relative'>
+
+                        
                         <label className="label text-black">Password</label>
-                        <input type="password"
+                        <input type={showPassword? 'text' : 'password'}
                             name='password' {...register("password",
                                 {
                                     require: true,
@@ -71,6 +80,12 @@ const LogIn = () => {
                                 })}
                             className="input outline-primary border-0 w-full"
                             placeholder="Password" />
+                            <button
+                            onClick={handleTogglePasswordShow}
+                            className="btn btn-xs text-base-content absolute top-6.5 right-4">
+                                {showPassword ? <FaEye />  : <FaEyeSlash />}
+                                 </button>
+
                         {
                             errors.password?.type === "required" &&
                             <p className='text-red-600'>Password is required</p>
@@ -85,6 +100,7 @@ const LogIn = () => {
                                 and special character
                             </p>
                         }
+                        </div>
                         <div><Link to="/forget-password" className="link link-hover">Forgot password?</Link></div>
 
                         {/* {
