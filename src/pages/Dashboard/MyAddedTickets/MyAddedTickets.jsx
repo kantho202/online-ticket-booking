@@ -409,7 +409,7 @@ const MyAddedTickets = () => {
                                                         <fieldset className="fieldset">
                                                             <label className="label font-medium text-[14px] "> Name</label>
                                                             <input type="text" defaultValue={user?.displayName}
-                                                                {...register('name', { required: true })}
+                                                                {...register('name', )}
                                                                 className="input  w-full  outline-primary border-0"
                                                                 placeholder=" Name" />
                                                             {
@@ -420,7 +420,7 @@ const MyAddedTickets = () => {
                                                         <fieldset className="fieldset ">
                                                             <label className="label font-medium text-[14px] ">Ticket title</label>
                                                             <input type="text"
-                                                                {...register('ticketTitle', { required: true })}
+                                                                {...register('ticketTitle', )}
 
                                                                 className="input  w-full outline-primary border-0"
                                                                 placeholder="Ticket title" />
@@ -439,7 +439,7 @@ const MyAddedTickets = () => {
                                                         <fieldset className="fieldset">
                                                             <label className="label font-medium text-[14px] ">Departure date & time</label>
                                                             <input type="datetime-local"
-                                                                {...register('departureDateTime', { required: true })}
+                                                                {...register('departureDateTime', )}
                                                                 className="input  w-full outline-primary border-0"
                                                                 placeholder="Date and Time" />
                                                             {
@@ -453,7 +453,7 @@ const MyAddedTickets = () => {
                                                         <fieldset className="fieldset">
                                                             <label className="label font-medium text-[14px] ">Price</label>
                                                             <input type="number"
-                                                                {...register('price', { required: true })}
+                                                                {...register('price')}
                                                                 className="input  w-full outline-primary border-0"
                                                                 placeholder="Price" />
                                                             {
@@ -477,7 +477,7 @@ const MyAddedTickets = () => {
                                                         <fieldset className="fieldset">
                                                             <label className="label font-medium text-[14px] "> Email</label>
                                                             <input type="text" defaultValue={user?.email}
-                                                                {...register('email', { required: true })}
+                                                                {...register('email', )}
                                                                 className="input  w-full outline-primary border-0"
                                                                 placeholder="sender Email" />
                                                             {
@@ -492,7 +492,7 @@ const MyAddedTickets = () => {
                                                             <fieldset className='fieldset'>
                                                                 <label className="label font-medium text-[14px] ">Transport type</label>
                                                                 <select
-                                                                    {...register('transport', { required: "Select a transport" })}
+                                                                    {...register('transport', )}
                                                                     className="select  w-full outline-primary border-0">
                                                                     <option value="">Select Transport </option>
                                                                     <option >Bus</option>
@@ -517,7 +517,7 @@ const MyAddedTickets = () => {
                                                         <fieldset className="fieldset">
                                                             <label className="label font-medium text-[14px] ">Image</label>
                                                             <input type="file"
-                                                                {...register('image', { required: true })}
+                                                                {...register('image', )}
                                                                 className="file-input  w-full outline-primary border-0"
                                                                 placeholder="image" />
                                                             {
@@ -535,7 +535,7 @@ const MyAddedTickets = () => {
                                                             <label className="label font-medium text-[14px] ">
                                                                 Ticket Quantity</label>
                                                             <input type="number"
-                                                                {...register('ticketQuantity', { required: true })}
+                                                                {...register('ticketQuantity', )}
                                                                 className="input  w-full outline-primary border-0"
                                                                 placeholder="Ticket Quantity" />
                                                             {
@@ -559,7 +559,7 @@ const MyAddedTickets = () => {
                                                             <input
                                                                 type="checkbox"
                                                                 value={perk}
-                                                                {...register("perks", { required: true })}
+                                                                {...register("perks", )}
                                                                 className="checkbox checkbox-primary"
                                                             />
                                                             <span>{perk}</span>
