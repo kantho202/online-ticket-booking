@@ -7,7 +7,7 @@ import Loader from '../../../components/Loading/Loading';
 const AdvertiseTickets = () => {
     const axiosSecure = useAxiosSecure()
 
-    const { data: tickets = [], refetch,isLoading } = useQuery({
+    const { data: tickets = [], refetch, isLoading } = useQuery({
         queryKey: ['tickets',],
         queryFn: async () => {
             const res = await axiosSecure.get(`/tickets?status=approved`)
@@ -15,11 +15,11 @@ const AdvertiseTickets = () => {
 
         }
     })
-    if(isLoading){
+    if (isLoading) {
         return <Loader></Loader>
     }
-    const handleToggleAdvertise = (ticket,isAdvertised) => {
-        
+    const handleToggleAdvertise = (ticket, isAdvertised) => {
+
         Swal.fire({
             title: `Are you sure to  ${isAdvertised}?`,
             text: "",
@@ -30,11 +30,11 @@ const AdvertiseTickets = () => {
             confirmButtonText: `${isAdvertised}!`
         }).then((result) => {
             if (result.isConfirmed) {
-                
+
                 const updateInfo = { isAdvertised }
                 axiosSecure.patch(`/tickets/${ticket._id}`, updateInfo)
                     .then(res => {
-                       
+
                         if (res.data.modifiedCount) {
                             refetch()
                             Swal.fire({
@@ -51,13 +51,13 @@ const AdvertiseTickets = () => {
             }
         });
     }
-    const handleAdvertise=(id)=>{
-        
-        handleToggleAdvertise(id,'advertise')
+    const handleAdvertise = (id) => {
+
+        handleToggleAdvertise(id, 'advertise')
 
     }
-    const handleUnAdvertise=(id)=>{
-       
+    const handleUnAdvertise = (id) => {
+
         handleToggleAdvertise(id, 'unadvertised')
     }
     return (
@@ -95,16 +95,16 @@ const AdvertiseTickets = () => {
                                        <td className='font-medium text-base'>{user.to}</td> */}
                                 <td className='font-medium text-base space-x-3 text-center'>
 
-                                        {
-                                            ticket.isAdvertised ==='unadvertised' ?  
-                                            <button onClick={()=>handleAdvertise(ticket)} 
-                                            className='btn btn-primary'>Advertise</button>
-                                             : <button onClick={()=>{handleUnAdvertise(ticket)}}
-                                              className='btn btn-primary btn-outline'>Unadvertise</button>
-                                        }
-                                      
-                                       
-                                   
+                                    {
+                                        ticket.isAdvertised === 'unadvertised' ?
+                                            <button onClick={() => handleAdvertise(ticket)}
+                                                className='btn btn-primary'>Advertise</button>
+                                            : <button onClick={() => { handleUnAdvertise(ticket) }}
+                                                className='btn btn-primary btn-outline'>Unadvertise</button>
+                                    }
+
+
+
 
                                 </td>
                             </tr>)
@@ -127,17 +127,20 @@ const AdvertiseTickets = () => {
                         <div className='py-5 '>
                             {/* <p className='text-2xl font-extrabold'><span className='text-primary  font-bold'>Ticket Title:</span> {p.ticket_title}</p> */}
                             <p className='font-semibold'><span className='text-primary font-bold'>Name:</span>
-                             {ticket.displayName}</p>
-                            <p className='font-semibold'><span className='text-primary font-bold'>Email:</span> 
-                            {ticket.email}</p>
-                            <p className='font-semibold'><span className='text-primary font-bold'>Role:</span>
-                             <span className="break-all">{ticket.createAt}</span></p>
+                                {ticket.ticketTitle}</p>
+                            <p className='font-semibold'><span className='text-primary font-bold'>Email:</span>
+                                {ticket.email}</p>
+                            <p className='font-semibold'><span className='text-primary font-bold'>Date: </span>
+                                <span className="break-all">{ticket.departureDateTime}</span></p>
                         </div>
                         <div className="flex justify-between">
-                            <button onClick={() => handleToggleAdvertise(ticket)}
-                                className="btn btn-primary btn-outline">Make Admin</button>
-                            <button onClick={() => handleUnAdvertise(ticket)} className="btn btn-primary">
-                                Make Vendor</button>
+                            {
+                                ticket.isAdvertised === 'unadvertised' ?
+                                    <button onClick={() => handleAdvertise(ticket)}
+                                        className='btn btn-primary'>Advertise</button>
+                                    : <button onClick={() => { handleUnAdvertise(ticket) }}
+                                        className='btn btn-primary btn-outline'>Unadvertise</button>
+                            }
                         </div>
                     </div>
                 ))}
