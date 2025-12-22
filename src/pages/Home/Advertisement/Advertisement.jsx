@@ -64,21 +64,21 @@ const Advertisement = () => {
                                 )}
 
                                 {/* Action Buttons */}
-                                <div className="pt-3 flex justify-between">
-                                    <Link to={`/seeDetails/${ticket._id}`}
-                                    
-                                    >
-                                        <StyledWrapper>
-                                            <div className="learn-more">
-                                                <span className="circle" aria-hidden="true">
-                                                    <span className="icon arrow" />
-                                                </span>
-                                                <span className="button-text">See details</span>
-                                            </div>
-                                        </StyledWrapper>
-                                    </Link>
-
-                                </div>
+                                  <div className="pt-3 flex justify-between">
+                                                                            <Link to={`/seeDetails/${ticket._id}`}
+                                
+                                                                            >
+                                                                                <StyledWrapper>
+                                                                                    <button className="learn-more">
+                                                                                        <span className="circle" aria-hidden="true">
+                                                                                            <span className="icon arrow" />
+                                                                                        </span>
+                                                                                        <span className="button-text">See details</span>
+                                                                                    </button>
+                                                                                </StyledWrapper>
+                                                                            </Link>
+                                
+                                                                        </div>
                             </div>
                         </div>
                     ))}

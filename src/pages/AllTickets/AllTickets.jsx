@@ -171,7 +171,7 @@ const AllTickets = () => {
                                         {/* Action Buttons */}
                                         <div className="pt-3 flex justify-between">
                                             <Link to={`/seeDetails/${ticket._id}`}
-                                            // onClick={handleSeeDetails}
+
                                             >
                                                 <StyledWrapper>
                                                     <button className="learn-more">
@@ -182,6 +182,7 @@ const AllTickets = () => {
                                                     </button>
                                                 </StyledWrapper>
                                             </Link>
+
                                         </div>
 
 
