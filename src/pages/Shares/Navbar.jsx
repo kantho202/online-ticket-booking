@@ -41,7 +41,7 @@ const Navbar = () => {
         Dashboard</NavLink></li>
     </>
     return (
-        <div className="navbar sticky top-0 z-50  lg:px-10 bg-base-100 ">
+        <div className="navbar sticky top-0 z-50 px-3  lg:px-10 bg-base-100 ">
             {/* <div className="lg:hidden ">
                 <input id="my-drawer-1" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content">
