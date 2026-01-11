@@ -56,7 +56,9 @@ const AllTickets = () => {
         )
     }
     return (
-        <div className=' py-10 w-11/12 mx-auto text-base-content'>
+        <div className=' py-10 w-11/12 mx-auto text-base-content'
+         data-aos="fade-up" data-aos-easing="linear"   data-aos-duration="1000"
+        >
             {/* <h1>home ticket {homeTicket.length}</h1> */}
             <div className="p-0 lg:p-6 min-h-screen ">
                 <h1 className="text-2xl font-bold  mb-8 text-center">All Tickets</h1>
@@ -124,12 +126,13 @@ const AllTickets = () => {
                     ) :
 
 
-                        (<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        (<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"  >
                             {tickets.map(ticket => (
                                 <div
                                     key={ticket._id}
                                     className="rounded-2xl shadow-lg border border-gray-200 overflow-hidden
                          transform transition hover:-translate-y-1 hover:shadow-2xl  "
+                          data-aos="fade-up" data-aos-easing="linear"   data-aos-duration="1000"
                                 >
                                     {/* Ticket Image */}
                                     <div className="h-48 overflow-hidden">

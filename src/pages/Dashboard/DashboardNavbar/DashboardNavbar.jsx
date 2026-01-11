@@ -1,13 +1,15 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router';
-import Logo from '../../components/Logo/Logo';
-import useAuth from '../../hook/useAuth';
+
 import { LuLogOut } from 'react-icons/lu';
-import useRole from '../../hook/useRole';
-import Loader from '../../components/Loading/Loading';
-const Navbar = () => {
-    const { user, signOutUser,loading } = useAuth()
+import Logo from '../../../components/Logo/Logo';
+import useAuth from '../../../hook/useAuth';
+import useRole from '../../../hook/useRole';
+import Loader from '../../../components/Loading/Loading';
+import { FaExchangeAlt } from 'react-icons/fa';
+const DashboardNavbar = () => {
+    const { user, signOutUser, loading } = useAuth()
     const { role } = useRole()
 
     const handleLogout = () => {
@@ -41,89 +43,32 @@ const Navbar = () => {
         <li><NavLink className={"font-medium text-base"} to={getDashboardRoute()}>
             Dashboard</NavLink></li>
     </>
-    if(loading){
+    if (loading) {
         return <Loader></Loader>
     }
     return (
-        <div className="navbar sticky top-0 z-50 px-3  lg:px-10 bg-base-100 ">
-            {/* <div className="lg:hidden ">
-                <input id="my-drawer-1" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content">
+        <div className="navbar sticky top-0 z-50 px-3  lg:px-10 bg-base-200 drop-shadow-sm">
 
-
-                    <label htmlFor="my-drawer-1" className="">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
-
-                    </label>
-                </div>
-                <div className="drawer-side flex items-end ">
-                    <label htmlFor="my-drawer-1" aria-label="close sidebar" className="drawer-overlay"></label>
-                    <ul className="menu bg-base-200 min-h-full text-center w-80 p-4">
-
-                        {links}
-                        <Link to="/login" className="btn btn-sm mr-4 mb-3 btn-outline w-full ">LogIn</Link>
-                        <Link to="/register" className="btn btn-sm w-full my-btn ">Register</Link>
-                    </ul>
-                </div>
-            </div> */}
-            <div className="lg:hidden pr-3">
-                <input id="my-drawer-1" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content">
-
-
-                    <label htmlFor="my-drawer-1" className="">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
-
-                    </label>
-                </div>
-                <div className="drawer-side space-y-">
-                    <label htmlFor="my-drawer-1" aria-label="close sidebar" className="drawer-overlay"></label>
-                    <ul className="menu bg-base-200 min-h-full w-80 p-4 flex flex-col text-center">
-
-                        {/* Top links */}
-                        <div className="space-y-1.5">
-                            {links}
-                        </div>
-
-                        {/* Bottom buttons */}
-                        <div className="mt-auto space-y-2">
-                            <Link
-                                to="/login"
-                                className="btn btn-sm btn-primary btn-outline w-full"
-                            >
-                                LogIn
-                            </Link>
-
-                            <Link
-                                to="/register"
-                                className="btn btn-sm btn-primary w-full"
-                            >
-                                Register
-                            </Link>
-                        </div>
-
-                    </ul>
-
-                </div>
-            </div>
 
             <div className="navbar-start hidden lg:flex">
 
 
                 <ul className="menu menu-horizontal px-1">
-                    {links}
+                    {/* {links} */} <Logo></Logo>
                 </ul>
             </div>
             <div className="navbar-center flex flex-col items-center gap-1  ">
-                <Logo ></Logo>
+
                 {/* <ul className="menu menu-horizontal px-1">
                     {links}
                 </ul> */}
             </div>
             <div className="navbar-end space-x-0 lg:space-x-2.5 flex  items-center ">
-
+               <FaExchangeAlt />
+ <NavLink className={"font-bold text-base pr-15 "} to="/">Home</NavLink>
                 {
                     user ?
+
                         //  <button onClick={handleLogout} className='btn btn-primary btn-outline'>Logout</button>
                         <div className="flex gap-2 mr-4">
 
@@ -193,4 +138,4 @@ const Navbar = () => {
     );
 };
 
-export default Navbar;
+export default DashboardNavbar;

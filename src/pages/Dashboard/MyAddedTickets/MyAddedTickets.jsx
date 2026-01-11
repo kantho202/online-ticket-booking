@@ -7,6 +7,7 @@ import Loader from '../../../components/Loading/Loading';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { LuTicketsPlane } from 'react-icons/lu';
 // import { useForm } from 'react-hook-form';
 
 const MyAddedTickets = () => {
@@ -123,9 +124,12 @@ const MyAddedTickets = () => {
     }
     return (
         <div className="p-6 text-base-content px-5 lg:px-10">
-            <h1 className="text-2xl font-bold  mb-8 text-center">My Added Tickets</h1>
+            <div className='flex gap-3 items-center  justify-center '>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+           <LuTicketsPlane /> <h1 className="text-2xl font-bold  ">My Added Tickets</h1>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-8">
                 {tickets.map(ticket => (
                     <div
                         key={ticket._id}

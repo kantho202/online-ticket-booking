@@ -6,12 +6,19 @@ import bannerImg2 from '../../../assets/bus.jpg';
 import bannerImg3 from '../../../assets/travel.png';
 import { Carousel } from 'react-responsive-carousel';
 import { BsArrowUpRightCircleFill } from 'react-icons/bs';
+import useAuth from '../../../hook/useAuth';
+import Loader from '../../../components/Loading/Loading';
 
 const Banner = () => {
+    const {loading}=useAuth()
+    if(loading){
+        return <Loader></Loader>
+    }
     return (
         <Carousel className=''
             autoPlay={true}
             infiniteLoop={true}
+            data-aos="fade-up" data-aos-easing="linear"   data-aos-duration="1500"
         >
             <div className='relative'>
                 <img src={bannerImg1} />

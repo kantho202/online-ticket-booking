@@ -8,6 +8,7 @@ import axios from 'axios';
 import useAxiosSecure from '../../../hook/useAxiosecure';
 import { toast } from 'react-toastify';
 import Loader from '../../../components/Loading/Loading';
+import { IoTicket } from 'react-icons/io5';
 
 
 // import useAxiosSecure from '../../hooks/useAxiosSecure';
@@ -90,7 +91,10 @@ const AddTicket = () => {
     }
     return (
         <div className=' px-5 py-5  lg:px-26  lg:py-20 text-base-content'>
-            <h1 className='font-extrabold text-[56px] text-primary text-center pb-4  logo'>Add Ticket</h1>
+            <div className='flex gap-3 justify-center items-center'>
+
+           <IoTicket size={32} /> <h1 className='font-extrabold text-[56px] text-primary  pb-4  logo'>Add Ticket</h1>
+            </div>
             <form onSubmit={handleSubmit(handleAddTicket)}>
 
 
