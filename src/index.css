@@ -15,7 +15,8 @@
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-  --color-primary: orange;
+  /* --color-primary: orange; */
+  --color-primary: #ff8c42;
   --color-secondary: teal;
   --color-base-100:#faf7f5;
    /* --linear-gradient(135deg, #dbeafe, #ffedd5, #fce7f3); */
@@ -24,7 +25,8 @@
 @plugin "daisyui/theme" {
   name: "dark";
   default: true;
-  --color-primary: orange;
+  /* --color-primary: orange; */
+  --color-primary: #ff8c42;
   --color-secondary: skyblue;
    --color-base-100: #000000;
    --color-base-content: #ffffff;
@@ -39,6 +41,6 @@
 
 
  a.active{
-   @apply text-primary;
+   @apply bg-primary;
 }
 

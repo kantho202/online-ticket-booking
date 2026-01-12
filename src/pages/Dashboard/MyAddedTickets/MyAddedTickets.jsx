@@ -7,64 +7,116 @@ import Loader from '../../../components/Loading/Loading';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { LuTicketsPlane } from 'react-icons/lu';
-// import { useForm } from 'react-hook-form';
+import { 
+    LuTicketsPlane, 
+    // LuEdit, 
+    LuTrash2, 
+    LuCalendar, 
+    LuMapPin, 
+    LuUsers, 
+    LuDollarSign,
+    LuClock,
+    LuImage,
+    LuX,
+    LuCheck,
+    // LuAlertCircle
+} from 'react-icons/lu';
+import { 
+    FaBus, 
+    FaTrain, 
+    FaPlane, 
+    FaShip,
+    FaWifi,
+    FaCoffee,
+    FaParking,
+    FaTv,
+    FaSnowflake
+} from 'react-icons/fa';
+import styled from 'styled-components';
 
 const MyAddedTickets = () => {
-    const { user } = useAuth()
-    const axiosSecure = useAxiosSecure()
-    const [selectedTicket, setSelectedTicket] = useState(null)
-    // const [editMode, setEditMode] = useState(false)
-    // const { register, handleSubmit, formState: { errors } } = useForm()
+    const { user } = useAuth();
+    const axiosSecure = useAxiosSecure();
+    const [selectedTicket, setSelectedTicket] = useState(null);
+    const [isUpdating, setIsUpdating] = useState(false);
+    const [imagePreview, setImagePreview] = useState(null);
+
     const { data: tickets = [], refetch, isLoading } = useQuery({
         queryKey: ['tickets', user?.email],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/tickets?email=${user?.email}`)
+            const res = await axiosSecure.get(`/tickets?email=${user?.email}`);
             return res.data;
-
         }
-    })
-    const ticketModalRef = useRef(null)
-    const handleTicketShowModal = () => {
-        ticketModalRef.current.showModal()
-    }
-    const perks = ["AC", "Breakfast", "WiFi", "TV", "Parking"];
-    const { register, handleSubmit, formState: { errors } } = useForm()
-    const handleTicketUpdate = (data) => {
-        let imageUrl = selectedTicket.image;
+    });
 
+    const ticketModalRef = useRef(null);
+    const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm();
 
-        if (data.image && data.image.length > 0) {
-            const formData = new FormData();
-            formData.append('image', data.image[0]);
+    const perks = [
+        { name: "AC", icon: FaSnowflake, label: "Air Conditioning" },
+        { name: "Breakfast", icon: FaCoffee, label: "Complimentary Breakfast" },
+        { name: "WiFi", icon: FaWifi, label: "Free WiFi" },
+        { name: "TV", icon: FaTv, label: "Entertainment System" },
+        { name: "Parking", icon: FaParking, label: "Free Parking" }
+    ];
 
-            axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`, formData)
-                .then(imgRes => {
-                    imageUrl = imgRes.data.data.url;
+    const transportIcons = {
+        Bus: FaBus,
+        Train: FaTrain,
+        Plane: FaPlane,
+        Launch: FaShip
+    };
 
-                    const updatedTicket = {
-                        ...data,
-                        image: imageUrl,
-                        perks: data.perks || [],
-                    };
+    const handleTicketShowModal = (ticket) => {
+        setSelectedTicket(ticket);
+        setImagePreview(ticket.image);
+        
+        // Pre-fill form with existing data
+        setValue('name', ticket.name);
+        setValue('ticketTitle', ticket.ticketTitle);
+        setValue('departureDateTime', ticket.departureDateTime);
+        setValue('price', ticket.price);
+        setValue('email', ticket.email);
+        setValue('transport', ticket.transport);
+        setValue('ticketQuantity', ticket.ticketQuantity);
+        setValue('from', ticket.from);
+        setValue('to', ticket.to);
+        
+        // Set perks checkboxes
+        if (ticket.perks) {
+            setValue('perks', ticket.perks);
+        }
+        
+        ticketModalRef.current.showModal();
+    };
 
-                    return axiosSecure.patch(`/tickets/${selectedTicket._id}`, updatedTicket);
-                })
-                .then(res => {
-                    if (res.data.modifiedCount > 0) {
-                        toast.success('Ticket updated successfully!');
-                        refetch();
-                        ticketModalRef.current.close();
-                    } else {
-                        toast.info('No changes were made.');
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    toast.error('Update failed!');
-                });
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
-        } else {
+    const handleTicketUpdate = async (data) => {
+        setIsUpdating(true);
+        
+        try {
+            let imageUrl = selectedTicket.image;
+
+            if (data.image && data.image.length > 0) {
+                const formData = new FormData();
+                formData.append('image', data.image[0]);
+                
+                const imgRes = await axios.post(
+                    `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`, 
+                    formData
+                );
+                imageUrl = imgRes.data.data.url;
+            }
 
             const updatedTicket = {
                 ...data,
@@ -72,539 +124,1072 @@ const MyAddedTickets = () => {
                 perks: data.perks || [],
             };
 
-            axiosSecure.patch(`/tickets/${selectedTicket._id}`, updatedTicket)
-                .then(res => {
-                    if (res.data.modifiedCount > 0) {
-                        toast.success('Ticket updated successfully!');
-                        refetch();
-                        ticketModalRef.current.close();
-                    } else {
-                        toast.info('No changes were made.');
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    toast.error('Update failed!');
-                });
+            const res = await axiosSecure.patch(`/tickets/${selectedTicket._id}`, updatedTicket);
+            
+            if (res.data.modifiedCount > 0) {
+                toast.success('Ticket updated successfully!');
+                refetch();
+                ticketModalRef.current.close();
+                reset();
+                setImagePreview(null);
+            } else {
+                toast.info('No changes were made.');
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error('Update failed!');
+        } finally {
+            setIsUpdating(false);
         }
     };
 
-
     const handleTicketRemove = (id) => {
-
         Swal.fire({
-            title: "Are you sure want to delete this ticket?",
-            text: "You won't be able to revert this!",
+            title: "Delete Ticket?",
+            text: "You won't be able to revert this action!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonColor: "#ef4444",
+            cancelButtonColor: "#6b7280",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel"
         }).then((result) => {
             if (result.isConfirmed) {
                 axiosSecure.delete(`/tickets/${id}`)
                     .then(res => {
-
                         if (res.data.deletedCount) {
-                            refetch()
+                            refetch();
                             Swal.fire({
                                 title: "Deleted!",
                                 text: "Your ticket has been deleted.",
                                 icon: "success"
                             });
                         }
-                    })
+                    });
             }
         });
+    };
 
-    }
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'approved': return '#10b981';
+            case 'rejected': return '#ef4444';
+            default: return '#f59e0b';
+        }
+    };
+
+    const getStatusIcon = (status) => {
+        switch (status) {
+            case 'approved': return <LuCheck />;
+            case 'rejected': return <LuX />;
+            default: return <LuClock />;
+        }
+    };
 
     if (isLoading) {
-        return <Loader></Loader>
+        return <Loader />;
     }
+
     return (
-        <div className="p-6 text-base-content px-5 lg:px-10">
-            <div className='flex gap-3 items-center  justify-center '>
+        <Container className='p-4 lg:p-8'>
+            {/* Header */}
+            <Header>
+                <HeaderIcon>
+                    <LuTicketsPlane />
+                </HeaderIcon>
+                <HeaderContent>
+                    <Title>My Added Tickets</Title>
+                    <Subtitle>Manage and track your ticket listings</Subtitle>
+                </HeaderContent>
+                <StatsCard>
+                    <StatsNumber>{tickets.length}</StatsNumber>
+                    <StatsLabel>Total Tickets</StatsLabel>
+                </StatsCard>
+            </Header>
 
-           <LuTicketsPlane /> <h1 className="text-2xl font-bold  ">My Added Tickets</h1>
-            </div>
+            {/* Tickets Grid */}
+            {tickets.length === 0 ? (
+                <EmptyState>
+                    <EmptyIcon>
+                        <LuTicketsPlane />
+                    </EmptyIcon>
+                    <EmptyTitle>No Tickets Added Yet</EmptyTitle>
+                    <EmptySubtitle>Start by adding your first ticket to get bookings</EmptySubtitle>
+                </EmptyState>
+            ) : (
+                <TicketsGrid>
+                    {tickets.map(ticket => (
+                        <TicketCard key={ticket._id}>
+                            <ImageContainer>
+                                <TicketImage src={ticket.image} alt={ticket.ticketTitle} />
+                                <ImageOverlay />
+                                <StatusBadge color={getStatusColor(ticket.status)}>
+                                    {getStatusIcon(ticket.status)}
+                                    {ticket.status || 'pending'}
+                                </StatusBadge>
+                                <PriceTag>${ticket.price}</PriceTag>
+                            </ImageContainer>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-8">
-                {tickets.map(ticket => (
-                    <div
-                        key={ticket._id}
-                        className="rounded-2xl shadow-lg border border-gray-200 overflow-hidden
-                         transform transition hover:-translate-y-1 hover:shadow-2xl "
-                    >
-                        {/* Ticket Image */}
-                        <div className="h-48 overflow-hidden">
-                            <img
-                                src={ticket.image}
-                                alt={ticket.ticketTitle}
-                                className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                            />
-                        </div>
-
-                        {/* Ticket Content */}
-                        <div className="p-5 space-y-3">
-                            <h2 className="text-[28px] font-bold logo ">{ticket.ticketTitle}</h2>
-                            <p className=""><span className="font-semibold">Name:</span> {ticket.name}</p>
-                            <p className=""><span className="font-semibold">From:</span> {ticket.from}</p>
-                            <p className=""><span className="font-semibold">To:</span> {ticket.to}</p>
-                            <p className=""><span className="font-semibold">Transport:</span> {ticket.transport}</p>
-                            {/* <p className=""><span className="font-semibold">Time:</span> {ticket.time}</p> */}
-                            <p className=""><span className="font-semibold">Quantity:</span> {ticket.ticketQuantity}</p>
-                            <p className=""><span className="font-semibold">Price:</span> ৳ {ticket.price}</p>
-                            <p className=""><span className="font-semibold">Email:</span> {ticket.email}</p>
-                            <p className=""><span className="font-semibold">Date & Time:</span> {ticket.departureDateTime}</p>
-
-                            {/* Perks */}
-                            {ticket.perks && ticket.perks.length > 0 && (
-                                <div className="flex flex-wrap gap-2 pt-2">
-                                    {ticket.perks.map((perk, index) => (
-                                        <span
-                                            key={index}
-                                            className="bg-primary/20 text-primary text-xs px-2 py-1 rounded-full font-medium"
-                                        >
-                                            {perk}
-                                        </span>
-                                    ))}
-                                </div>
-                            )}
-
-                            {/* Verification Status */}
-                            <p className={`mt-3 font-semibold text-sm ${ticket.status === "approved"
-                                ? "text-green-600"
-                                : ticket.status === "reject"
-                                    ? "text-red-600"
-                                    : "text-yellow-500"
-                                }`}>
-                                Status: {ticket.status || "pending"}
-                            </p>
-
-                            {/* Action Buttons */}
-                            <div className="pt-3 flex justify-between">
-
-                                <button
-                                    disabled={ticket.status === 'reject'}
-                                    onClick={() => {
-                                        setSelectedTicket(ticket);
-                                        handleTicketShowModal()
-                                    }}
-                                    className={`px-4 py-2 bg-primary btn text-white rounded-lg 
-                                        ${ticket.status === 'reject' ? " cursor-not-allowed" : ""}
-                                    hover:bg-primary/80 transition `}>
-                                    Update
-                                </button>
-                                <button
-                                    disabled={ticket.status === 'reject' ? 'cursor not allow' : ''}
-                                    onClick={() => handleTicketRemove(ticket._id)}
-                                    className={`px-4 py-2 border btn border-primary text-primary rounded-lg
-                                        ${ticket.status === 'reject' ? "cursor-not-allowed" : ""}
-                                         hover:bg-primary hover:text-white transition`}>
-                                    Delete
-                                </button>
-
-                                {/* <button
+                            <CardContent>
+                                <TicketTitle>{ticket.ticketTitle}</TicketTitle>
                                 
-                                    onClick={() => setSelectedTicket(ticket)}
-                                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition">
-                                    Update
-                                </button>
-                                <button
-                                    onClick={() => handleTicketRemove(ticket._id)}
-                                    className="px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition">
-                                    Delete
-                                </button> */}
-
-
-
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                ))}
-
-            </div>
-
-            {selectedTicket && (
-                // <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                //     <form
-                //         onSubmit={(e) => handleTicketUpdate(e, selectedTicket._id)}
-                //         className="bg-base-100 p-6 rounded-xl w-[400px]"
-                //     >
-                //         <h2 className="text-xl font-bold mb-4">Update Ticket</h2>
-
-                //         <h1 className='font-medium '>Ticket Title</h1>
-                //         <input
-                //             name="ticketTitle"
-                //             defaultValue={selectedTicket.ticketTitle}
-                //             className="input input-bordered w-full mb-3"
-                //         />
-                //         <h1 className='font-medium '>From</h1>
-                //         <input
-                //             name="from"
-                //             defaultValue={selectedTicket.from}
-                //             className="input input-bordered w-full mb-3"
-                //         />
-                //         <h1 className='font-medium'>To</h1>
-                //         <input
-                //             name="to"
-                //             defaultValue={selectedTicket.to}
-                //             className="input input-bordered w-full mb-3"
-                //         />
-
-                //         <h1 className='font-medium'>Transport</h1>
-                //         <input
-                //             name="price"
-                //             defaultValue={selectedTicket.transport}
-                //             className="input input-bordered w-full mb-3"
-                //         />
-                //         <h1 className='font-medium'> Date</h1>
-                //         <input
-                //             name="ticketQuantity"
-                //             defaultValue={selectedTicket.date}
-                //             className="input input-bordered w-full mb-3"
-                //         />
-                //         <h1 className='font-medium'> Time</h1>
-                //         <input
-                //             name="ticketQuantity"
-                //             defaultValue={selectedTicket.time}
-                //             className="input input-bordered w-full mb-3"
-                //         />
-                //         <h1 className='font-medium'> Quantity</h1>
-                //         <input
-                //             name="ticketQuantity"
-                //             defaultValue={selectedTicket.ticketQuantity}
-                //             className="input input-bordered w-full mb-3"
-                //         />
-                //         {/* <h1 className='font-medium'> Price</h1>
-                //         <input
-                //             name="ticketQuantity"
-                //             defaultValue={selectedTicket.price}
-                //             className="input input-bordered w-full mb-3"
-                //         /> */}
-
-
-                //         <div className="flex justify-end gap-3">
-                //             <button
-                //                 type="button"
-                //                 onClick={() => setSelectedTicket(null)}
-                //                 className="btn"
-                //             >
-                //                 Cancel
-                //             </button>
-
-                //             <button className="btn btn-primary">
-                //                 Save
-                //             </button>
-                //         </div>
-                //     </form>
-
-                //     {/* <form onSubmit={handleSubmit(handleTicketUpdate)} className="card-body flex-1 w-full lg:w-1/2    ">
-                //         <fieldset className="fieldset">
-
-                //             <label className="label text-xl font-bold">Full name</label>
-
-
-                //             {editMode ? (
-                //                 <input
-                //                     type="text"
-                //                     name="name"
-
-                //                     onChange={name}
-                //                     className="input input-bordered w-full"
-                //                     placeholder="Enter your name"
-                //                     required
-                //                 />
-                //             ) : (
-                //                 <p className="text-lg font-semibold">{user?.displayName || "No Name Set"}</p>
-                //             )}
-
-                //             <label className="label font-bold text-xl ">Photo URL</label>
-                //             <div className=''>
-                //                 {
-                //                     editMode ? (
-                //                         <input
-                //                             type="text"
-                //                             name='photo'
-
-                //                             className='input input-bordered w-full mx-auto '
-                //                             placeholder='Enter your photo url'
-                //                         />
-                //                     ) : (
-                //                         <p className='text-lg font-semibold'>{user?.photoURL || "No phot url"} </p>
-                //                     )
-                //                 }
-                //             </div>
-
-                //             <label className="label font-bold text-xl">Email</label>
-                //             <div className='text-lg font-semibold'>
-                //                 {
-                //                     user ? <span>{user.email}</span> : "No email found"
-                //                 }
-                //             </div>
-
-
-                //             <div className='mt-6 flex gap-6'>
-                //                 {editMode ? (
-                //                     <>
-                //                         <button type='submit' className='btn btn-success flex-1'>
-                //                             Save Change
-                //                         </button>
-                //                         <button
-                //                             type='button'
-                //                             onClick={() => {
-                //                                 setEditMode(false)
-                //                             }}
-                //                             className='btn btn-ghost flex-1'
-                //                         >
-                //                             Cancel
-                //                         </button>
-                //                     </>
-                //                 ) : (
-                //                     <button type='button'
-                //                         onClick={() => { setEditMode(true) }}
-                //                         className='w-full btn btn-accent '
-                //                     >
-                //                         Update
-                //                     </button>
-                //                 )}
-                //             </div>
-
-
-
-
-
-                //         </fieldset>
-                //     </form> */}
-                // </div>
-                <dialog ref={ticketModalRef} className="modal modal-bottom sm:modal-middle">
-                    <div className="modal-box w-full lg:w-11/12 lg:max-w-5xl">
-
-
-
-                        {/* <h3 className="font-bold text-lg">Hello!</h3>
-                            <p className="py-4">Press ESC key or click the button below to close</p> */}
-                        <div className='w-full '>
-                            <div className=" mx-auto">
-                                <div className="hero-content flex-col lg:flex-row shrink-0   rounded-2xl">
-
-                                    <div className=" w-full  ">
-                                        <div className="card-body ">
-                                            <h1 className="text-2xl lg:text-3xl text-center light:text-red-500   font-bold">Update Tickets!</h1>
-                                            <p className=' font-medium text-center text-base py-3'>Update tickets by editing schedules, prices, routes, and seat availability to ensure accurate, real-time bookings.</p>
-                                            {/* update form */}
-                                            <form onSubmit={handleSubmit(handleTicketUpdate)}>
-
-
-                                                {/* ticket title info  */}
-
-
-                                                <div className=' grid grid-cols-1 lg:grid-cols-2 lg:gap-12 items-center pb-5'>
-                                                    {/* ticket detail */}
-
-
-                                                    {/* name filed */}
-                                                    <div className='space-y-5 pt-7'>
-
-                                                        <fieldset className="fieldset">
-                                                            <label className="label font-medium text-[14px] "> Name</label>
-                                                            <input type="text" defaultValue={user?.displayName}
-                                                                {...register('name', )}
-                                                                className="input  w-full  outline-primary border-0"
-                                                                placeholder=" Name" />
-                                                            {
-                                                                errors.name?.type === "required" &&
-                                                                <p className='text-red-600'> Name is required</p>
-                                                            }
-                                                        </fieldset>
-                                                        <fieldset className="fieldset ">
-                                                            <label className="label font-medium text-[14px] ">Ticket title</label>
-                                                            <input type="text"
-                                                                {...register('ticketTitle', )}
-
-                                                                className="input  w-full outline-primary border-0"
-                                                                placeholder="Ticket title" />
-                                                            {
-                                                                errors.ticketTitle?.type === "required" &&
-                                                                <p className='text-red-600'>Ticket title is required</p>
-                                                            }
-                                                        </fieldset>
-
-
-
-
-
-
-
-                                                        <fieldset className="fieldset">
-                                                            <label className="label font-medium text-[14px] ">Departure date & time</label>
-                                                            <input type="datetime-local"
-                                                                {...register('departureDateTime', )}
-                                                                className="input  w-full outline-primary border-0"
-                                                                placeholder="Date and Time" />
-                                                            {
-                                                                errors.date?.type === "required" &&
-                                                                <p className='text-red-600'>Departure date and  time  is required</p>
-                                                            }
-                                                        </fieldset>
-
-
-
-                                                        <fieldset className="fieldset">
-                                                            <label className="label font-medium text-[14px] ">Price</label>
-                                                            <input type="number"
-                                                                {...register('price')}
-                                                                className="input  w-full outline-primary border-0"
-                                                                placeholder="Price" />
-                                                            {
-                                                                errors.price?.type === "required" && <p className='text-red-600'>Price is required</p>
-                                                            }
-                                                        </fieldset>
-
-
-
-
-
-
-                                                    </div>
-
-
-
-                                                    {/* email filed */}
-                                                    <div className='space-y-5 pt-7'>
-
-
-                                                        <fieldset className="fieldset">
-                                                            <label className="label font-medium text-[14px] "> Email</label>
-                                                            <input type="text" defaultValue={user?.email}
-                                                                {...register('email', )}
-                                                                className="input  w-full outline-primary border-0"
-                                                                placeholder="sender Email" />
-                                                            {
-                                                                errors.email?.type === "required" &&
-                                                                <p className='text-red-600'> Email is required</p>
-                                                            }
-                                                        </fieldset>
-
-
-                                                        <div className=''>
-
-                                                            <fieldset className='fieldset'>
-                                                                <label className="label font-medium text-[14px] ">Transport type</label>
-                                                                <select
-                                                                    {...register('transport', )}
-                                                                    className="select  w-full outline-primary border-0">
-                                                                    <option value="">Select Transport </option>
-                                                                    <option >Bus</option>
-                                                                    <option >Train</option>
-                                                                    <option >Plane</option>
-                                                                    <option >Launch</option>
-
-
-                                                                </select>
-                                                                {
-                                                                    errors.transport?.type === "required" &&
-                                                                    <p className='text-red-600'>Transport type  is required</p>
-                                                                }
-                                                            </fieldset>
-
-
-
-                                                        </div>
-
-
-
-                                                        <fieldset className="fieldset">
-                                                            <label className="label font-medium text-[14px] ">Image</label>
-                                                            <input type="file"
-                                                                {...register('image', )}
-                                                                className="file-input  w-full outline-primary border-0"
-                                                                placeholder="image" />
-                                                            {
-                                                                errors.image?.type === "required" &&
-                                                                <p className='text-red-600'>Image  is required</p>
-                                                            }
-                                                        </fieldset>
-
-
-
-
-
-
-                                                        <fieldset className="fieldset">
-                                                            <label className="label font-medium text-[14px] ">
-                                                                Ticket Quantity</label>
-                                                            <input type="number"
-                                                                {...register('ticketQuantity', )}
-                                                                className="input  w-full outline-primary border-0"
-                                                                placeholder="Ticket Quantity" />
-                                                            {
-                                                                errors.ticketQuantity?.type === "required" &&
-                                                                <p className='text-red-600'>
-                                                                    Ticket Quantity is required</p>
-                                                            }
-                                                        </fieldset>
-
-
-                                                    </div>
-
-
-                                                </div>
-
-                                                <div className="space-y-2 pb-20">
-                                                    <h1 className='font-medium text-[14px] '>Perks</h1>
-                                                    {perks.map((perk, i) => (
-                                                        <label key={i} className="flex items-center gap-2 cursor-pointer">
-
-                                                            <input
-                                                                type="checkbox"
-                                                                value={perk}
-                                                                {...register("perks", )}
-                                                                className="checkbox checkbox-primary"
-                                                            />
-                                                            <span>{perk}</span>
-                                                        </label>
-                                                    ))}
-                                                    {
-                                                        errors.perks?.type === "required" &&
-                                                        <p className='text-red-600'> At least select one perks</p>
-                                                    }
-                                                </div>
-
-
-
-                                                <input type="submit" className=' btn btn-primary '
-                                                    value="Update" />
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            {/* add properties */}
-                            {/* <div className='mx-20 py-5'>
-                               <h1 className='text-3xl font-medium'>All Add Properties Details</h1>
-                                  </div> */}
-                        </div>
-
-
-
-                        <div className="modal-action">
-                            <form method="dialog">
-                                {/* if there is a button in form, it will close the modal */}
-                                <button className="btn my-btn">Close</button>
-                            </form>
-                        </div>
-                    </div>
-                </dialog>
+                                <RouteInfo>
+                                    <RouteItem>
+                                        <LuMapPin />
+                                        <span>{ticket.from}</span>
+                                    </RouteItem>
+                                    <RouteDivider>→</RouteDivider>
+                                    <RouteItem>
+                                        <LuMapPin />
+                                        <span>{ticket.to}</span>
+                                    </RouteItem>
+                                </RouteInfo>
+
+                                <InfoGrid>
+                                    <InfoItem>
+                                        <InfoIcon>
+                                            {React.createElement(transportIcons[ticket.transport] || FaBus)}
+                                        </InfoIcon>
+                                        <InfoText>
+                                            <InfoLabel>Transport</InfoLabel>
+                                            <InfoValue>{ticket.transport}</InfoValue>
+                                        </InfoText>
+                                    </InfoItem>
+                                    
+                                    <InfoItem>
+                                        <InfoIcon>
+                                            <LuUsers />
+                                        </InfoIcon>
+                                        <InfoText>
+                                            <InfoLabel>Quantity</InfoLabel>
+                                            <InfoValue>{ticket.ticketQuantity}</InfoValue>
+                                        </InfoText>
+                                    </InfoItem>
+
+                                    <InfoItem>
+                                        <InfoIcon>
+                                            <LuCalendar />
+                                        </InfoIcon>
+                                        <InfoText>
+                                            <InfoLabel>Departure</InfoLabel>
+                                            <InfoValue>
+                                                {new Date(ticket.departureDateTime).toLocaleDateString()}
+                                            </InfoValue>
+                                        </InfoText>
+                                    </InfoItem>
+
+                                    <InfoItem>
+                                        <InfoIcon>
+                                            <LuClock />
+                                        </InfoIcon>
+                                        <InfoText>
+                                            <InfoLabel>Time</InfoLabel>
+                                            <InfoValue>
+                                                {new Date(ticket.departureDateTime).toLocaleTimeString([], {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })}
+                                            </InfoValue>
+                                        </InfoText>
+                                    </InfoItem>
+                                </InfoGrid>
+
+                                {ticket.perks && ticket.perks.length > 0 && (
+                                    <PerksContainer>
+                                        <PerksTitle>Included Perks</PerksTitle>
+                                        <PerksGrid>
+                                            {ticket.perks.map((perk, index) => (
+                                                <PerkTag key={index}>
+                                                    {React.createElement(
+                                                        perks.find(p => p.name === perk)?.icon || FaWifi
+                                                    )}
+                                                    {perk}
+                                                </PerkTag>
+                                            ))}
+                                          
+                                        </PerksGrid>
+                                    </PerksContainer>
+                                )}
+
+                                <ActionButtons>
+                                    <UpdateButton
+                                        disabled={ticket.status === 'rejected'}
+                                        onClick={() => handleTicketShowModal(ticket)}
+                                    >
+                                        {/* <LuEdit /> */}
+                                        Update
+                                    </UpdateButton>
+                                    <DeleteButton
+                                        disabled={ticket.status === 'rejected'}
+                                        onClick={() => handleTicketRemove(ticket._id)}
+                                    >
+                                        <LuTrash2 />
+                                        Delete
+                                    </DeleteButton>
+                                </ActionButtons>
+                            </CardContent>
+                        </TicketCard>
+                    ))}
+                </TicketsGrid>
             )}
-        </div>
 
+            {/* Update Modal */}
+            {selectedTicket && (
+                <Modal ref={ticketModalRef}>
+                    <ModalContent>
+                        <ModalHeader>
+                            <ModalTitle>Update Ticket</ModalTitle>
+                            <CloseButton onClick={() => ticketModalRef.current.close()}>
+                                <LuX />
+                            </CloseButton>
+                        </ModalHeader>
+
+                        <ModalBody>
+                            <UpdateForm onSubmit={handleSubmit(handleTicketUpdate)}>
+                                <FormGrid>
+                                    {/* Left Column */}
+                                    <FormColumn>
+                                        <FormGroup>
+                                            <Label>Ticket Title</Label>
+                                            <Input
+                                                type="text"
+                                                {...register('ticketTitle', { required: 'Title is required' })}
+                                                placeholder="Enter ticket title"
+                                            />
+                                            {errors.ticketTitle && <ErrorMessage>{errors.ticketTitle.message}</ErrorMessage>}
+                                        </FormGroup>
+
+                                        <FormRow>
+                                            <FormGroup>
+                                                <Label>From</Label>
+                                                <Input
+                                                    type="text"
+                                                    {...register('from', { required: 'From location is required' })}
+                                                    placeholder="Departure location"
+                                                />
+                                                {errors.from && <ErrorMessage>{errors.from.message}</ErrorMessage>}
+                                            </FormGroup>
+
+                                            <FormGroup>
+                                                <Label>To</Label>
+                                                <Input
+                                                    type="text"
+                                                    {...register('to', { required: 'Destination is required' })}
+                                                    placeholder="Destination"
+                                                />
+                                                {errors.to && <ErrorMessage>{errors.to.message}</ErrorMessage>}
+                                            </FormGroup>
+                                        </FormRow>
+
+                                        <FormGroup>
+                                            <Label>Transport Type</Label>
+                                            <Select {...register('transport', { required: 'Transport type is required' })}>
+                                                <option value="">Select Transport</option>
+                                                <option value="Bus">Bus</option>
+                                                <option value="Train">Train</option>
+                                                <option value="Plane">Plane</option>
+                                                <option value="Launch">Launch</option>
+                                            </Select>
+                                            {errors.transport && <ErrorMessage>{errors.transport.message}</ErrorMessage>}
+                                        </FormGroup>
+
+                                        <FormRow>
+                                            <FormGroup>
+                                                <Label>Price (৳)</Label>
+                                                <Input
+                                                    type="number"
+                                                    {...register('price', { required: 'Price is required' })}
+                                                    placeholder="Ticket price"
+                                                />
+                                                {errors.price && <ErrorMessage>{errors.price.message}</ErrorMessage>}
+                                            </FormGroup>
+
+                                            <FormGroup>
+                                                <Label>Quantity</Label>
+                                                <Input
+                                                    type="number"
+                                                    {...register('ticketQuantity', { required: 'Quantity is required' })}
+                                                    placeholder="Available tickets"
+                                                />
+                                                {errors.ticketQuantity && <ErrorMessage>{errors.ticketQuantity.message}</ErrorMessage>}
+                                            </FormGroup>
+                                        </FormRow>
+
+                                        <FormGroup>
+                                            <Label>Departure Date & Time</Label>
+                                            <Input
+                                                type="datetime-local"
+                                                {...register('departureDateTime', { required: 'Date and time is required' })}
+                                            />
+                                            {errors.departureDateTime && <ErrorMessage>{errors.departureDateTime.message}</ErrorMessage>}
+                                        </FormGroup>
+                                    </FormColumn>
+
+                                    {/* Right Column */}
+                                    <FormColumn>
+                                        <FormGroup>
+                                            <Label>Update Image</Label>
+                                            <ImageUploadArea>
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    {...register('image')}
+                                                    onChange={handleImageChange}
+                                                    style={{ display: 'none' }}
+                                                    id="update-image"
+                                                />
+                                                <ImageUploadLabel htmlFor="update-image">
+                                                    {imagePreview ? (
+                                                        <ImagePreview>
+                                                            <img src={imagePreview} alt="Preview" />
+                                                            <ImageOverlayUpdate>
+                                                                <LuImage />
+                                                                <span>Click to change</span>
+                                                            </ImageOverlayUpdate>
+                                                        </ImagePreview>
+                                                    ) : (
+                                                        <UploadPlaceholder>
+                                                            <LuImage />
+                                                            <span>Click to upload new image</span>
+                                                        </UploadPlaceholder>
+                                                    )}
+                                                </ImageUploadLabel>
+                                            </ImageUploadArea>
+                                        </FormGroup>
+
+                                        <FormGroup>
+                                            <Label>Available Perks</Label>
+                                            <PerksUpdateGrid>
+                                                {perks.map((perk) => (
+                                                    <PerkCheckboxContainer key={perk.name}>
+                                                        <PerkCheckbox
+                                                            type="checkbox"
+                                                            value={perk.name}
+                                                            {...register("perks")}
+                                                            id={`update-${perk.name}`}
+                                                        />
+                                                        <PerkCheckboxLabel htmlFor={`update-${perk.name}`}>
+                                                            <perk.icon />
+                                                            {perk.name}
+                                                        </PerkCheckboxLabel>
+                                                    </PerkCheckboxContainer>
+                                                ))}
+                                            </PerksUpdateGrid>
+                                        </FormGroup>
+                                    </FormColumn>
+                                </FormGrid>
+
+                                <ModalActions>
+                                    <CancelButton
+                                        type="button"
+                                        onClick={() => ticketModalRef.current.close()}
+                                    >
+                                        Cancel
+                                    </CancelButton>
+                                    <SubmitButton type="submit" disabled={isUpdating}>
+                                        {isUpdating ? (
+                                            <>
+                                                <LoadingSpinner />
+                                                Updating...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <LuCheck />
+                                                Update Ticket
+                                            </>
+                                        )}
+                                    </SubmitButton>
+                                </ModalActions>
+                            </UpdateForm>
+                        </ModalBody>
+                    </ModalContent>
+                </Modal>
+            )}
+        </Container>
     );
 };
+
+// Styled Components
+const Container = styled.div`
+    // padding: 2rem;
+    background: #;
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+`;
+
+const Header = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: ;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+`;
+
+const HeaderIcon = styled.div`
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #ff8c42, #ff6b35);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+    box-shadow: 0 8px 25px rgba(255, 140, 66, 0.3);
+`;
+
+const HeaderContent = styled.div`
+    flex: 1;
+`;
+
+const Title = styled.h1`
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #ff8c42, #ff6b35);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+`;
+
+const Subtitle = styled.p`
+    font-size: 1.1rem;
+    color: #64748b;
+    margin: 0;
+`;
+
+const StatsCard = styled.div`
+    text-align: center;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #ff8c42, #ff6b35);
+    border-radius: 16px;
+    color: white;
+    min-width: 120px;
+`;
+
+const StatsNumber = styled.div`
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+`;
+
+const StatsLabel = styled.div`
+    font-size: 0.9rem;
+    opacity: 0.9;
+`;
+
+const EmptyState = styled.div`
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+`;
+
+const EmptyIcon = styled.div`
+    width: 100px;
+    height: 100px;
+    background: #f1f5f9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #94a3b8;
+    margin: 0 auto 2rem;
+`;
+
+const EmptyTitle = styled.h2`
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+`;
+
+const EmptySubtitle = styled.p`
+    color: #64748b;
+    font-size: 1rem;
+`;
+
+const TicketsGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+`;
+
+const TicketCard = styled.div`
+    background: ;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+`;
+
+const ImageContainer = styled.div`
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+`;
+
+const TicketImage = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+
+    ${TicketCard}:hover & {
+        transform: scale(1.05);
+    }
+`;
+
+const ImageOverlay = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.1) 0%,
+        rgba(0, 0, 0, 0.3) 100%
+    );
+`;
+
+const StatusBadge = styled.div`
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: ${props => props.color};
+    color: white;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    backdrop-filter: blur(10px);
+`;
+
+const PriceTag = styled.div`
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    color: #ff8c42;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    backdrop-filter: blur(10px);
+`;
+
+const CardContent = styled.div`
+    padding: 2rem;
+`;
+
+const TicketTitle = styled.h3`
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #;
+    margin-bottom: 1rem;
+`;
+
+const RouteInfo = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #;
+    border-radius: 12px;
+`;
+
+const RouteItem = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+
+    svg {
+        color: #ff8c42;
+    }
+`;
+
+const RouteDivider = styled.div`
+    color: #ff8c42;
+    font-weight: 700;
+    font-size: 1.2rem;
+`;
+
+const InfoGrid = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+`;
+
+const InfoItem = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+`;
+
+const InfoIcon = styled.div`
+    width: 40px;
+    height: 40px;
+    background: #fff5f0;
+    border: 2px solid #fed7aa;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ff8c42;
+    font-size: 1.1rem;
+`;
+
+const InfoText = styled.div`
+    flex: 1;
+`;
+
+const InfoLabel = styled.div`
+    font-size: 0.7rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+`;
+
+const InfoValue = styled.div`
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.9rem;
+`;
+
+const PerksContainer = styled.div`
+    margin-bottom: 1.5rem;
+`;
+
+const PerksTitle = styled.h4`
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.75rem;
+`;
+
+const PerksGrid = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+`;
+
+const PerkTag = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    background: linear-gradient(135deg, #ff8c42, #ff6b35);
+    color: white;
+    border-radius: 15px;
+    font-size: 0.7rem;
+    font-weight: 600;
+
+    &.more {
+        background: #64748b;
+    }
+
+    svg {
+        font-size: 0.8rem;
+    }
+`;
+
+const ActionButtons = styled.div`
+    display: flex;
+    gap: 1rem;
+`;
+
+const UpdateButton = styled.button`
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #ff8c42, #ff6b35);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255, 140, 66, 0.3);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+`;
+
+const DeleteButton = styled.button`
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: ;
+    color: #ef4444;
+    border: 2px solid #ef4444;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+        background: #ef4444;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+`;
+
+const Modal = styled.dialog`
+    padding: 0;
+    border: none;
+    border-radius: 20px;
+    background: transparent;
+    max-width: 90vw;
+    max-height: 90vh;
+    width: 1000px;
+
+    &::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+    }
+`;
+
+const ModalContent = styled.div`
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+`;
+
+const ModalHeader = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    background: linear-gradient(135deg, #ff8c42, #ff6b35);
+    color: white;
+`;
+
+const ModalTitle = styled.h2`
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+`;
+
+const CloseButton = styled.button`
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+`;
+
+const ModalBody = styled.div`
+    padding: 2rem;
+    max-height: 70vh;
+    overflow-y: auto;
+`;
+
+const UpdateForm = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+`;
+
+const FormGrid = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+`;
+
+const FormColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+`;
+
+const FormRow = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+`;
+
+const FormGroup = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+`;
+
+const Label = styled.label`
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.9rem;
+`;
+
+const Input = styled.input`
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+
+    &:focus {
+        outline: none;
+        border-color: #ff8c42;
+        box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+    }
+`;
+
+const Select = styled.select`
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:focus {
+        outline: none;
+        border-color: #ff8c42;
+        box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+    }
+`;
+
+const ImageUploadArea = styled.div`
+    position: relative;
+`;
+
+const ImageUploadLabel = styled.label`
+    display: block;
+    cursor: pointer;
+`;
+
+const ImagePreview = styled.div`
+    position: relative;
+    width: 100%;
+    height: 150px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px dashed #e2e8f0;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+`;
+
+const ImageOverlayUpdate = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+    ${ImagePreview}:hover & {
+        opacity: 1;
+    }
+`;
+
+const UploadPlaceholder = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: #64748b;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: #ff8c42;
+        background: white;
+    }
+`;
+
+const PerksUpdateGrid = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+`;
+
+const PerkCheckboxContainer = styled.div`
+    position: relative;
+`;
+
+const PerkCheckbox = styled.input`
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+
+    &:checked + label {
+        background: linear-gradient(135deg, #ff8c42, #ff6b35);
+        color: white;
+        border-color: #ff8c42;
+    }
+`;
+
+const PerkCheckboxLabel = styled.label`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+    font-weight: 500;
+
+    &:hover {
+        border-color: #ff8c42;
+        background: #fff5f0;
+    }
+`;
+
+const ErrorMessage = styled.span`
+    color: #ef4444;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    &::before {
+        content: '⚠';
+    }
+`;
+
+const ModalActions = styled.div`
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+`;
+
+const CancelButton = styled.button`
+    padding: 0.75rem 1.5rem;
+    background: #f1f5f9;
+    color: #64748b;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: #e2e8f0;
+    }
+`;
+
+const SubmitButton = styled.button`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #ff8c42, #ff6b35);
+    color: ;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(255, 140, 66, 0.3);
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+`;
+
+const LoadingSpinner = styled.div`
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+`;
 
 export default MyAddedTickets;

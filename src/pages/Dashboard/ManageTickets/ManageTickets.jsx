@@ -65,8 +65,8 @@ const ManageTickets = () => {
     }
     
     return (
-             <div className=' min-h-screen pt-5 text-base-content px-5 lg:px-10 '>
-            {/* <h1 className='text-xl font-bold mb-4'>  transaction :{payments.length}</h1> */}
+             <div className=' min-h-screen pt- text-base-content px-5   '>
+            {/* <h1 className='text-xl font-bold mb-4'>  Manage Ticket</h1> */}
             <div className="hidden md:block overflow-x-auto rounded-lg  ">
                 <table className="table table-zebra w-full text-base">
                     {/* head */}
@@ -91,9 +91,9 @@ const ManageTickets = () => {
                                 <td className='font-medium text-base'>{ticket.ticketTitle}</td>
                                 <td className='font-medium text-base'>{ticket.from}</td>
                                 <td className='font-medium text-base'>{ticket.to}</td>
-                                <td className='font-medium text-base space-x-3'>
+                                <td className='font-medium text-base space-x-3 flex '>
                                     <button onClick={()=>handleApprovedTicket(ticket._id)}
-                                     className="btn btn-primary btn-outline">Approved</button>
+                                     className="btn btn-primary btn-outline lg:mb-3">Approved</button>
                                     <button onClick={()=>handleRejectionTicket(ticket._id)} className="btn btn-primary">Reject</button>
                                 </td>
                             </tr>)

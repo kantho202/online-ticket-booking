@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router';
+import { Link, NavLink, Outlet } from 'react-router';
 import Logo from '../components/Logo/Logo';
 import { FaHistory, FaTicketAlt, FaUsersCog, FaUserTie } from 'react-icons/fa';
 import { IoMegaphone, IoTicket } from 'react-icons/io5';
@@ -11,199 +11,277 @@ import useRole from '../hook/useRole';
 import Navbar from '../pages/Shares/Navbar';
 import { VscThreeBars } from "react-icons/vsc";
 import DashboardNavbar from '../pages/Dashboard/DashboardNavbar/DashboardNavbar';
+import useAuth from '../hook/useAuth';
 
 const DashboardLayout = () => {
     const { role } = useRole()
+    const { user } = useAuth()
 
     return (
         <div>
-           <div className='flex items-center bg-primary '>
-             <label htmlFor="my-drawer-4" aria-label="open sidebar" className="p-5 cursor-pointer">
-                {/* Sidebar toggle icon */}
-                {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M9 4v16"></path><path d="M14 10l2 2l-2 2"></path></svg> */}
-                <VscThreeBars  className=' ' />
+            {/* Fixed Navbar with proper z-index */}
+            <div className='flex items-center bg-primary sticky h-16 top-0 z-[100]'>
+                <label htmlFor="my-drawer-4" aria-label="open sidebar" className="p-5 lg:p-6 cursor-pointer">
+                    <VscThreeBars className='text-white' />
+                </label>
+                <DashboardNavbar></DashboardNavbar>
+            </div>
 
-            </label>
-            {/* <Navbar></Navbar> */}
-            <DashboardNavbar></DashboardNavbar>
-           </div>
-            <div className="drawer lg:drawer-open">
-                <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content">
-                    {/* Navbar */}
-                    
-                    {/* Page content here */}
-                    <div className=""><Outlet></Outlet></div>
+            {/* Main content with top margin to account for fixed navbar */}
+            <div className="drawer drawer-mobile lg:drawer-open min-h-screen pt-16 lg:pt-20">
+                <input id="my-drawer-4" type="checkbox" className="drawer-toggle peer" />
+
+                <div className=" drawer-content
+  transition-all
+  duration-300
+  lg:ml-16
+  lg:peer-checked:ml-64">
+                    <div className="lg:is-drawer-close:pr-20">
+                        <Outlet></Outlet>
+                    </div>
                 </div>
 
-                <div className="drawer-side is-drawer-close:overflow-visible ">
+                {/* Drawer side with higher z-index */}
+                <div className="drawer-side z-50  ">
                     <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
-                    <div className="flex shadow min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 
-                     is-drawer-open:w-64">
-                        {/* Sidebar content here */}
-                        <ul className="menu w-full grow drop-shadow-sm">
-                            <div className='flex justify-center items-center'>
 
-                                {/* <Logo></Logo> */}
+                    <div className="
+                    fixed
+    top-16 lg:top-
+    left-0
+    h-[calc(100vh-4rem)]
+    flex
+    shadow
+    flex-col
+    bg-base-200
+    is-drawer-close:w-14
+    lg:is-drawer-close:w-16
+    is-drawer-open:w-64
+    overflow-visible
+      ">
+                        {/* Dashboard Title */}
+                        <div className='flex flex-wrap min h-screen'>
+                            <div className="p-4 is-drawer-close:tooltip is-drawer-close:tooltip-right w-full" data-tip="">
+                                <span className="is-drawer-close:hidden text-2xl font-bold block w-full text-center border-primary border-2 p-2 
+                                bg-primary/80 rounded-xl">Dashboard</span>
+                                {/* <div className='border-primary border '></div> */}
                             </div>
-                            {/* List item */}
-                            {/* <li>
-                            <Link to="/dashboard">
-                                <button className="is-drawer-close:tooltip 
-                                is-drawer-close:tooltip-right flex items-center justify-center " data-tip="Homepage">
-                                    
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                                    <span className="is-drawer-close:hidden pl-2">Homepage</span>
+
+                            {/* Menu Items */}
+
+                            <ul className="menu w-full grow drop-shadow-sm space-y-2">
+                                {/* User Menu */}
+
+                                {role === 'user' && (
+                                    <>
+                                        <li>
+                                            <NavLink
+                                                to="/dashboard/userProfile"
+                                                className={({ isActive }) =>
+                                                    `flex items-center justify-center w-full p-2 rounded-xl ${isActive ? 'bg-primary text-white' : 'hover:bg-orange-200'
+                                                    }`
+                                                }
+                                            >
+                                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center 
+                                                 py-1.5 cursor-pointer" data-tip="User Profile">
+                                                    <FaUserTie />
+                                                    <span className="is-drawer-close:hidden pl-2">User Profile</span>
+                                                </button>
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink
+                                                to="/dashboard/myBookedTickets"
+                                                className={({ isActive }) =>
+                                                    `flex items-center justify-center w-full p-2 rounded-xl ${isActive ? 'bg-primary text-white' : 'hover:bg-orange-200'
+                                                    }`
+                                                }
+                                            >
+                                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center py-1.5 cursor-pointer" data-tip="My Booked Tickets">
+                                                    <BsTicketPerforated />
+                                                    <span className="is-drawer-close:hidden pl-2">My Booked Tickets</span>
+                                                </button>
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink
+                                                to="/dashboard/transactionHistory"
+                                                className={({ isActive }) =>
+                                                    `flex items-center justify-center w-full p-2 rounded-xl ${isActive ? 'bg-primary text-white' : 'hover:bg-orange-200'
+                                                    }`
+                                                }
+                                            >
+                                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center py-1.5 cursor-pointer" data-tip="Transaction History">
+                                                    <FaHistory />
+                                                    <span className="is-drawer-close:hidden pl-2">Transaction History</span>
+                                                </button>
+                                            </NavLink>
+                                        </li>
+                                    </>
+                                )}
+
+                                {/* Vendor Menu */}
+                                {role === 'vendor' && (
+                                    <>
+                                        <li>
+                                            <NavLink
+                                                to="/dashboard/vendorProfile"
+                                                className={({ isActive }) =>
+                                                    `flex items-center justify-center w-full p-2 rounded-xl ${isActive ? 'bg-primary text-white' : 'hover:bg-orange-200'
+                                                    }`
+                                                }
+                                            >
+                                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center py-1.5" data-tip="Vendor Profile">
+                                                    <FaUserTie />
+                                                    <span className="is-drawer-close:hidden pl-2">Vendor Profile</span>
+                                                </button>
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink
+                                                to="/dashboard/addTicket"
+                                                className={({ isActive }) =>
+                                                    `flex items-center justify-center w-full p-2 rounded-xl ${isActive ? 'bg-primary text-white' : 'hover:bg-orange-200'
+                                                    }`
+                                                }
+                                            >
+                                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center py-1.5" data-tip="Add Ticket">
+                                                    <IoTicket />
+                                                    <span className="is-drawer-close:hidden pl-2">Add Ticket</span>
+                                                </button>
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink
+                                                to="/dashboard/myAddedTickets"
+                                                className={({ isActive }) =>
+                                                    `flex items-center justify-center w-full p-2 rounded-xl ${isActive ? 'bg-primary text-white' : 'hover:bg-orange-200'
+                                                    }`
+                                                }
+                                            >
+                                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center py-1.5" data-tip="My Added Ticket">
+                                                    <LuTicketsPlane />
+                                                    <span className="is-drawer-close:hidden pl-2">My Added Tickets</span>
+                                                </button>
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink
+                                                to="/dashboard/requestedBooking"
+                                                className={({ isActive }) =>
+                                                    `flex items-center justify-center w-full p-2 rounded-xl ${isActive ? 'bg-primary text-white' : 'hover:bg-orange-200'
+                                                    }`
+                                                }
+                                            >
+                                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center py-1.5" data-tip="Requested Booking">
+                                                    <HiOutlineDocumentSearch />
+                                                    <span className="is-drawer-close:hidden pl-2">Requested Booking</span>
+                                                </button>
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink
+                                                to="/dashboard/revenueOverview"
+                                                className={({ isActive }) =>
+                                                    `flex items-center justify-center w-full p-2 rounded-xl ${isActive ? 'bg-primary text-white' : 'hover:bg-orange-200'
+                                                    }`
+                                                }
+                                            >
+                                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center py-1.5" data-tip="Revenue Overview">
+                                                    <RiLineChartLine />
+                                                    <span className="is-drawer-close:hidden pl-2">Revenue Overview</span>
+                                                </button>
+                                            </NavLink>
+                                        </li>
+                                    </>
+                                )}
+
+                                {/* Admin Menu */}
+                                {role === 'admin' && (
+                                    <>
+                                        <li>
+                                            <NavLink
+                                                to="/dashboard/adminProfile"
+                                                className={({ isActive }) =>
+                                                    `flex items-center justify-center w-full p-2 rounded-xl ${isActive ? 'bg-primary text-white' : 'hover:bg-orange-200'
+                                                    }`
+                                                }
+                                            >
+                                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center py-1.5" data-tip="Admin Profile">
+                                                    <FaUserTie />
+                                                    <span className="is-drawer-close:hidden pl-2">Admin Profile</span>
+                                                </button>
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink
+                                                to="/dashboard/manageTickets"
+                                                className={({ isActive }) =>
+                                                    `flex items-center justify-center w-full p-2 rounded-xl ${isActive ? 'bg-primary text-white' : 'hover:bg-orange-200'
+                                                    }`
+                                                }
+                                            >
+                                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center py-1.5" data-tip="Manage Tickets">
+                                                    <FaTicketAlt />
+                                                    <span className="is-drawer-close:hidden pl-2">Manage Tickets</span>
+                                                </button>
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink
+                                                to="/dashboard/mangeUsers"
+                                                className={({ isActive }) =>
+                                                    `flex items-center justify-center w-full p-2 rounded-xl ${isActive ? 'bg-primary text-white' : 'hover:bg-orange-200'
+                                                    }`
+                                                }
+                                            >
+                                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center py-1.5" data-tip="Manage Users">
+                                                    <FaUsersCog />
+                                                    <span className="is-drawer-close:hidden pl-2">Manage Users</span>
+                                                </button>
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink
+                                                to="/dashboard/advertiseTickets"
+                                                className={({ isActive }) =>
+                                                    `flex items-center justify-center w-full p-2 rounded-xl ${isActive ? 'bg-primary text-white' : 'hover:bg-orange-200'
+                                                    }`
+                                                }
+                                            >
+                                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center py-1.5" data-tip="Advertise Tickets">
+                                                    <IoMegaphone />
+                                                    <span className="is-drawer-close:hidden pl-2">Advertise Tickets</span>
+                                                </button>
+                                            </NavLink>
+                                        </li>
+                                    </>
+                                )}
+                            </ul>
+
+                            {/* Dashboard Footer */}
+                            <div className="w-full p-4 rounded-xl lg:mb- ">
+
+                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-close:hidden w-full p-4  
+                            bg-primary/50 px- flex items-center justify-center py-5 rounded-xl border-2 border-primary" data-tip="">
+                                    <div className="is-drawer-close:hidden font-bold  flex  items-center gap-3">
+                                        <div role="button" className="btn  object-cover ring-1 border-0  hover:ring-orange-400 flex justify-end
+                                   transition-all duration-300 btn-circle avatar">
+                                            <div className="w-30 rounded-full    items-end">
+                                                <img
+                                                    alt=""
+                                                    src={user?.photoURL} />
+                                            </div>
+
+                                        </div>
+                                        <div className='text-xs'>
+                                            <h1>Welcome Back</h1>
+                                            <span className='text-primary'>{role}</span>
+                                        </div>
+                                    </div>
                                 </button>
-                            </Link>
-                            </li> */}
-                            {
-                                role === 'user' && <>
-                                    <li>
-                                        <Link to="/dashboard/userProfile">
-                                            <button className=" is-drawer-close:tooltip is-drawer-close:tooltip-right 
-                                        flex items-center justify-center " data-tip="User Profile">
-                                                {/* Home icon */}
-                                                <FaUserTie />
-                                                <span className="is-drawer-close:hidden pl-2">User Profile</span>
-                                            </button>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/dashboard/myBookedTickets">
-                                            <button className="is-drawer-close:tooltip
-                                 is-drawer-close:tooltip-right flex items-center justify-center "
-                                                data-tip="My Booked Tickets">
-                                                {/* Home icon */}
-                                                <BsTicketPerforated />
-                                                <span className="is-drawer-close:hidden pl-2">My Booked Tickets</span>
-                                            </button>
-                                        </Link>
-                                    </li>
-
-                                    <li>
-                                        <Link to="/dashboard/transactionHistory">
-                                            <button className="is-drawer-close:tooltip 
-                                is-drawer-close:tooltip-right flex items-center justify-center "
-                                                data-tip="Transaction History">
-                                                {/* Home icon */}
-                                                <FaHistory />
-                                                <span className="is-drawer-close:hidden pl-2">Transaction History</span>
-                                            </button>
-                                        </Link>
-                                    </li>
-                                </>
-                            }
-
-
-                            {
-                                role === 'vendor' && <>
-                                    <li>
-                                        <Link to="/dashboard/vendorProfile">
-                                            <button className=" is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center " data-tip="Vendor Profile">
-                                                {/* Home icon */}
-                                                <FaUserTie />
-                                                <span className="is-drawer-close:hidden pl-2">Vendor Profile</span>
-                                            </button>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/dashboard/addTicket">
-                                            <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center " data-tip="Add Ticket">
-                                                {/* Home icon */}
-                                                <IoTicket />
-                                                <span className="is-drawer-close:hidden pl-2">Add Ticket</span>
-                                            </button>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/dashboard/myAddedTickets">
-                                            <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center " data-tip="My Added Ticket">
-                                                {/* Home icon */}
-                                                <LuTicketsPlane />
-                                                <span className="is-drawer-close:hidden pl-2">My Added Tickets</span>
-                                            </button>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/dashboard/requestedBooking">
-                                            <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center " data-tip="Requested Booking">
-                                                {/* Home icon */}
-                                                <HiOutlineDocumentSearch />
-                                                <span className="is-drawer-close:hidden pl-2">Requested Booking</span>
-                                            </button>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/dashboard/revenueOverview">
-                                            <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center justify-center" data-tip="Revenue Overview">
-                                                {/* Home icon */}
-                                                <RiLineChartLine />
-                                                <span className="is-drawer-close:hidden pl-2">Revenue Overview</span>
-                                            </button>
-                                        </Link>
-                                    </li>
-
-                                </>
-                            }
-
-
-
-
-
-                            {/* admin list */}
-                            {
-                                role === 'admin' && <>
-                                    <li>
-                                        <Link to="/dashboard/adminProfile">
-                                            <button className=" is-drawer-close:tooltip is-drawer-close:tooltip-right 
-                                        flex items-center justify-center " data-tip="Admin Profile">
-                                                {/* Home icon */}
-                                                <FaUserTie />
-                                                <span className="is-drawer-close:hidden pl-2">Admin Profile</span>
-                                            </button>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/dashboard/manageTickets">
-                                            <button className="is-drawer-close:tooltip
-                                 is-drawer-close:tooltip-right flex items-center justify-center"
-                                                data-tip="Manage Tickets">
-                                                {/* Home icon */}
-                                                <FaTicketAlt />
-                                                <span className="is-drawer-close:hidden pl-2">Manage Tickets</span>
-                                            </button>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/dashboard/mangeUsers">
-                                            <button className="is-drawer-close:tooltip
-                                 is-drawer-close:tooltip-right flex items-center justify-center"
-                                                data-tip="Manage Users">
-                                                {/* Home icon */}
-                                                <FaUsersCog />
-                                                <span className="is-drawer-close:hidden pl-2">Manage Users</span>
-                                            </button>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/dashboard/advertiseTickets">
-                                            <button className="is-drawer-close:tooltip
-                                 is-drawer-close:tooltip-right flex items-center justify-center"
-                                                data-tip="Advertise Tickets">
-                                                {/* Home icon */}
-                                                <IoMegaphone />
-                                                <span className="is-drawer-close:hidden pl-2">Advertise Tickets</span>
-                                            </button>
-                                        </Link>
-                                    </li>
-                                </>
-                            }
-
-
-                            {/* List item */}
-
-                        </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -8,7 +8,7 @@ import { MdEmail } from 'react-icons/md';
 
 const Footer = () => {
   return (
-    <footer className="bg-base-200 overflow-x-hidden" data-aos="fade-up" data-aos-easing="linear"   data-aos-duration="1500">
+    <footer className="bg-base-200 overflow-x-hidden" >
 
       {/* Main Footer */}
       <div className="footer grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-5 lg:px-10 py-10 text-base-content"
