@@ -1,54 +1,19 @@
+# Online Ticket Booking System
 
-# 🎫 Online Ticket Booking System
+🔗 **Live Demo**: [https://online-ticket-booking-4cc7f.web.app](https://online-ticket-booking-4cc7f.web.app)
 
-A modern, responsive web application for booking tickets online built with React, Vite, and Firebase. This platform provides a seamless experience for users to browse, select, and purchase tickets for various services.
+## Project Description
 
-Live Link : https://online-ticket-booking-4cc7f.web.app
-## ✨ Features
+A comprehensive online ticket booking platform built with React and Firebase that enables users to browse, book, and manage tickets across different service categories. The application features role-based access control with separate dashboards for users, vendors, and administrators, integrated payment processing, and real-time booking management.
 
-- 🔐 **User Authentication** - Secure login and registration system
-- 🎫 **Ticket Booking** - Browse and book tickets for different services
-- 💳 **Payment Integration** - Secure payment processing
-- 📱 **Responsive Design** - Works perfectly on all devices
-- 🔄 **Real-time Updates** - Live ticket availability and booking status
-- 📊 **Dashboard** - User-friendly dashboard for managing bookings
-- 🎨 **Modern UI** - Beautiful interface with smooth animations
-- 🔍 **Search & Filter** - Easy ticket discovery with advanced filters
-
-## 🛠️ Tech Stack
-
-### Frontend
-- **React 19** - Modern React with latest features
-- **Vite** - Lightning-fast build tool and dev server
-- **TailwindCSS** - Utility-first CSS framework
-- **DaisyUI** - Beautiful component library
-- **React Router** - Client-side routing
-- **React Hook Form** - Efficient form handling
-- **Lottie React** - Smooth animations
-
-### Backend & Services
-- **Firebase** - Authentication, hosting, and backend services
-- **React Query** - Server state management
-- **Axios** - HTTP client for API requests
-
-### UI/UX Libraries
-- **Heroicons** - Beautiful SVG icons
-- **React Icons** - Comprehensive icon library
-- **AOS** - Animate On Scroll library
-- **SweetAlert2** - Beautiful alert dialogs
-- **React Toastify** - Elegant notifications
-- **Recharts** - Data visualization
-
-## 🚀 Getting Started
+## Setup & Installation Instructions
 
 ### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+- Git
 
-Make sure you have the following installed:
-- **Node.js** (v18 or higher)
-- **npm** or **yarn**
-- **Git**
-
-### Installation
+### Installation Steps
 
 1. **Clone the repository**
    ```bash
@@ -61,12 +26,8 @@ Make sure you have the following installed:
    npm install
    ```
 
-3. **Set up environment variables**
-   ```bash
-   cp .env.example .env
-   ```
-   
-   Update the `.env` file with your Firebase configuration:
+3. **Configure environment variables**
+   Create a `.env` file in the root directory and add your Firebase configuration:
    ```env
    VITE_FIREBASE_API_KEY=your_api_key
    VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
@@ -76,100 +37,105 @@ Make sure you have the following installed:
    VITE_FIREBASE_APP_ID=your_app_id
    ```
 
-4. **Start the development server**
+4. **Start development server**
    ```bash
    npm run dev
    ```
 
-5. **Open your browser**
-   
-   Navigate to `http://localhost:5173` to see the application.
+5. **Access the application**
+   Open `http://localhost:5173` in your browser
 
-## 📁 Project Structure
+## Route Summary
 
-```
-online-ticket-booking/
-├── public/                 # Static assets
-│   ├── images/            # Public images
-│   └── serviceCenter.json # Service configuration
-├── src/
-│   ├── animation/         # Lottie animation files
-│   ├── assets/           # Images and static files
-│   ├── components/       # Reusable UI components
-│   │   ├── Error/        # Error handling components
-│   │   ├── Forbidden/    # Access control components
-│   │   ├── Loading/      # Loading states
-│   │   └── Logo/         # Brand components
-│   ├── firebase/         # Firebase configuration
-│   ├── hook/            # Custom React hooks
-│   ├── layouts/         # Page layout components
-│   ├── pages/           # Application pages
-│   └── routes/          # Routing configuration
-├── .env                 # Environment variables
-├── firebase.json        # Firebase hosting config
-└── package.json         # Dependencies and scripts
-```
+### Public Routes
+- `/` - Home page with featured tickets
+- `/login` - User authentication
+- `/register` - User registration
+- `/forget-password` - Password recovery
 
-## 🔧 Available Scripts
+### Protected Routes
+- `/allTickets` - Browse all available tickets
+- `/seeDetails/:id` - View ticket details
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint for code quality
+### Dashboard Routes (Role-based)
 
-## 🚀 Deployment
+**User Dashboard:**
+- `/dashboard/userProfile` - User profile management
+- `/dashboard/myBookedTickets` - View booked tickets
+- `/dashboard/transactionHistory` - Payment history
+- `/dashboard/payment/:ticketId` - Payment processing
+- `/dashboard/payment-success` - Payment confirmation
+- `/dashboard/payment-canceled` - Payment cancellation
 
-This project is configured for Firebase Hosting:
+**Vendor Dashboard:**
+- `/dashboard/vendorProfile` - Vendor profile management
+- `/dashboard/addTicket` - Create new tickets
+- `/dashboard/myAddedTickets` - Manage created tickets
+- `/dashboard/RequestedBooking` - Handle booking requests
+- `/dashboard/RevenueOverview` - Revenue analytics
 
-1. **Build the project**
-   ```bash
-   npm run build
-   ```
+**Admin Dashboard:**
+- `/dashboard/adminProfile` - Admin profile management
+- `/dashboard/manageTickets` - System-wide ticket management
+- `/dashboard/mangeUsers` - User management
+- `/dashboard/advertiseTickets` - Ticket promotion management
 
-2. **Deploy to Firebase**
-   ```bash
-   firebase deploy
-   ```
+## List of Implemented Features
 
-## 🤝 Contributing
+### Authentication & Authorization
+- User registration and login
+- Password recovery system
+- Role-based access control (User, Vendor, Admin)
+- Protected routes with authentication guards
 
-We welcome contributions! Please follow these steps:
+### Ticket Management
+- Browse and search tickets
+- Detailed ticket information display
+- Category-based ticket organization
+- Real-time availability updates
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Booking System
+- Secure ticket booking process
+- Booking confirmation system
+- Booking history tracking
+- Booking status management
 
-## 📝 License
+### Payment Integration
+- Secure payment processing
+- Payment success/failure handling
+- Transaction history
+- Revenue tracking for vendors
 
-This project is licensed under the ISC License. See the [LICENSE](LICENSE) file for details.
+### Dashboard Features
+- Role-specific dashboards
+- Profile management
+- Analytics and reporting
+- Administrative controls
 
-## 🐛 Bug Reports
+### User Experience
+- Responsive design for all devices
+- Loading states and error handling
+- Toast notifications
+- Smooth animations and transitions
 
-If you find a bug, please create an issue on [GitHub Issues](https://github.com/kantho202/online-ticket-booking/issues).
+## Brief Explanation of Features
 
-## 📞 Support
+**React Query**: Manages server state, caching, and data synchronization for optimal performance and user experience.
 
-For support and questions:
-- Create an issue on GitHub
-- Check the documentation
-- Review existing issues for solutions
+**Firebase Authentication**: Provides secure user authentication with email/password and handles user sessions.
 
-## 🙏 Acknowledgments
+**Role-based Routing**: Implements three user roles (User, Vendor, Admin) with specific route access and dashboard features.
 
-- React team for the amazing framework
-- Vite team for the blazing-fast build tool
-- Firebase team for the excellent backend services
-- All contributors who help improve this project
+**Payment Processing**: Integrated payment system with success/failure handling and transaction tracking.
 
----
+**Responsive Design**: Built with TailwindCSS and DaisyUI for consistent, mobile-first design across all devices.
 
-<div align="center">
-  <p>Made with ❤️ by the Online Ticket Booking Team</p>
-  <p>
-    <a href="https://github.com/kantho202/online-ticket-booking">⭐ Star this repo</a> •
-    <a href="https://github.com/kantho202/online-ticket-booking/issues">🐛 Report Bug</a> •
-    <a href="https://github.com/kantho202/online-ticket-booking/issues">💡 Request Feature</a>
-  </p>
-</div>
+**Real-time Updates**: Uses Firebase for real-time data synchronization across booking status and ticket availability.
+
+**Form Handling**: React Hook Form provides efficient form validation and submission with minimal re-renders.
+
+**State Management**: Combines React Context for authentication state with React Query for server state management.
+
+**Animation System**: Lottie React and AOS library provide smooth, professional animations throughout the application.
+
+**Error Handling**: Comprehensive error boundaries and user-friendly error messages with SweetAlert2 and React Toastify.
