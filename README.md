@@ -118,6 +118,27 @@ A comprehensive online ticket booking platform built with React and Firebase tha
 - Toast notifications
 - Smooth animations and transitions
 
+## Project Structure
+
+```
+online-ticket-booking/
+├── 📁 public/                    # Static assets
+├── 📁 src/
+│   ├── � components/           # Reusable UI components
+│   ├── � pages/               # Application pages
+│   │   ├── Auth/               # Login, Register, Password Reset
+│   │   ├── Home/               # Home page & ticket details
+│   │   └── Dashboard/          # User/Vendor/Admin dashboards
+│   ├── 📁 layouts/             # Page layouts
+│   ├── 📁 routes/              # Routing & route protection
+│   ├── 📁 firebase/            # Firebase configuration
+│   ├── 📁 hook/                # Custom React hooks
+│   └── 📁 assets/              # Images & static files
+├── ⚙️ firebase.json            # Firebase hosting config
+├── ⚙️ package.json             # Dependencies
+└── � README.md                # Documentation
+```
+
 ## Brief Explanation of Features
 
 **React Query**: Manages server state, caching, and data synchronization for optimal performance and user experience.
