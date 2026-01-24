@@ -6,6 +6,13 @@
 
 A comprehensive online ticket booking platform built with React and Firebase that enables users to browse, book, and manage tickets across different service categories. The application features role-based access control with separate dashboards for users, vendors, and administrators, integrated payment processing, and real-time booking management.
 
+## Project Screenshots
+
+<div align="center">
+  <img src="public/online-booking.png" alt="Online Booking Interface" width="400"/>
+  <img src="src/assets/travel.png" alt="Travel Services" width="400"/>
+</div>
+
 ## Major Features/Services
 
 • **Multi-Role Dashboard System** - Separate interfaces for Users (booking & payment), Vendors (ticket management & revenue tracking), and Admins (system-wide control & user management)
