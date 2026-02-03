@@ -41,6 +41,6 @@
 
 
  a.active{
-   @apply bg-primary;
+   @apply underline decoration-3  underline-offset-7 decoration-primary ;
 }
 
