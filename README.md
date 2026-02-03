@@ -2,7 +2,6 @@
 
 🔗 **Live Demo**: [https://online-ticket-booking-4cc7f.web.app](https://online-ticket-booking-4cc7f.web.app)
 
-<<<<<<< HEAD
 ## Project Screenshots
 
 <div align="center">
@@ -18,19 +17,6 @@
 
 A comprehensive online ticket booking platform built with React and Firebase that enables users to browse, book, and manage tickets across different service categories. The application features role-based access control with separate dashboards for users, vendors, and administrators, integrated payment processing, and real-time booking management.
 
-=======
-## Project Description
-
-A comprehensive online ticket booking platform built with React and Firebase that enables users to browse, book, and manage tickets across different service categories. The application features role-based access control with separate dashboards for users, vendors, and administrators, integrated payment processing, and real-time booking management.
-
-## Project Screenshots
-
-<div align="center">
-  <img src="public/online-booking.png" alt="Online Booking Interface" width="400"/>
-  <img src="src/assets/travel.png" alt="Travel Services" width="400"/>
-</div>
-
->>>>>>> 98062f72cddc230494dad68e7c096a137b76c1d2
 ## Major Features/Services
 
 • **Multi-Role Dashboard System** - Separate interfaces for Users (booking & payment), Vendors (ticket management & revenue tracking), and Admins (system-wide control & user management)
@@ -38,7 +24,6 @@ A comprehensive online ticket booking platform built with React and Firebase tha
 • **Secure Payment Integration** - Complete payment processing with transaction history, payment success/failure handling, and revenue analytics for vendors
 
 • **Real-time Ticket Management** - Live ticket availability updates, booking confirmation system, and dynamic pricing with Firebase real-time database integration
-<<<<<<< HEAD
 
 ## Used Tech Stack
 
@@ -76,8 +61,6 @@ A comprehensive online ticket booking platform built with React and Firebase tha
 - ESLint - Code linting
 - Axios - HTTP client
 
-=======
->>>>>>> 98062f72cddc230494dad68e7c096a137b76c1d2
 ## Setup & Installation Instructions
 
 ### Prerequisites
@@ -117,15 +100,14 @@ A comprehensive online ticket booking platform built with React and Firebase tha
 5. **Access the application**
    Open `http://localhost:5173` in your browser
 
-<<<<<<< HEAD
 ## Project Structure
 
 ```
 online-ticket-booking/
 ├── 📁 public/                    # Static assets
 ├── 📁 src/
-│   ├── � components/           # Reusable UI components
-│   ├── � pages/               # Application pages
+│   ├── 📁 components/           # Reusable UI components
+│   ├── 📁 pages/               # Application pages
 │   │   ├── Auth/               # Login, Register, Password Reset
 │   │   ├── Home/               # Home page & ticket details
 │   │   └── Dashboard/          # User/Vendor/Admin dashboards
@@ -136,11 +118,9 @@ online-ticket-booking/
 │   └── 📁 assets/              # Images & static files
 ├── ⚙️ firebase.json            # Firebase hosting config
 ├── ⚙️ package.json             # Dependencies
-└── � README.md                # Documentation
+└── 📖 README.md                # Documentation
 ```
 
-=======
->>>>>>> 98062f72cddc230494dad68e7c096a137b76c1d2
 ## Route Summary
 
 ### Public Routes
@@ -214,30 +194,6 @@ online-ticket-booking/
 - Toast notifications
 - Smooth animations and transitions
 
-<<<<<<< HEAD
-=======
-## Project Structure
-
-```
-online-ticket-booking/
-├── 📁 public/                    # Static assets
-├── 📁 src/
-│   ├── � components/           # Reusable UI components
-│   ├── � pages/               # Application pages
-│   │   ├── Auth/               # Login, Register, Password Reset
-│   │   ├── Home/               # Home page & ticket details
-│   │   └── Dashboard/          # User/Vendor/Admin dashboards
-│   ├── 📁 layouts/             # Page layouts
-│   ├── 📁 routes/              # Routing & route protection
-│   ├── 📁 firebase/            # Firebase configuration
-│   ├── 📁 hook/                # Custom React hooks
-│   └── 📁 assets/              # Images & static files
-├── ⚙️ firebase.json            # Firebase hosting config
-├── ⚙️ package.json             # Dependencies
-└── � README.md                # Documentation
-```
-
->>>>>>> 98062f72cddc230494dad68e7c096a137b76c1d2
 ## Brief Explanation of Features
 
 **React Query**: Manages server state, caching, and data synchronization for optimal performance and user experience.
@@ -258,8 +214,4 @@ online-ticket-booking/
 
 **Animation System**: Lottie React and AOS library provide smooth, professional animations throughout the application.
 
-<<<<<<< HEAD
 **Error Handling**: Comprehensive error boundaries and user-friendly error messages with SweetAlert2 and React Toastify.
-=======
-**Error Handling**: Comprehensive error boundaries and user-friendly error messages with SweetAlert2 and React Toastify.
->>>>>>> 98062f72cddc230494dad68e7c096a137b76c1d2
