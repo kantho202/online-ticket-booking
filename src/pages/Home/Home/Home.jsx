@@ -4,17 +4,19 @@ import LatestTickets from '../LatestTickets/LatestTickets';
 import { PopularRoutes } from '../PopularRoutes/PopularRoutes';
 import { WhyChooseUs } from '../WhyChooseUs/WhyChooseUs';
 import Advertisement from '../Advertisement/Advertisement';
-// import PopularRoutes from '../PopularRoutes/PopularRoutes';
+import BookingProcess from '../BookingProcess/BookingProcess';
+import TicketingFeatures from '../TicketingFeatures/TicketingFeatures';
 
 const Home = () => {
     return (
         <div>
-            
             <Banner></Banner>
-            <Advertisement ></Advertisement>
-            <LatestTickets ></LatestTickets>
-          <PopularRoutes ></PopularRoutes>
-          <WhyChooseUs ></WhyChooseUs>
+            <Advertisement></Advertisement>
+            <BookingProcess></BookingProcess>
+            <LatestTickets></LatestTickets>
+            <TicketingFeatures></TicketingFeatures>
+            <PopularRoutes></PopularRoutes>
+            <WhyChooseUs></WhyChooseUs>
         </div>
     );
 };

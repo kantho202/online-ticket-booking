@@ -206,87 +206,88 @@ const handleRefresh = async () => {
             </FiltersContainer>
 
             {/* Desktop Table View */}
-            <TableContainer className="hidden lg:block">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHeaderCell>#</TableHeaderCell>
-                            <TableHeaderCell>Customer</TableHeaderCell>
-                            <TableHeaderCell>Ticket Details</TableHeaderCell>
-                            <TableHeaderCell>Quantity</TableHeaderCell>
-                            <TableHeaderCell>Amount</TableHeaderCell>
-                            <TableHeaderCell>Status</TableHeaderCell>
-                            <TableHeaderCell>Actions</TableHeaderCell>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {filteredBookings.map((booking, i) => (
-                            <TableRow key={booking._id}>
-                                <TableCell>
-                                    <RowNumber>#{i + 1}</RowNumber>
-                                </TableCell>
-                                <TableCell>
-                                    <CustomerInfo>
-                                        <CustomerAvatar>
-                                            {booking.name.charAt(0).toUpperCase()}
-                                            {/* <img src={booking.image} alt="" /> */}
-                                        </CustomerAvatar>
-                                        <CustomerDetails>
-                                            <CustomerName>{booking.name}</CustomerName>
-                                            <CustomerEmail>{booking.email}</CustomerEmail>
-                                        </CustomerDetails>
-                                    </CustomerInfo>
-                                </TableCell>
-                                <TableCell>
-                                    <TicketInfo>
-                                        <TicketTitle>{booking.ticket_title}</TicketTitle>
-                                        <TicketMeta>
-                                            <FiCalendar /> Booking ID: {booking._id.slice(-6)}
-                                        </TicketMeta>
-                                    </TicketInfo>
-                                </TableCell>
-                                <TableCell>
-                                    <QuantityBadge>{booking.bookingQuantity}</QuantityBadge>
-                                </TableCell>
-                                <TableCell>
-                                    <Amount>${booking.total_price?.toLocaleString()}</Amount>
-                                </TableCell>
-                                <TableCell>
-                                    {getStatusBadge(booking.status)}
-                                </TableCell>
-                                <TableCell>
-                                    <ActionButtons>
-                                        {(!booking.status || booking.status === 'pending') && (
-                                            <>
+            <TableContainer>
+                <TableWrapper>
+                    <Table>
+                        <TableHeader>
+                            <tr>
+                                <TableHeaderCell>#</TableHeaderCell>
+                                <TableHeaderCell>Customer</TableHeaderCell>
+                                <TableHeaderCell>Ticket Details</TableHeaderCell>
+                                <TableHeaderCell>Quantity</TableHeaderCell>
+                                <TableHeaderCell>Amount</TableHeaderCell>
+                                <TableHeaderCell>Status</TableHeaderCell>
+                                <TableHeaderCell>Actions</TableHeaderCell>
+                            </tr>
+                        </TableHeader>
+                        <TableBody>
+                            {filteredBookings.map((booking, i) => (
+                                <TableRow key={booking._id}>
+                                    <TableCell>
+                                        <RowNumber>#{i + 1}</RowNumber>
+                                    </TableCell>
+                                    <TableCell>
+                                        <CustomerInfo>
+                                            <CustomerAvatar>
+                                                {booking.name.charAt(0).toUpperCase()}
+                                            </CustomerAvatar>
+                                            <CustomerDetails>
+                                                <CustomerName>{booking.name}</CustomerName>
+                                                <CustomerEmail>{booking.email}</CustomerEmail>
+                                            </CustomerDetails>
+                                        </CustomerInfo>
+                                    </TableCell>
+                                    <TableCell>
+                                        <TicketInfo>
+                                            <TicketTitle>{booking.ticket_title}</TicketTitle>
+                                            <TicketMeta>
+                                                <FaHashtag />
+                                                ID: {booking._id.slice(-6)}
+                                            </TicketMeta>
+                                        </TicketInfo>
+                                    </TableCell>
+                                    <TableCell>
+                                        <QuantityBadge>{booking.bookingQuantity}</QuantityBadge>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Amount>৳{booking.total_price?.toLocaleString()}</Amount>
+                                    </TableCell>
+                                    <TableCell>
+                                        {getStatusBadge(booking.status)}
+                                    </TableCell>
+                                    <TableCell>
+                                        {(!booking.status || booking.status === 'pending') ? (
+                                            <ActionButtons>
                                                 <AcceptButton
                                                     onClick={() => handleApproved(booking._id)}
                                                     disabled={isProcessing === booking._id}
                                                 >
                                                     <FaCheck />
-                                                    {isProcessing === booking._id ? 'Processing...' : 'Accept'}
+                                                    <ButtonText>{isProcessing === booking._id ? 'Processing...' : 'Accept'}</ButtonText>
                                                 </AcceptButton>
                                                 <RejectButton
                                                     onClick={() => handleRejection(booking._id)}
                                                     disabled={isProcessing === booking._id}
                                                 >
                                                     <FaTimes />
-                                                    Reject
+                                                    <ButtonText>Reject</ButtonText>
                                                 </RejectButton>
-                                            </>
+                                            </ActionButtons>
+                                        ) : (
+                                            <ViewButton>
+                                                <FiEye />
+                                            </ViewButton>
                                         )}
-                                        <ViewButton>
-                                            <FiEye />
-                                        </ViewButton>
-                                    </ActionButtons>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableWrapper>
             </TableContainer>
 
             {/* Mobile Card View */}
-            <MobileContainer className="block lg:hidden">
+            <MobileContainer>
                 {filteredBookings.map((booking, i) => (
                     <BookingCard key={booking._id}>
                         <CardHeader>
@@ -301,7 +302,7 @@ const handleRefresh = async () => {
                                 </TicketIcon>
                                 <TicketDetails>
                                     <TicketTitle>{booking.ticket_title}</TicketTitle>
-                                    <TicketId>ID: {booking._id.slice(-6)}</TicketId>
+                                    <TicketId>Booking ID: {booking._id.slice(-6)}</TicketId>
                                 </TicketDetails>
                             </TicketSection>
 
@@ -379,8 +380,7 @@ const handleRefresh = async () => {
 
 // Styled Components
 const Container = styled.div`
-    // padding: 2rem;
-    background: #;
+    background: #f8fafc;
     min-height: 100vh;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 `;
@@ -425,16 +425,16 @@ const ActionButton = styled.button`
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
-    background: ;
+    background: white;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
-    color: #;
+    color: #374151;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     
     &:hover {
-        background: #;
+        background: #f9fafb;
         border-color: #ff8c42;
         color: #ff8c42;
     }
@@ -448,7 +448,7 @@ const StatsContainer = styled.div`
 `;
 
 const StatCard = styled.div`
-    background: ;
+    background: white;
     padding: 1.5rem;
     border-radius: 16px;
     display: flex;
@@ -481,7 +481,7 @@ const StatContent = styled.div``;
 const StatValue = styled.div`
     font-size: 1.75rem;
     font-weight: 700;
-    color: #;
+    color: #1f2937;
 `;
 
 const StatLabel = styled.div`
@@ -518,7 +518,7 @@ const SearchInput = styled.input`
     padding: 0.75rem 1rem 0.75rem 2.5rem;
     border: 1px solid #d1d5db;
     border-radius: 12px;
-    background: ;
+    background: white;
     font-size: 0.9rem;
     transition: all 0.2s ease;
 
@@ -533,7 +533,7 @@ const FilterSelect = styled.select`
     padding: 0.75rem 1rem;
     border: 1px solid #d1d5db;
     border-radius: 12px;
-    background: ;
+    background: white;
     font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -546,16 +546,45 @@ const FilterSelect = styled.select`
 `;
 
 const TableContainer = styled.div`
-    background: ;
+    background: white;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     border: 1px solid #f3f4f6;
+    margin-bottom: 2rem;
+    
+    @media (max-width: 1024px) {
+        display: none;
+    }
+`;
+
+const TableWrapper = styled.div`
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    
+    &::-webkit-scrollbar {
+        height: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
 `;
 
 const Table = styled.table`
     width: 100%;
     border-collapse: collapse;
+    min-width: 800px;
 `;
 
 const TableHeader = styled.thead`
@@ -564,7 +593,7 @@ const TableHeader = styled.thead`
 
 const TableRow = styled.tr`
     &:hover {
-        background: #;
+        background: #f8fafc;
     }
 `;
 
@@ -576,6 +605,7 @@ const TableHeaderCell = styled.th`
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    white-space: nowrap;
 `;
 
 const TableBody = styled.tbody``;
@@ -589,16 +619,18 @@ const TableCell = styled.td`
 const RowNumber = styled.span`
     font-weight: 600;
     color: #6b7280;
-    background: #;
+    background: #f8fafc;
     padding: 0.25rem 0.5rem;
     border-radius: 6px;
     font-size: 0.8rem;
+    white-space: nowrap;
 `;
 
 const CustomerInfo = styled.div`
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    min-width: 180px;
 `;
 
 const CustomerAvatar = styled.div`
@@ -611,26 +643,41 @@ const CustomerAvatar = styled.div`
     align-items: center;
     justify-content: center;
     font-weight: 600;
+    flex-shrink: 0;
 `;
 
-const CustomerDetails = styled.div``;
+const CustomerDetails = styled.div`
+    min-width: 0;
+    flex: 1;
+`;
 
 const CustomerName = styled.div`
     font-weight: 600;
-    color: #;
+    color: #1f2937;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const CustomerEmail = styled.div`
     font-size: 0.8rem;
     color: #6b7280;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
-const TicketInfo = styled.div``;
+const TicketInfo = styled.div`
+    min-width: 200px;
+`;
 
 const TicketTitle = styled.div`
     font-weight: 600;
-    color: #;
+    color: #1f2937;
     margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const TicketMeta = styled.div`
@@ -639,6 +686,7 @@ const TicketMeta = styled.div`
     gap: 0.25rem;
     font-size: 0.8rem;
     color: #6b7280;
+    white-space: nowrap;
 `;
 
 const QuantityBadge = styled.span`
@@ -648,87 +696,21 @@ const QuantityBadge = styled.span`
     border-radius: 20px;
     font-weight: 600;
     font-size: 0.9rem;
+    white-space: nowrap;
 `;
 
 const Amount = styled.span`
     font-weight: 700;
     color: #10b981;
     font-size: 1.1rem;
-`;
-
-const StatusBadge = styled.span`
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    
-    ${props => {
-        switch (props.status) {
-            case 'accepted':
-                return 'background: #dcfce7; color: #166534;';
-            case 'rejected':
-                return 'background: #fef2f2; color: #dc2626;';
-            default:
-                return 'background: #fef3c7; color: #d97706;';
-        }
-    }}
+    white-space: nowrap;
 `;
 
 const ActionButtons = styled.div`
     display: flex;
     gap: 0.5rem;
     align-items: center;
-`;
-
-const AcceptButton = styled.button`
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.5rem 1rem;
-    background: #10b981;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    
-    &:hover:not(:disabled) {
-        background: #059669;
-    }
-    
-    &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-`;
-
-const RejectButton = styled.button`
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.5rem 1rem;
-    background: #ef4444;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    
-    &:hover:not(:disabled) {
-        background: #dc2626;
-    }
-    
-    &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
+    min-width: 140px;
 `;
 
 const ViewButton = styled.button`
@@ -743,6 +725,7 @@ const ViewButton = styled.button`
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
+    flex-shrink: 0;
     
     &:hover {
         background: #e5e7eb;
@@ -750,17 +733,33 @@ const ViewButton = styled.button`
     }
 `;
 
+const ButtonText = styled.span`
+    @media (max-width: 480px) {
+        display: none;
+    }
+`;
+
 const MobileContainer = styled.div`
     display: grid;
     gap: 1.5rem;
+    
+    @media (min-width: 1025px) {
+        display: none;
+    }
 `;
 
 const BookingCard = styled.div`
-    background: ;
+    background: white;
     border-radius: 16px;
     padding: 1.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     border: 1px solid #f3f4f6;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
 `;
 
 const CardHeader = styled.div`
@@ -786,7 +785,7 @@ const TicketSection = styled.div`
     gap: 1rem;
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background: #;
+    background: #f8fafc;
     border-radius: 12px;
 `;
 
@@ -800,10 +799,12 @@ const TicketIcon = styled.div`
     align-items: center;
     justify-content: center;
     font-size: 1.1rem;
+    flex-shrink: 0;
 `;
 
 const TicketDetails = styled.div`
     flex: 1;
+    min-width: 0;
 `;
 
 const TicketId = styled.div`
@@ -834,10 +835,12 @@ const InfoIcon = styled.div`
     align-items: center;
     justify-content: center;
     font-size: 0.9rem;
+    flex-shrink: 0;
 `;
 
 const InfoContent = styled.div`
     flex: 1;
+    min-width: 0;
 `;
 
 const InfoLabel = styled.div`
