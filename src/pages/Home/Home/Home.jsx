@@ -6,12 +6,14 @@ import { WhyChooseUs } from '../WhyChooseUs/WhyChooseUs';
 import Advertisement from '../Advertisement/Advertisement';
 import BookingProcess from '../BookingProcess/BookingProcess';
 import TicketingFeatures from '../TicketingFeatures/TicketingFeatures';
+import AboutSection from '../AboutSection/AboutSection';
 
 const Home = () => {
     return (
         <div>
             <Banner></Banner>
             <Advertisement></Advertisement>
+            <AboutSection></AboutSection>
             <BookingProcess></BookingProcess>
             <LatestTickets></LatestTickets>
             <TicketingFeatures></TicketingFeatures>
