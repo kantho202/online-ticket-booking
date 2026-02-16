@@ -29,6 +29,8 @@ import Loader from '../../../components/Loading/Loading';
 import styled from 'styled-components';
 import { FaTicket } from 'react-icons/fa6';
 import { LuRefreshCcw } from 'react-icons/lu';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const RequestedBooking = () => {
     const axiosSecure = useAxiosSecure();
@@ -117,9 +119,144 @@ const RequestedBooking = () => {
                 return <StatusBadge status="pending"><FiClock /> Pending</StatusBadge>;
         }
     };
-const handleRefresh = async () => {
+
+    const handleRefresh = async () => {
         // await refetch(); // This will refetch the data
        window.location.reload();
+    };
+
+    const handleExportPDF = () => {
+        try {
+            console.log('Starting PDF export...');
+            console.log('Filtered bookings:', filteredBookings);
+            
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(20);
+            doc.setTextColor(255, 140, 66);
+            doc.text('Booking Requests Report', 14, 20);
+            
+            // Add date
+            doc.setFontSize(10);
+            doc.setTextColor(100);
+            const dateStr = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            doc.text(`Generated on: ${dateStr}`, 14, 28);
+            
+            // Add statistics
+            doc.setFontSize(12);
+            doc.setTextColor(0);
+            doc.text('Summary Statistics:', 14, 38);
+            doc.setFontSize(10);
+            doc.text(`Total Requests: ${filteredBookings.length}`, 14, 45);
+            doc.text(`Accepted: ${filteredBookings.filter(b => b.status === 'accepted').length}`, 14, 51);
+            doc.text(`Rejected: ${filteredBookings.filter(b => b.status === 'rejected').length}`, 14, 57);
+            doc.text(`Pending: ${filteredBookings.filter(b => !b.status || b.status === 'pending').length}`, 14, 63);
+            
+            // Prepare table data
+            const tableData = filteredBookings.map((booking, index) => [
+                index + 1,
+                booking.name || 'N/A',
+                booking.email || 'N/A',
+                booking.ticket_title || 'N/A',
+                booking.bookingQuantity || 0,
+                `BDT ${booking.total_price?.toLocaleString() || '0'}`,
+                booking.status === 'accepted' ? 'Accepted' : 
+                booking.status === 'rejected' ? 'Rejected' : 'Pending'
+            ]);
+            
+            console.log('Table data prepared:', tableData);
+            
+            // Add table using autoTable
+            doc.autoTable({
+                startY: 70,
+                head: [['#', 'Customer Name', 'Email', 'Ticket', 'Qty', 'Amount', 'Status']],
+                body: tableData,
+                theme: 'striped',
+                headStyles: {
+                    fillColor: [255, 140, 66],
+                    textColor: [255, 255, 255],
+                    fontStyle: 'bold'
+                },
+                styles: {
+                    fontSize: 9,
+                    cellPadding: 3
+                },
+                columnStyles: {
+                    0: { cellWidth: 10 },
+                    1: { cellWidth: 30 },
+                    2: { cellWidth: 40 },
+                    3: { cellWidth: 35 },
+                    4: { cellWidth: 15 },
+                    5: { cellWidth: 25 },
+                    6: { cellWidth: 25 }
+                },
+                didParseCell: function(data) {
+                    // Color code status column
+                    if (data.column.index === 6 && data.section === 'body') {
+                        const status = data.cell.raw;
+                        if (status === 'Accepted') {
+                            data.cell.styles.textColor = [22, 101, 52];
+                            data.cell.styles.fillColor = [220, 252, 231];
+                        } else if (status === 'Rejected') {
+                            data.cell.styles.textColor = [220, 38, 38];
+                            data.cell.styles.fillColor = [254, 242, 242];
+                        } else {
+                            data.cell.styles.textColor = [217, 119, 6];
+                            data.cell.styles.fillColor = [254, 243, 199];
+                        }
+                    }
+                }
+            });
+            
+            console.log('Table added to PDF');
+            
+            // Add footer
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(150);
+                doc.text(
+                    `Page ${i} of ${pageCount}`,
+                    doc.internal.pageSize.getWidth() / 2,
+                    doc.internal.pageSize.getHeight() - 10,
+                    { align: 'center' }
+                );
+            }
+            
+            console.log('Footer added');
+            
+            // Save the PDF
+            const fileName = `booking-requests-${new Date().toISOString().split('T')[0]}.pdf`;
+            console.log('Saving PDF as:', fileName);
+            doc.save(fileName);
+            
+            console.log('PDF saved successfully');
+            
+            // Show success message
+            Swal.fire({
+                icon: 'success',
+                title: 'PDF Downloaded!',
+                text: 'Booking requests report has been downloaded successfully.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Export Failed',
+                text: `Error: ${error.message}. Please check the console for details.`,
+                confirmButtonColor: '#ff8c42'
+            });
+        }
     };
     return (
         <Container className='p-4 lg:p-8'>
@@ -134,7 +271,7 @@ const handleRefresh = async () => {
                                     <FiRefreshCw className={isFetching ? 'animate-spin' : ''} />
                                     {isFetching ? 'Refreshing...' : 'Refresh'}
                                 </ActionButton>
-                    <ActionButton>
+                    <ActionButton onClick={handleExportPDF}>
                         <FaDownload />
                         Export
                     </ActionButton>
@@ -704,6 +841,28 @@ const Amount = styled.span`
     color: #10b981;
     font-size: 1.1rem;
     white-space: nowrap;
+`;
+
+const StatusBadge = styled.span`
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    
+    ${props => {
+        switch (props.status) {
+            case 'accepted':
+                return 'background: #dcfce7; color: #166534;';
+            case 'rejected':
+                return 'background: #fef2f2; color: #dc2626;';
+            default:
+                return 'background: #fef3c7; color: #d97706;';
+        }
+    }}
 `;
 
 const ActionButtons = styled.div`
