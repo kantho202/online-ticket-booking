@@ -37,6 +37,9 @@ const RequestedBooking = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [isProcessing, setIsProcessing] = useState(null);
+    const [selectedBooking, setSelectedBooking] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
     const { data: bookings = [], isLoading, refetch,isFetching } = useQuery({
         queryKey: ['bookings'],
@@ -125,6 +128,62 @@ const RequestedBooking = () => {
        window.location.reload();
     };
 
+    const handleOpenModal = (booking) => {
+        setSelectedBooking(booking);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedBooking(null);
+    };
+
+    const handleOpenViewModal = (booking) => {
+        setSelectedBooking(booking);
+        setIsViewModalOpen(true);
+    };
+
+    const handleCloseViewModal = () => {
+        setIsViewModalOpen(false);
+        setSelectedBooking(null);
+    };
+
+    const handleUpdateBooking = async (e) => {
+        e.preventDefault();
+        
+        const form = e.target;
+        const updatedData = {
+            name: form.name.value,
+            email: form.email.value,
+            ticket_title: form.ticket_title.value,
+            bookingQuantity: parseInt(form.bookingQuantity.value),
+            total_price: parseFloat(form.total_price.value),
+            status: form.status.value
+        };
+
+        try {
+            const res = await axiosSecure.patch(`/bookings/${selectedBooking._id}`, updatedData);
+            
+            if (res.data.modifiedCount > 0) {
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Updated!',
+                    text: 'Booking has been updated successfully.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                handleCloseModal();
+                refetch();
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Failed to update booking. Please try again.',
+            });
+        }
+    };
+
     const handleExportPDF = () => {
         try {
             console.log('Starting PDF export...');
@@ -132,14 +191,15 @@ const RequestedBooking = () => {
             
             const doc = new jsPDF();
             
-            // Add title
-            doc.setFontSize(20);
-            doc.setTextColor(255, 140, 66);
-            doc.text('Booking Requests Report', 14, 20);
+            // Add title with background
+            doc.setFillColor(255, 140, 66);
+            doc.rect(0, 0, 210, 35, 'F');
+            doc.setFontSize(24);
+            doc.setTextColor(255, 255, 255);
+            doc.text('Booking Requests Report', 105, 15, { align: 'center' });
             
             // Add date
-            doc.setFontSize(10);
-            doc.setTextColor(100);
+            doc.setFontSize(11);
             const dateStr = new Date().toLocaleDateString('en-US', { 
                 year: 'numeric', 
                 month: 'long', 
@@ -147,55 +207,83 @@ const RequestedBooking = () => {
                 hour: '2-digit',
                 minute: '2-digit'
             });
-            doc.text(`Generated on: ${dateStr}`, 14, 28);
+            doc.text(`Generated on: ${dateStr}`, 105, 25, { align: 'center' });
             
-            // Add statistics
-            doc.setFontSize(12);
+            // Add statistics section with boxes
+            doc.setFontSize(14);
             doc.setTextColor(0);
-            doc.text('Summary Statistics:', 14, 38);
-            doc.setFontSize(10);
-            doc.text(`Total Requests: ${filteredBookings.length}`, 14, 45);
-            doc.text(`Accepted: ${filteredBookings.filter(b => b.status === 'accepted').length}`, 14, 51);
-            doc.text(`Rejected: ${filteredBookings.filter(b => b.status === 'rejected').length}`, 14, 57);
-            doc.text(`Pending: ${filteredBookings.filter(b => !b.status || b.status === 'pending').length}`, 14, 63);
+            doc.text('Summary Statistics', 14, 45);
             
-            // Prepare table data
-            const tableData = filteredBookings.map((booking, index) => [
-                index + 1,
-                booking.name || 'N/A',
-                booking.email || 'N/A',
-                booking.ticket_title || 'N/A',
-                booking.bookingQuantity || 0,
-                `BDT ${booking.total_price?.toLocaleString() || '0'}`,
-                booking.status === 'accepted' ? 'Accepted' : 
-                booking.status === 'rejected' ? 'Rejected' : 'Pending'
-            ]);
+            const stats = [
+                { label: 'Total Requests', value: filteredBookings.length, color: [255, 140, 66] },
+                { label: 'Accepted', value: filteredBookings.filter(b => b.status === 'accepted').length, color: [16, 185, 129] },
+                { label: 'Rejected', value: filteredBookings.filter(b => b.status === 'rejected').length, color: [239, 68, 68] },
+                { label: 'Pending', value: filteredBookings.filter(b => !b.status || b.status === 'pending').length, color: [245, 158, 11] }
+            ];
+            
+            let xPos = 14;
+            stats.forEach((stat, index) => {
+                doc.setFillColor(stat.color[0], stat.color[1], stat.color[2]);
+                doc.rect(xPos, 50, 45, 20, 'F');
+                doc.setFontSize(18);
+                doc.setTextColor(255, 255, 255);
+                doc.text(stat.value.toString(), xPos + 22.5, 60, { align: 'center' });
+                doc.setFontSize(9);
+                doc.text(stat.label, xPos + 22.5, 67, { align: 'center' });
+                xPos += 48;
+            });
+            
+            // Add detailed bookings section
+            doc.setFontSize(14);
+            doc.setTextColor(0);
+            doc.text('Detailed Booking Information', 14, 80);
+            
+            // Prepare comprehensive table data with all details
+            const tableData = filteredBookings.map((booking, index) => {
+                const bookingDate = booking.createdAt ? new Date(booking.createdAt).toLocaleDateString() : 'N/A';
+                return [
+                    index + 1,
+                    booking.name || 'N/A',
+                    booking.email || 'N/A',
+                    booking.ticket_title || 'N/A',
+                    booking.bookingQuantity || 0,
+                    `BDT ${booking.total_price?.toLocaleString() || '0'}`,
+                    booking.status === 'accepted' ? 'Accepted' : 
+                    booking.status === 'rejected' ? 'Rejected' : 'Pending',
+                    bookingDate
+                ];
+            });
             
             console.log('Table data prepared:', tableData);
             
-            // Add table using autoTable
+            // Add comprehensive table
             doc.autoTable({
-                startY: 70,
-                head: [['#', 'Customer Name', 'Email', 'Ticket', 'Qty', 'Amount', 'Status']],
+                startY: 85,
+                head: [['#', 'Customer', 'Email', 'Ticket', 'Qty', 'Amount', 'Status', 'Date']],
                 body: tableData,
-                theme: 'striped',
+                theme: 'grid',
                 headStyles: {
                     fillColor: [255, 140, 66],
                     textColor: [255, 255, 255],
-                    fontStyle: 'bold'
+                    fontStyle: 'bold',
+                    fontSize: 10,
+                    halign: 'center'
                 },
                 styles: {
                     fontSize: 9,
-                    cellPadding: 3
+                    cellPadding: 4,
+                    lineColor: [200, 200, 200],
+                    lineWidth: 0.1
                 },
                 columnStyles: {
-                    0: { cellWidth: 10 },
-                    1: { cellWidth: 30 },
-                    2: { cellWidth: 40 },
-                    3: { cellWidth: 35 },
-                    4: { cellWidth: 15 },
-                    5: { cellWidth: 25 },
-                    6: { cellWidth: 25 }
+                    0: { cellWidth: 10, halign: 'center' },
+                    1: { cellWidth: 28 },
+                    2: { cellWidth: 38 },
+                    3: { cellWidth: 32 },
+                    4: { cellWidth: 12, halign: 'center' },
+                    5: { cellWidth: 25, halign: 'right' },
+                    6: { cellWidth: 22, halign: 'center' },
+                    7: { cellWidth: 23, halign: 'center' }
                 },
                 didParseCell: function(data) {
                     // Color code status column
@@ -204,30 +292,73 @@ const RequestedBooking = () => {
                         if (status === 'Accepted') {
                             data.cell.styles.textColor = [22, 101, 52];
                             data.cell.styles.fillColor = [220, 252, 231];
+                            data.cell.styles.fontStyle = 'bold';
                         } else if (status === 'Rejected') {
                             data.cell.styles.textColor = [220, 38, 38];
                             data.cell.styles.fillColor = [254, 242, 242];
+                            data.cell.styles.fontStyle = 'bold';
                         } else {
                             data.cell.styles.textColor = [217, 119, 6];
                             data.cell.styles.fillColor = [254, 243, 199];
+                            data.cell.styles.fontStyle = 'bold';
                         }
                     }
-                }
+                },
+                margin: { top: 85, left: 14, right: 14 }
             });
             
             console.log('Table added to PDF');
             
-            // Add footer
+            // Calculate totals
+            const totalAmount = filteredBookings.reduce((sum, b) => sum + (b.total_price || 0), 0);
+            const totalQuantity = filteredBookings.reduce((sum, b) => sum + (b.bookingQuantity || 0), 0);
+            
+            // Add summary at the end
+            const finalY = doc.lastAutoTable.finalY + 10;
+            doc.setFillColor(248, 250, 252);
+            doc.rect(14, finalY, 182, 25, 'F');
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0);
+            doc.text('Total Summary:', 20, finalY + 8);
+            doc.setFontSize(10);
+            doc.text(`Total Bookings: ${filteredBookings.length}`, 20, finalY + 15);
+            doc.text(`Total Quantity: ${totalQuantity}`, 20, finalY + 21);
+            doc.text(`Total Amount: BDT ${totalAmount.toLocaleString()}`, 100, finalY + 15);
+            doc.text(`Report Generated: ${dateStr}`, 100, finalY + 21);
+            
+            // Add footer with page numbers and branding
             const pageCount = doc.internal.getNumberOfPages();
             for (let i = 1; i <= pageCount; i++) {
                 doc.setPage(i);
-                doc.setFontSize(8);
-                doc.setTextColor(150);
+                
+                // Footer line
+                doc.setDrawColor(255, 140, 66);
+                doc.setLineWidth(0.5);
+                doc.line(14, doc.internal.pageSize.getHeight() - 15, 196, doc.internal.pageSize.getHeight() - 15);
+                
+                // Page number
+                doc.setFontSize(9);
+                doc.setTextColor(100);
                 doc.text(
                     `Page ${i} of ${pageCount}`,
-                    doc.internal.pageSize.getWidth() / 2,
+                    105,
                     doc.internal.pageSize.getHeight() - 10,
                     { align: 'center' }
+                );
+                
+                // Branding
+                doc.text(
+                    'Online Ticket Booking System',
+                    14,
+                    doc.internal.pageSize.getHeight() - 10
+                );
+                
+                doc.text(
+                    `© ${new Date().getFullYear()}`,
+                    196,
+                    doc.internal.pageSize.getHeight() - 10,
+                    { align: 'right' }
                 );
             }
             
@@ -244,8 +375,8 @@ const RequestedBooking = () => {
             Swal.fire({
                 icon: 'success',
                 title: 'PDF Downloaded!',
-                text: 'Booking requests report has been downloaded successfully.',
-                timer: 2000,
+                text: `${filteredBookings.length} booking requests exported successfully.`,
+                timer: 2500,
                 showConfirmButton: false
             });
         } catch (error) {
@@ -411,7 +542,7 @@ const RequestedBooking = () => {
                                                 </RejectButton>
                                             </ActionButtons>
                                         ) : (
-                                            <ViewButton>
+                                            <ViewButton onClick={() => handleOpenViewModal(booking)}>
                                                 <FiEye />
                                             </ViewButton>
                                         )}
@@ -510,6 +641,266 @@ const RequestedBooking = () => {
                         }
                     </EmptySubtitle>
                 </EmptyState>
+            )}
+
+            {/* DaisyUI Modal for View Details */}
+            {isViewModalOpen && selectedBooking && (
+                <div className="modal modal-open">
+                    <div className="modal-box max-w-3xl">
+                        <button 
+                            className="btn btn-sm btn-circle absolute right-2 top-2"
+                            onClick={handleCloseViewModal}
+                        >
+                            ✕
+                        </button>
+                        
+                        <h3 className="font-bold text-2xl mb-6 text-center" style={{color: '#ff8c42'}}>
+                            Booking Details
+                        </h3>
+                        
+                        <div className="space-y-4">
+                            {/* Booking ID */}
+                            <div className="flex items-center p-4 bg-base-200 rounded-lg">
+                                <div className="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                                    <FaHashtag className="text-orange-500 text-xl" />
+                                </div>
+                                <div className="ml-4 flex-1">
+                                    <p className="text-sm text-gray-500">Booking ID</p>
+                                    <p className="font-semibold text-lg">{selectedBooking._id}</p>
+                                </div>
+                            </div>
+
+                            {/* Customer Name */}
+                            <div className="flex items-center p-4 bg-base-200 rounded-lg">
+                                <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <FaUser className="text-blue-500 text-xl" />
+                                </div>
+                                <div className="ml-4 flex-1">
+                                    <p className="text-sm text-gray-500">Customer Name</p>
+                                    <p className="font-semibold text-lg">{selectedBooking.name}</p>
+                                </div>
+                            </div>
+
+                            {/* Email */}
+                            <div className="flex items-center p-4 bg-base-200 rounded-lg">
+                                <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                    <FaEnvelope className="text-green-500 text-xl" />
+                                </div>
+                                <div className="ml-4 flex-1">
+                                    <p className="text-sm text-gray-500">Email Address</p>
+                                    <p className="font-semibold text-lg">{selectedBooking.email}</p>
+                                </div>
+                            </div>
+
+                            {/* Ticket Title */}
+                            <div className="flex items-center p-4 bg-base-200 rounded-lg">
+                                <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                    <FaTicket className="text-purple-500 text-xl" />
+                                </div>
+                                <div className="ml-4 flex-1">
+                                    <p className="text-sm text-gray-500">Ticket Title</p>
+                                    <p className="font-semibold text-lg">{selectedBooking.ticket_title}</p>
+                                </div>
+                            </div>
+
+                            {/* Quantity and Price */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="flex items-center p-4 bg-base-200 rounded-lg">
+                                    <div className="flex-shrink-0 w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                                        <FaHashtag className="text-yellow-500 text-xl" />
+                                    </div>
+                                    <div className="ml-4 flex-1">
+                                        <p className="text-sm text-gray-500">Quantity</p>
+                                        <p className="font-semibold text-lg">{selectedBooking.bookingQuantity}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center p-4 bg-base-200 rounded-lg">
+                                    <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                        <FaDollarSign className="text-green-500 text-xl" />
+                                    </div>
+                                    <div className="ml-4 flex-1">
+                                        <p className="text-sm text-gray-500">Total Price</p>
+                                        <p className="font-semibold text-lg">৳{selectedBooking.total_price?.toLocaleString()}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Status */}
+                            <div className="flex items-center p-4 bg-base-200 rounded-lg">
+                                <div className="flex-shrink-0 w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
+                                    {selectedBooking.status === 'accepted' ? (
+                                        <FiCheckCircle className="text-green-500 text-xl" />
+                                    ) : selectedBooking.status === 'rejected' ? (
+                                        <FiXCircle className="text-red-500 text-xl" />
+                                    ) : (
+                                        <FiClock className="text-yellow-500 text-xl" />
+                                    )}
+                                </div>
+                                <div className="ml-4 flex-1">
+                                    <p className="text-sm text-gray-500">Status</p>
+                                    <div className="mt-1">
+                                        {getStatusBadge(selectedBooking.status)}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Booking Date */}
+                            {selectedBooking.createdAt && (
+                                <div className="flex items-center p-4 bg-base-200 rounded-lg">
+                                    <div className="flex-shrink-0 w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center">
+                                        <FiClock className="text-pink-500 text-xl" />
+                                    </div>
+                                    <div className="ml-4 flex-1">
+                                        <p className="text-sm text-gray-500">Booking Date</p>
+                                        <p className="font-semibold text-lg">
+                                            {new Date(selectedBooking.createdAt).toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="modal-action">
+                            <button
+                                className="btn"
+                                style={{backgroundColor: '#ff8c42', color: 'white', border: 'none'}}
+                                onClick={handleCloseViewModal}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                    <div className="modal-backdrop" onClick={handleCloseViewModal}></div>
+                </div>
+            )}
+
+            {/* DaisyUI Modal for Update */}
+            {isModalOpen && selectedBooking && (
+                <div className="modal modal-open">
+                    <div className="modal-box max-w-2xl">
+                        <h3 className="font-bold text-2xl mb-4 text-center" style={{color: '#ff8c42'}}>
+                            Update Booking Details
+                        </h3>
+                        
+                        <form onSubmit={handleUpdateBooking}>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {/* Customer Name */}
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text font-semibold">Customer Name</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        defaultValue={selectedBooking.name}
+                                        className="input input-bordered w-full"
+                                        required
+                                    />
+                                </div>
+
+                                {/* Email */}
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text font-semibold">Email</span>
+                                    </label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        defaultValue={selectedBooking.email}
+                                        className="input input-bordered w-full"
+                                        required
+                                    />
+                                </div>
+
+                                {/* Ticket Title */}
+                                <div className="form-control md:col-span-2">
+                                    <label className="label">
+                                        <span className="label-text font-semibold">Ticket Title</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="ticket_title"
+                                        defaultValue={selectedBooking.ticket_title}
+                                        className="input input-bordered w-full"
+                                        required
+                                    />
+                                </div>
+
+                                {/* Quantity */}
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text font-semibold">Quantity</span>
+                                    </label>
+                                    <input
+                                        type="number"
+                                        name="bookingQuantity"
+                                        defaultValue={selectedBooking.bookingQuantity}
+                                        className="input input-bordered w-full"
+                                        min="1"
+                                        required
+                                    />
+                                </div>
+
+                                {/* Total Price */}
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text font-semibold">Total Price (BDT)</span>
+                                    </label>
+                                    <input
+                                        type="number"
+                                        name="total_price"
+                                        defaultValue={selectedBooking.total_price}
+                                        className="input input-bordered w-full"
+                                        min="0"
+                                        step="0.01"
+                                        required
+                                    />
+                                </div>
+
+                                {/* Status */}
+                                <div className="form-control md:col-span-2">
+                                    <label className="label">
+                                        <span className="label-text font-semibold">Status</span>
+                                    </label>
+                                    <select
+                                        name="status"
+                                        defaultValue={selectedBooking.status || 'pending'}
+                                        className="select select-bordered w-full"
+                                    >
+                                        <option value="pending">Pending</option>
+                                        <option value="accepted">Accepted</option>
+                                        <option value="rejected">Rejected</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="modal-action">
+                                <button
+                                    type="button"
+                                    className="btn btn-ghost"
+                                    onClick={handleCloseModal}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="btn"
+                                    style={{backgroundColor: '#ff8c42', color: 'white', border: 'none'}}
+                                >
+                                    Update Booking
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div className="modal-backdrop" onClick={handleCloseModal}></div>
+                </div>
             )}
         </Container>
     );
