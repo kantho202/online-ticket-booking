@@ -462,7 +462,10 @@ const RequestedBooking = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </SearchContainer>
-                <FilterSelect
+                
+                {/* DaisyUI Status Filter Select */}
+                <select 
+                    className="select select-bordered w-full max-w-xs"
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
                 >
@@ -470,7 +473,7 @@ const RequestedBooking = () => {
                     <option value="pending">Pending</option>
                     <option value="accepted">Accepted</option>
                     <option value="rejected">Rejected</option>
-                </FilterSelect>
+                </select>
             </FiltersContainer>
 
             {/* Desktop Table View */}
@@ -1020,11 +1023,13 @@ const StatLabel = styled.div`
 
 const FiltersContainer = styled.div`
     display: flex;
+    align-items: center;
     gap: 1rem;
     margin-bottom: 2rem;
     
     @media (max-width: 768px) {
         flex-direction: column;
+        align-items: stretch;
     }
 `;
 
