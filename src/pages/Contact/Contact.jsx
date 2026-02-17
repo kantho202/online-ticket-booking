@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { 
     FaPhone, 
     FaEnvelope, 
@@ -10,6 +9,7 @@ import {
     FaInstagram,
     FaLinkedin
 } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
 const Contact = () => {
@@ -54,419 +54,209 @@ const Contact = () => {
             icon: <FaPhone />,
             title: 'Phone',
             details: ['+880 1234-567890', '+880 9876-543210'],
-            color: '#10b981'
+            color: 'bg-green-100 text-green-500',
+            hoverColor: 'hover:bg-green-500 hover:text-white'
         },
         {
             icon: <FaEnvelope />,
             title: 'Email',
             details: ['support@ticketbooking.com', 'info@ticketbooking.com'],
-            color: '#3b82f6'
+            color: 'bg-blue-100 text-blue-500',
+            hoverColor: 'hover:bg-blue-500 hover:text-white'
         },
         {
             icon: <FaMapMarkerAlt />,
             title: 'Address',
             details: ['123 Main Street', 'Dhaka, Bangladesh'],
-            color: '#ef4444'
+            color: 'bg-red-100 text-red-500',
+            hoverColor: 'hover:bg-red-500 hover:text-white'
         },
         {
             icon: <FaClock />,
             title: 'Working Hours',
             details: ['Mon - Fri: 9:00 AM - 6:00 PM', 'Sat - Sun: 10:00 AM - 4:00 PM'],
-            color: '#f59e0b'
+            color: 'bg-yellow-100 text-yellow-600',
+            hoverColor: 'hover:bg-yellow-500 hover:text-white'
         }
     ];
 
     const socialLinks = [
-        { icon: <FaFacebook />, name: 'Facebook', url: '#', color: '#1877f2' },
-        { icon: <FaTwitter />, name: 'Twitter', url: '#', color: '#1da1f2' },
-        { icon: <FaInstagram />, name: 'Instagram', url: '#', color: '#e4405f' },
-        { icon: <FaLinkedin />, name: 'LinkedIn', url: '#', color: '#0077b5' }
+        { icon: <FaFacebook />, name: 'Facebook', url: '#', color: 'hover:bg-blue-600' },
+        { icon: <FaTwitter />, name: 'Twitter', url: '#', color: 'hover:bg-sky-500' },
+        { icon: <FaInstagram />, name: 'Instagram', url: '#', color: 'hover:bg-pink-600' },
+        { icon: <FaLinkedin />, name: 'LinkedIn', url: '#', color: 'hover:bg-blue-700' }
     ];
 
     return (
-        <Container>
-            <ContentWrapper>
+        <div className="py-16 px-4 bg-gray-50 min-h-screen">
+            <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <Header>
-                    <Title>Get In Touch</Title>
-                    <Subtitle>Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</Subtitle>
-                </Header>
+                <div className="text-center mb-12">
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+                        Get In Touch
+                    </h1>
+                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                        Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                    </p>
+                </div>
 
                 {/* Contact Info Cards */}
-                <ContactInfoGrid>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                     {contactInfo.map((info, index) => (
-                        <InfoCard key={index}>
-                            <IconWrapper color={info.color}>
+                        <div 
+                            key={index}
+                            className="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 text-center"
+                        >
+                            <div className={`w-16 h-16 ${info.color} rounded-full flex items-center justify-center text-2xl mx-auto mb-4 transition-all duration-300 ${info.hoverColor}`}>
                                 {info.icon}
-                            </IconWrapper>
-                            <InfoTitle>{info.title}</InfoTitle>
+                            </div>
+                            <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                                {info.title}
+                            </h3>
                             {info.details.map((detail, idx) => (
-                                <InfoDetail key={idx}>{detail}</InfoDetail>
+                                <p key={idx} className="text-sm text-gray-600 mb-1">
+                                    {detail}
+                                </p>
                             ))}
-                        </InfoCard>
+                        </div>
                     ))}
-                </ContactInfoGrid>
+                </div>
 
                 {/* Contact Form and Map Section */}
-                <ContactSection>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Contact Form */}
-                    <FormSection>
-                        <FormTitle>Send Us a Message</FormTitle>
-                        <Form onSubmit={handleSubmit}>
-                            <FormRow>
-                                <FormGroup>
-                                    <Label>Your Name *</Label>
-                                    <Input
+                    <div className="bg-white p-8 rounded-2xl shadow-lg">
+                        <h2 className="text-3xl font-bold text-gray-800 mb-6">
+                            Send Us a Message
+                        </h2>
+                        <form onSubmit={handleSubmit} className="space-y-5">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Your Name *
+                                    </label>
+                                    <input
                                         type="text"
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
                                         placeholder="Enter your name"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
                                         required
                                     />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label>Email Address *</Label>
-                                    <Input
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Email Address *
+                                    </label>
+                                    <input
                                         type="email"
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
                                         placeholder="Enter your email"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
                                         required
                                     />
-                                </FormGroup>
-                            </FormRow>
+                                </div>
+                            </div>
 
-                            <FormRow>
-                                <FormGroup>
-                                    <Label>Phone Number</Label>
-                                    <Input
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Phone Number
+                                    </label>
+                                    <input
                                         type="tel"
                                         name="phone"
                                         value={formData.phone}
                                         onChange={handleChange}
                                         placeholder="Enter your phone"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
                                     />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label>Subject *</Label>
-                                    <Input
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Subject *
+                                    </label>
+                                    <input
                                         type="text"
                                         name="subject"
                                         value={formData.subject}
                                         onChange={handleChange}
                                         placeholder="Enter subject"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
                                         required
                                     />
-                                </FormGroup>
-                            </FormRow>
+                                </div>
+                            </div>
 
-                            <FormGroup>
-                                <Label>Message *</Label>
-                                <TextArea
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                    Message *
+                                </label>
+                                <textarea
                                     name="message"
                                     value={formData.message}
                                     onChange={handleChange}
                                     placeholder="Write your message here..."
                                     rows="6"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition resize-none"
                                     required
                                 />
-                            </FormGroup>
+                            </div>
 
-                            <SubmitButton type="submit">
+                            <button
+                                type="submit"
+                                className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 px-6 rounded-lg font-semibold text-lg hover:from-orange-600 hover:to-orange-700 transform hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl"
+                            >
                                 Send Message
-                            </SubmitButton>
-                        </Form>
-                    </FormSection>
+                            </button>
+                        </form>
+                    </div>
 
                     {/* Map Section */}
-                    <MapSection>
-                        <FormTitle>Find Us Here</FormTitle>
-                        <MapContainer>
+                    <div className="bg-white p-8 rounded-2xl shadow-lg">
+                        <h2 className="text-3xl font-bold text-gray-800 mb-6">
+                            Find Us Here
+                        </h2>
+                        <div className="w-full h-80 rounded-xl overflow-hidden mb-6">
                             <iframe
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d233668.38703692693!2d90.25446309999999!3d23.780573!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8b087026b81%3A0x8fa563bbdd5904c2!2sDhaka!5e0!3m2!1sen!2sbd!4v1234567890123!5m2!1sen!2sbd"
                                 width="100%"
                                 height="100%"
-                                style={{ border: 0, borderRadius: '12px' }}
+                                style={{ border: 0 }}
                                 allowFullScreen=""
                                 loading="lazy"
                                 referrerPolicy="no-referrer-when-downgrade"
                                 title="Location Map"
                             />
-                        </MapContainer>
+                        </div>
 
                         {/* Social Links */}
-                        <SocialSection>
-                            <SocialTitle>Follow Us</SocialTitle>
-                            <SocialLinks>
+                        <div className="text-center">
+                            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                                Follow Us
+                            </h3>
+                            <div className="flex justify-center gap-4">
                                 {socialLinks.map((social, index) => (
-                                    <SocialLink 
-                                        key={index} 
+                                    <a
+                                        key={index}
                                         href={social.url}
-                                        color={social.color}
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        className={`w-12 h-12 bg-gray-100 text-gray-600 rounded-full flex items-center justify-center text-xl transition-all duration-300 hover:text-white transform hover:-translate-y-1 hover:shadow-lg ${social.color}`}
                                     >
                                         {social.icon}
-                                    </SocialLink>
+                                    </a>
                                 ))}
-                            </SocialLinks>
-                        </SocialSection>
-                    </MapSection>
-                </ContactSection>
-            </ContentWrapper>
-        </Container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
-
-// Styled Components
-const Container = styled.div`
-    padding: 4rem 1rem;
-    background: #f8fafc;
-    min-height: 100vh;
-    
-    @media (max-width: 768px) {
-        padding: 3rem 1rem;
-    }
-`;
-
-const ContentWrapper = styled.div`
-    max-width: 1200px;
-    margin: 0 auto;
-`;
-
-const Header = styled.div`
-    text-align: center;
-    margin-bottom: 3rem;
-`;
-
-const Title = styled.h1`
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    
-    @media (max-width: 768px) {
-        font-size: 2rem;
-    }
-`;
-
-const Subtitle = styled.p`
-    font-size: 1.1rem;
-    color: #6b7280;
-    max-width: 600px;
-    margin: 0 auto;
-`;
-
-const ContactInfoGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-    
-    @media (max-width: 1024px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    @media (max-width: 640px) {
-        grid-template-columns: 1fr;
-    }
-`;
-
-const InfoCard = styled.div`
-    background: white;
-    padding: 2rem;
-    border-radius: 16px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-    }
-`;
-
-const IconWrapper = styled.div`
-    width: 60px;
-    height: 60px;
-    background: ${props => props.color}20;
-    color: ${props => props.color};
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    margin: 0 auto 1rem;
-`;
-
-const InfoTitle = styled.h3`
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 0.75rem;
-`;
-
-const InfoDetail = styled.p`
-    font-size: 0.9rem;
-    color: #6b7280;
-    margin-bottom: 0.25rem;
-`;
-
-const ContactSection = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    
-    @media (max-width: 1024px) {
-        grid-template-columns: 1fr;
-    }
-`;
-
-const FormSection = styled.div`
-    background: white;
-    padding: 2.5rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-`;
-
-const FormTitle = styled.h2`
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 1.5rem;
-`;
-
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-`;
-
-const FormRow = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    
-    @media (max-width: 640px) {
-        grid-template-columns: 1fr;
-    }
-`;
-
-const FormGroup = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
-const Label = styled.label`
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 0.5rem;
-`;
-
-const Input = styled.input`
-    padding: 0.75rem 1rem;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    
-    &:focus {
-        outline: none;
-        border-color: #ff8c42;
-        box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
-    }
-`;
-
-const TextArea = styled.textarea`
-    padding: 0.75rem 1rem;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 1rem;
-    resize: vertical;
-    font-family: inherit;
-    transition: all 0.2s ease;
-    
-    &:focus {
-        outline: none;
-        border-color: #ff8c42;
-        box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
-    }
-`;
-
-const SubmitButton = styled.button`
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
-    
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(255, 140, 66, 0.4);
-    }
-`;
-
-const MapSection = styled.div`
-    background: white;
-    padding: 2.5rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-`;
-
-const MapContainer = styled.div`
-    width: 100%;
-    height: 350px;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 2rem;
-`;
-
-const SocialSection = styled.div`
-    text-align: center;
-`;
-
-const SocialTitle = styled.h3`
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 1rem;
-`;
-
-const SocialLinks = styled.div`
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-`;
-
-const SocialLink = styled.a`
-    width: 50px;
-    height: 50px;
-    background: ${props => props.color}20;
-    color: ${props => props.color};
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    transition: all 0.3s ease;
-    
-    &:hover {
-        background: ${props => props.color};
-        color: white;
-        transform: translateY(-3px);
-    }
-`;
 
 export default Contact;
