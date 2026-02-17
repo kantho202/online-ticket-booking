@@ -38,6 +38,7 @@ const Navbar = () => {
     const links = <>
         <li><NavLink className={"font-medium text-base hover:bg-primary mr-3  "} to="/">Home</NavLink></li>
         <li><NavLink className={"font-medium text-base hover:bg-primary mr-3"} to="/allTickets">All Tickets</NavLink></li>
+        <li><NavLink className={"font-medium text-base hover:bg-primary mr-3"} to="/contact">Contact</NavLink></li>
         <li><NavLink className={"font-medium text-base hover:bg-primary mr-3"} to={getDashboardRoute()}>
             Dashboard</NavLink></li>
     </>
