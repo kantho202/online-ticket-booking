@@ -29,7 +29,6 @@ import UserRoute from "./userRoute";
 import VendorProfile from "../pages/Dashboard/DashboardProfile/VendorProfile";
 import UserProfile from "../pages/Dashboard/DashboardProfile/UserProfile";
 import AdminProfile from "../pages/Dashboard/DashboardProfile/AdminProfile";
-import Contact from "../pages/Contact/Contact";
 // import TicketDetails from "../pages/Home/LatestTickets/TicketDetails";
 
 export const router = createBrowserRouter([
@@ -51,10 +50,6 @@ export const router = createBrowserRouter([
       {
         path: '/seeDetails/:id',
         element: <PrivateRoute><TicketDetails></TicketDetails></PrivateRoute>
-      },
-      {
-        path: '/contact',
-        Component: Contact
       },
       {
         path: '*',

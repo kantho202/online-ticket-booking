@@ -7,6 +7,7 @@ import Advertisement from '../Advertisement/Advertisement';
 import BookingProcess from '../BookingProcess/BookingProcess';
 import TicketingFeatures from '../TicketingFeatures/TicketingFeatures';
 import AboutSection from '../AboutSection/AboutSection';
+import Contact from '../../Contact/Contact';
 
 const Home = () => {
     return (
@@ -19,6 +20,7 @@ const Home = () => {
             <TicketingFeatures></TicketingFeatures>
             <PopularRoutes></PopularRoutes>
             <WhyChooseUs></WhyChooseUs>
+            <Contact></Contact>
         </div>
     );
 };
