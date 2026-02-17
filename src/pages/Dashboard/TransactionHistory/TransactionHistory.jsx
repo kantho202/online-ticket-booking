@@ -135,7 +135,7 @@ const TransactionHistory = () => {
                                 </TicketIcon>
                                 <TicketDetails>
                                     <TicketTitle>{payment.ticketName}</TicketTitle>
-                                    <TicketId>Amount: ৳{formatAmount(payment.amount)}</TicketId>
+                                    <TicketId>Amount: ${formatAmount(payment.amount)}</TicketId>
                                 </TicketDetails>
                             </TicketSection>
 
