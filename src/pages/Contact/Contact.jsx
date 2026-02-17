@@ -82,13 +82,13 @@ const Contact = () => {
 
     const socialLinks = [
         { icon: <FaFacebook />, name: 'Facebook', url: '#', color: 'hover:bg-blue-600' },
-        { icon: <FaTwitter />, name: 'Twitter', url: '#', color: 'hover:bg-sky-500' },
+        { icon: <FaXTwitter />, name: 'Twitter', url: '#', color: 'hover:bg-black' },
         { icon: <FaInstagram />, name: 'Instagram', url: '#', color: 'hover:bg-pink-600' },
         { icon: <FaLinkedin />, name: 'LinkedIn', url: '#', color: 'hover:bg-blue-700' }
     ];
 
     return (
-        <div className="py-16 px-4 bg-gray-50 min-h-screen">
+        <div className="py-16 px-4  min-h-screen">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-12">
@@ -105,7 +105,7 @@ const Contact = () => {
                     {contactInfo.map((info, index) => (
                         <div 
                             key={index}
-                            className="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 text-center"
+                            className=" p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 text-center"
                         >
                             <div className={`w-16 h-16 ${info.color} rounded-full flex items-center justify-center text-2xl mx-auto mb-4 transition-all duration-300 ${info.hoverColor}`}>
                                 {info.icon}
@@ -125,7 +125,7 @@ const Contact = () => {
                 {/* Contact Form and Map Section */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Contact Form */}
-                    <div className="bg-white p-8 rounded-2xl shadow-lg">
+                    <div className=" p-8 rounded-2xl shadow-lg">
                         <h2 className="text-3xl font-bold text-gray-800 mb-6">
                             Send Us a Message
                         </h2>
@@ -216,7 +216,7 @@ const Contact = () => {
                     </div>
 
                     {/* Map Section */}
-                    <div className="bg-white p-8 rounded-2xl shadow-lg">
+                    <div className=" p-8 rounded-2xl shadow-lg">
                         <h2 className="text-3xl font-bold text-gray-800 mb-6">
                             Find Us Here
                         </h2>
