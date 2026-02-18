@@ -35,7 +35,7 @@ const AboutSection = () => {
                                 alt="Online Ticket Booking"
                                 className="w-full h-96 md:h-72 object-cover"
                             />
-                            <div className="absolute bottom-5 right-5 bg-white p-6 rounded-2xl shadow-xl flex items-center gap-4 animate-float">
+                            <div className="absolute bottom-5 right-5  p-6 rounded-2xl shadow-xl flex items-center gap-4 animate-float">
                                 <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-xl flex items-center justify-center text-2xl">
                                     <FaRocket />
                                 </div>
@@ -113,7 +113,7 @@ const AboutSection = () => {
                             </a>
                             <a 
                                 href="/contact"
-                                className="inline-block px-8 py-4 bg-white text-orange-500 font-semibold border-2 border-orange-500 rounded-xl transition-all duration-300 hover:bg-orange-500 hover:text-white hover:-translate-y-1 text-center"
+                                className="inline-block px-8 py-4  text-orange-500 font-semibold border-2 border-orange-500 rounded-xl transition-all duration-300 hover:bg-orange-500 hover:text-white hover:-translate-y-1 text-center"
                             >
                                 Contact Us
                             </a>
