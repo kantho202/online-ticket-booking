@@ -204,7 +204,7 @@ const AchievementsGrid = styled.div`
 `;
 
 const AchievementCard = styled.div`
-    background: #f8fafc;
+    background: ;
     padding: 1.5rem 1rem;
     border-radius: 12px;
     text-align: center;
@@ -331,7 +331,7 @@ const PrimaryButton = styled.a`
 const SecondaryButton = styled.a`
     display: inline-block;
     padding: 1rem 2rem;
-    background: white;
+    background: ;
     color: #ff8c42;
     font-weight: 600;
     border: 2px solid #ff8c42;
