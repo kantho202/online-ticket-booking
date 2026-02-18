@@ -102,7 +102,7 @@ const AboutSection = () => {
 // Styled Components
 const Container = styled.div`
     padding: 5rem 1rem;
-    background: #ffffff;
+    background: ;
     
     @media (max-width: 768px) {
         padding: 3rem 1rem;
@@ -172,7 +172,7 @@ const FloatingIcon = styled.div`
     width: 50px;
     height: 50px;
     background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
+    color: ;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -241,7 +241,7 @@ const Badge = styled.div`
     display: inline-block;
     padding: 0.5rem 1.25rem;
     background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
+    color: ;
     border-radius: 20px;
     font-size: 0.9rem;
     font-weight: 600;
@@ -314,7 +314,7 @@ const PrimaryButton = styled.a`
     display: inline-block;
     padding: 1rem 2rem;
     background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
+    color: ;
     font-weight: 600;
     border-radius: 12px;
     text-decoration: none;
