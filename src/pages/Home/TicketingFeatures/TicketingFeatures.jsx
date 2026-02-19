@@ -1,5 +1,3 @@
-import React from 'react';
-import styled from 'styled-components';
 import { 
     FaMobileAlt, 
     FaClock, 
@@ -15,218 +13,108 @@ const TicketingFeatures = () => {
             icon: <FaMobileAlt />,
             title: "Mobile Friendly",
             description: "Book tickets anytime, anywhere from your mobile device",
-            color: "#3b82f6"
+            color: "bg-blue-100 text-blue-500"
         },
         {
             icon: <FaClock />,
             title: "24/7 Availability",
             description: "Access our platform round the clock for instant bookings",
-            color: "#10b981"
+            color: "bg-green-100 text-green-500"
         },
         {
             icon: <FaMapMarkedAlt />,
             title: "Multiple Routes",
             description: "Wide range of destinations and routes to choose from",
-            color: "#f59e0b"
+            color: "bg-yellow-100 text-yellow-500"
         },
         {
             icon: <FaHeadset />,
             title: "Customer Support",
             description: "Dedicated support team ready to assist you",
-            color: "#8b5cf6"
+            color: "bg-purple-100 text-purple-500"
         },
         {
             icon: <FaPercent />,
             title: "Best Prices",
             description: "Competitive pricing with exclusive deals and offers",
-            color: "#ec4899"
+            color: "bg-pink-100 text-pink-500"
         },
         {
             icon: <FaLock />,
             title: "Secure Booking",
             description: "Safe and encrypted payment processing",
-            color: "#ef4444"
+            color: "bg-red-100 text-red-500"
         }
     ];
 
     return (
-        <Container>
-            <ContentWrapper>
-                <Header>
-                    <Title>Why Book Tickets Online?</Title>
-                    <Subtitle>Experience hassle-free ticket booking with our advanced features</Subtitle>
-                </Header>
+        <div className="py-16 px-4 bg-white md:py-12">
+            <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-12">
+                    <h2 className="text-4xl md:text-3xl font-bold text-gray-800 mb-3">
+                        Why Book Tickets Online?
+                    </h2>
+                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                        Experience hassle-free ticket booking with our advanced features
+                    </p>
+                </div>
 
-                <FeaturesGrid>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                     {features.map((feature, index) => (
-                        <FeatureCard key={index}>
-                            <IconCircle color={feature.color}>
+                        <div 
+                            key={index}
+                            className="p-8 rounded-2xl bg-gray-50 text-center transition-all duration-300 border-2 border-transparent hover:bg-white hover:border-orange-500 hover:-translate-y-1 hover:shadow-xl group"
+                        >
+                            <div className={`w-18 h-18 ${feature.color} rounded-full flex items-center justify-center text-3xl mx-auto mb-6 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6`}>
                                 {feature.icon}
-                            </IconCircle>
-                            <FeatureTitle>{feature.title}</FeatureTitle>
-                            <FeatureDescription>{feature.description}</FeatureDescription>
-                        </FeatureCard>
+                            </div>
+                            <h3 className="text-xl font-semibold text-gray-800 mb-3">
+                                {feature.title}
+                            </h3>
+                            <p className="text-sm text-gray-600 leading-relaxed">
+                                {feature.description}
+                            </p>
+                        </div>
                     ))}
-                </FeaturesGrid>
+                </div>
 
-                <StatsSection>
-                    <StatItem>
-                        <StatNumber>10K+</StatNumber>
-                        <StatLabel>Happy Customers</StatLabel>
-                    </StatItem>
-                    <StatItem>
-                        <StatNumber>50+</StatNumber>
-                        <StatLabel>Routes Available</StatLabel>
-                    </StatItem>
-                    <StatItem>
-                        <StatNumber>99.9%</StatNumber>
-                        <StatLabel>Success Rate</StatLabel>
-                    </StatItem>
-                    <StatItem>
-                        <StatNumber>24/7</StatNumber>
-                        <StatLabel>Support Available</StatLabel>
-                    </StatItem>
-                </StatsSection>
-            </ContentWrapper>
-        </Container>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 p-12 md:p-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-3xl shadow-xl">
+                    <div className="text-center text-white">
+                        <div className="text-4xl md:text-3xl font-bold mb-2">
+                            10K+
+                        </div>
+                        <div className="text-base opacity-95 font-medium">
+                            Happy Customers
+                        </div>
+                    </div>
+                    <div className="text-center text-white">
+                        <div className="text-4xl md:text-3xl font-bold mb-2">
+                            50+
+                        </div>
+                        <div className="text-base opacity-95 font-medium">
+                            Routes Available
+                        </div>
+                    </div>
+                    <div className="text-center text-white">
+                        <div className="text-4xl md:text-3xl font-bold mb-2">
+                            99.9%
+                        </div>
+                        <div className="text-base opacity-95 font-medium">
+                            Success Rate
+                        </div>
+                    </div>
+                    <div className="text-center text-white">
+                        <div className="text-4xl md:text-3xl font-bold mb-2">
+                            24/7
+                        </div>
+                        <div className="text-base opacity-95 font-medium">
+                            Support Available
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
-
-// Styled Components
-const Container = styled.div`
-    padding: 4rem 1rem;
-    background: white;
-    
-    @media (max-width: 768px) {
-        padding: 3rem 1rem;
-    }
-`;
-
-const ContentWrapper = styled.div`
-    max-width: 1200px;
-    margin: 0 auto;
-`;
-
-const Header = styled.div`
-    text-align: center;
-    margin-bottom: 3rem;
-`;
-
-const Title = styled.h2`
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 0.75rem;
-    
-    @media (max-width: 768px) {
-        font-size: 2rem;
-    }
-`;
-
-const Subtitle = styled.p`
-    font-size: 1.1rem;
-    color: #6b7280;
-    max-width: 600px;
-    margin: 0 auto;
-`;
-
-const FeaturesGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-bottom: 4rem;
-    
-    @media (max-width: 1024px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    @media (max-width: 640px) {
-        grid-template-columns: 1fr;
-    }
-`;
-
-const FeatureCard = styled.div`
-    padding: 2rem;
-    border-radius: 16px;
-    background: #f8fafc;
-    text-align: center;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-    
-    &:hover {
-        background: white;
-        border-color: #ff8c42;
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(255, 140, 66, 0.15);
-    }
-`;
-
-const IconCircle = styled.div`
-    width: 70px;
-    height: 70px;
-    background: ${props => props.color}20;
-    color: ${props => props.color};
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.75rem;
-    margin: 0 auto 1.5rem;
-    transition: all 0.3s ease;
-    
-    ${FeatureCard}:hover & {
-        transform: scale(1.1) rotate(5deg);
-    }
-`;
-
-const FeatureTitle = styled.h3`
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 0.75rem;
-`;
-
-const FeatureDescription = styled.p`
-    font-size: 0.95rem;
-    color: #6b7280;
-    line-height: 1.6;
-`;
-
-const StatsSection = styled.div`
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    padding: 3rem 2rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(255, 140, 66, 0.3);
-    
-    @media (max-width: 768px) {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-        padding: 2rem 1rem;
-    }
-`;
-
-const StatItem = styled.div`
-    text-align: center;
-    color: white;
-`;
-
-const StatNumber = styled.div`
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    
-    @media (max-width: 768px) {
-        font-size: 2rem;
-    }
-`;
-
-const StatLabel = styled.div`
-    font-size: 1rem;
-    opacity: 0.95;
-    font-weight: 500;
-`;
 
 export default TicketingFeatures;
