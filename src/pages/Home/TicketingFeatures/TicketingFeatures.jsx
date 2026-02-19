@@ -78,7 +78,7 @@ const TicketingFeatures = () => {
                     ))}
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 p-12 md:p-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-3xl shadow-xl">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 p-12 md:p-8 rounded-3xl shadow-xl">
                     <div className="text-center text-white">
                         <div className="text-4xl md:text-3xl font-bold mb-2">
                             10K+
