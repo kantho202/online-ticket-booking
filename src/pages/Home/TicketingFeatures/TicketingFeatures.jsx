@@ -51,10 +51,10 @@ const TicketingFeatures = () => {
         <div className="py-16 px-4  md:py-12">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-3xl font-bold text-gray-800 mb-3">
+                    <h2 className="text-4xl md:text-3xl font-bold mb-3">
                         Why Book Tickets Online?
                     </h2>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    <p className="text-lg  max-w-2xl mx-auto">
                         Experience hassle-free ticket booking with our advanced features
                     </p>
                 </div>
