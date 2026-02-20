@@ -77,11 +77,11 @@ const Advertisement = () => {
             <div className="max-w-7xl mx-auto px-8 md:px-4 relative z-10" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="800">
                 {/* Header Section */}
                 <div className="text-center mb-20 md:mb-12">
-                    <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-md text-gray-800 rounded-full text-sm font-semibold mb-8 border border-white/30">
+                    <div className="inline-flex items-center gap-2 px-6 py-3  backdrop-blur-md text-gray-800 rounded-full text-sm font-semibold mb-8 border border-white/30">
                         <FaStar className="text-yellow-400" />
                         Featured Destinations
                     </div>
-                    <h1 className="text-6xl md:text-4xl sm:text-3xl font-extrabold text-gray-900 mb-6 tracking-tight leading-tight">
+                    <h1 className="text-6xl md:text-4xl sm:text-3xl font-extrabold  mb-6 tracking-tight leading-tight">
                         Premium Travel Experiences
                     </h1>
                     <p className="text-xl md:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
@@ -121,7 +121,7 @@ const Advertisement = () => {
                                     <div className="p-8 flex flex-col flex-1 gap-6">
                                         {/* Title */}
                                         <div className="flex justify-between items-start gap-4">
-                                            <h2 className="text-2xl font-bold text-gray-900 leading-tight line-clamp-2 min-h-[3.5rem]">
+                                            <h2 className="text-2xl font-bold  leading-tight line-clamp-2 min-h-[3.5rem]">
                                                 {ticket.ticketTitle}
                                             </h2>
                                         </div>
