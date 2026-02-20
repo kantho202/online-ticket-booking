@@ -64,7 +64,7 @@ const LatestTickets = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50 py-24 relative overflow-hidden">
+        <div className="min-h-screen  py-24 relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-radial from-white/10 via-transparent to-transparent"></div>
@@ -77,10 +77,10 @@ const LatestTickets = () => {
                         <FaStar className="text-yellow-400" />
                         Featured Destinations
                     </div>
-                    <h1 className="text-6xl md:text-4xl sm:text-3xl font-extrabold text-gray-900 mb-6 tracking-tight leading-tight">
+                    <h1 className="text-6xl md:text-4xl sm:text-3xl font-extrabold  mb-6 tracking-tight leading-tight">
                         Latest Travel Tickets
                     </h1>
-                    <p className="text-xl md:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
+                    <p className="text-xl md:text-lg  max-w-3xl mx-auto leading-relaxed font-light">
                         Discover amazing travel experiences and book your next adventure with exclusive deals
                     </p>
                 </div>
@@ -91,7 +91,7 @@ const LatestTickets = () => {
                         const TransportIcon = transportIcons[ticket.transport] || FaBus;
                         return (
                             <div key={ticket._id} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 100} className="h-full flex flex-col">
-                                <div className="bg-white rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 hover:-translate-y-4 hover:scale-105 hover:shadow-3xl border border-white/20 flex flex-col h-full group">
+                                <div className=" rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 hover:-translate-y-4 hover:scale-105 hover:shadow-3xl border border-white/20 flex flex-col h-full group">
                                     {/* Image Container */}
                                     <div className="relative h-64 overflow-hidden flex-shrink-0">
                                         <img 
@@ -117,7 +117,7 @@ const LatestTickets = () => {
                                     <div className="p-8 flex flex-col flex-1 gap-6">
                                         {/* Title */}
                                         <div className="flex justify-between items-start gap-4">
-                                            <h2 className="text-2xl font-bold text-gray-900 leading-tight line-clamp-2 min-h-[3.5rem] flex-1">
+                                            <h2 className="text-2xl font-bold  leading-tight line-clamp-2 min-h-[3.5rem] flex-1">
                                                 {ticket.ticketTitle}
                                             </h2>
                                         </div>
