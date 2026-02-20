@@ -68,7 +68,7 @@ const Advertisement = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 py-24 relative overflow-hidden">
+        <div className="min-h-screen py-24 relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-radial from-white/10 via-transparent to-transparent"></div>
@@ -95,7 +95,7 @@ const Advertisement = () => {
                         const TransportIcon = transportIcons[ticket.transport] || FaBus;
                         return (
                             <div key={ticket._id} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 100}>
-                                <div className="bg-white rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 hover:-translate-y-4 hover:scale-105 hover:shadow-3xl border border-white/20 flex flex-col h-full group">
+                                <div className=" rounded-[10px] overflow-hidden shadow-2xl transition-all duration-500 hover:-translate-y-4 hover:scale-105 hover:shadow-3xl border border-white/20 flex flex-col h-full group">
                                     {/* Image Container */}
                                     <div className="relative h-72 overflow-hidden flex-shrink-0">
                                         <img 
