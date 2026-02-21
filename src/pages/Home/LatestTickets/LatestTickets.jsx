@@ -91,7 +91,7 @@ const LatestTickets = () => {
                         const TransportIcon = transportIcons[ticket.transport] || FaBus;
                         return (
                             <div key={ticket._id} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 100} className="h-full flex flex-col">
-                                <div className=" rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 hover:-translate-y-4 hover:scale-105 hover:shadow-3xl border border-white/20 flex flex-col h-full group">
+                                <div className=" rounded-[10px] overflow-hidden shadow-2xl transition-all duration-500 hover:-translate-y-4 hover:scale-105 hover:shadow-3xl border border-white/20 flex flex-col h-full group">
                                     {/* Image Container */}
                                     <div className="relative h-64 overflow-hidden flex-shrink-0">
                                         <img 
@@ -229,7 +229,7 @@ const LatestTickets = () => {
                                         {/* Action Button */}
                                         <div className="mt-auto pt-4">
                                             <Link to={`/seeDetails/${ticket._id}`} className="block w-full">
-                                                <button className="relative w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none px-8 py-5 rounded-2xl font-bold text-lg cursor-pointer transition-all duration-500 overflow-hidden shadow-xl hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 group">
+                                                <button className="relative w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none btn rounded-2xl font-bold text-lg cursor-pointer transition-all duration-500 overflow-hidden shadow-xl hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 group">
                                                     <div className="flex items-center justify-center gap-4 relative z-10">
                                                         <span className="text-lg">View Details</span>
                                                         <div className="text-xl transition-transform duration-300 group-hover:translate-x-1">
