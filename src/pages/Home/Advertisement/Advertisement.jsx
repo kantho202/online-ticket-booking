@@ -95,7 +95,8 @@ const Advertisement = () => {
                         const TransportIcon = transportIcons[ticket.transport] || FaBus;
                         return (
                             <div key={ticket._id} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 100}>
-                                <div className=" rounded-[10px] overflow-hidden shadow-2xl transition-all duration-500 hover:-translate-y-4 hover:scale-105 hover:shadow-3xl border border-white/20 flex flex-col h-full group">
+                                <div className=" rounded-[10px] overflow-hidden shadow-2xl transition-all duration-500
+                                 hover:-translate-y-4 hover:scale-105 hover:shadow-3xl border border-white/20 flex flex-col h-full group">
                                     {/* Image Container */}
                                     <div className="relative h-72 overflow-hidden flex-shrink-0">
                                         <img 
@@ -163,7 +164,7 @@ const Advertisement = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-3 px-4 py-4 bg-white rounded-xl border-2 border-gray-100 transition-all duration-300 hover:border-orange-500 hover:-translate-y-1 hover:shadow-lg min-h-[70px]">
+                                            <div className="flex items-center gap-3 px-4 py-4 rounded-xl border-2 border-gray-100 transition-all duration-300 hover:border-orange-500 hover:-translate-y-1 hover:shadow-lg min-h-[70px]">
                                                 <div className="w-9 h-9 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-base shadow-lg flex-shrink-0">
                                                     <FaClock />
                                                 </div>
@@ -173,7 +174,7 @@ const Advertisement = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-3 px-4 py-4 bg-white rounded-xl border-2 border-gray-100 transition-all duration-300 hover:border-orange-500 hover:-translate-y-1 hover:shadow-lg min-h-[70px]">
+                                            <div className="flex items-center gap-3 px-4 py-4  rounded-xl border-2 border-gray-100 transition-all duration-300 hover:border-orange-500 hover:-translate-y-1 hover:shadow-lg min-h-[70px]">
                                                 <div className="w-9 h-9 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-base shadow-lg flex-shrink-0">
                                                     <TransportIcon />
                                                 </div>
