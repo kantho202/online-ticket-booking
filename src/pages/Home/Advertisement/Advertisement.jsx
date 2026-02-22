@@ -143,7 +143,7 @@ const Advertisement = () => {
 
                                         {/* Info Grid */}
                                         <div className="grid grid-cols-2 gap-3">
-                                            <div className="flex items-center gap-3 px-4 py-4 bg-white rounded-xl border-2 border-gray-100 transition-all duration-300 hover:border-orange-500 hover:-translate-y-1 hover:shadow-lg min-h-[70px]">
+                                            <div className="flex items-center gap-3 px-4 py-4 rounded-xl border-2 border-gray-100 transition-all duration-300 hover:border-orange-500 hover:-translate-y-1 hover:shadow-lg min-h-[70px]">
                                                 <div className="w-9 h-9 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-base shadow-lg flex-shrink-0">
                                                     <FaUsers />
                                                 </div>
@@ -153,7 +153,7 @@ const Advertisement = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-3 px-4 py-4 bg-white rounded-xl border-2 border-gray-100 transition-all duration-300 hover:border-orange-500 hover:-translate-y-1 hover:shadow-lg min-h-[70px]">
+                                            <div className="flex items-center gap-3 px-4 py-4 rounded-xl border-2 border-gray-100 transition-all duration-300 hover:border-orange-500 hover:-translate-y-1 hover:shadow-lg min-h-[70px]">
                                                 <div className="w-9 h-9 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-base shadow-lg flex-shrink-0">
                                                     <FaCalendarAlt />
                                                 </div>
