@@ -128,7 +128,7 @@ const Advertisement = () => {
                                         </div>
 
                                         {/* Route Info */}
-                                        <div className="flex items-center justify-between px-5 py-5 bg-gray-50 rounded-2xl border border-gray-200">
+                                        <div className="flex items-center justify-between px-5 py-5  rounded-2xl border border-gray-200">
                                             <div className="flex items-center gap-2 font-semibold text-gray-700 flex-1 min-w-0">
                                                 <FaMapMarkerAlt className="text-orange-500 text-lg flex-shrink-0" />
                                                 <span className="text-sm truncate">{ticket.from || 'Departure'}</span>
@@ -186,7 +186,7 @@ const Advertisement = () => {
                                         </div>
 
                                         {/* Traveler Info */}
-                                        <div className="flex items-center gap-4 px-4 py-4 bg-gray-50 rounded-2xl border border-gray-200 min-h-[70px]">
+                                        <div className="flex items-center gap-4 px-4 py-4  rounded-2xl border border-gray-200 min-h-[70px]">
                                             <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-base flex-shrink-0">
                                                 {ticket.name?.charAt(0)?.toUpperCase() || 'T'}
                                             </div>
