@@ -74,7 +74,7 @@ const LatestTickets = () => {
                 {/* Header Section */}
                 <div className="text-center mb-20 md:mb-12">
                     
-                    <h1 className="text-6xl md:text-4xl sm:text-3xl font-extrabold  mb-6 tracking-tight leading-tight">
+                    <h1 className="text-6xl md:text-4xl text-xl font-extrabold  mb-6 tracking-tight leading-tight">
                         Latest Travel Tickets
                     </h1>
                     <p className="text-xl md:text-lg  max-w-3xl mx-auto leading-relaxed font-light">
@@ -99,9 +99,10 @@ const LatestTickets = () => {
                                         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/60"></div>
                                         
                                         {/* Price Tag */}
-                                        <div className="absolute top-6 right-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-4 rounded-2xl text-center shadow-xl backdrop-blur-md border-2 border-white/20">
-                                            <div className="text-2xl font-bold leading-none">${ticket.price}</div>
-                                            <div className="text-xs opacity-90 mt-1">per person</div>
+                                        <div className="absolute top-6 right-6 bg-gradient-to-r
+                                         from-orange-500 to-orange-600 text-white px-2 py-1 rounded-[10px] text-center shadow-xl backdrop-blur-md border-2 border-white/20">
+                                            <div className="text-[15px] font-bold leading-none">${ticket.price}</div>
+                                            <div className="text-[11px] opacity-90 mt-1">per person</div>
                                         </div>
                                         
                                         {/* Status Badge */}
