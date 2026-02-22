@@ -100,7 +100,7 @@ const LatestTickets = () => {
                                         
                                         {/* Price Tag */}
                                         <div className="absolute top-6 right-6 bg-gradient-to-r
-                                         from-orange-500 to-orange-600 text-white px-2 py-1 rounded-[10px] text-center shadow-xl backdrop-blur-md border-2 border-white/20">
+                                         from-orange-500 to-orange-600 text-white px-3 py-2 rounded-[10px] text-center shadow-xl backdrop-blur-md border-2 border-white/20">
                                             <div className="text-[15px] font-bold leading-none">${ticket.price}</div>
                                             <div className="text-[11px] opacity-90 mt-1">per person</div>
                                         </div>
@@ -121,7 +121,7 @@ const LatestTickets = () => {
                                         </div>
 
                                         {/* Route Info */}
-                                        <div className="flex items-center justify-between px-5 py-5 bg-gray-50 rounded-2xl border border-gray-200">
+                                        <div className="flex items-center justify-between px-5 py-5  rounded-2xl border border-gray-200">
                                             <div className="flex items-center gap-2 font-semibold text-gray-700 flex-1 min-w-0">
                                                 <FaMapMarkerAlt className="text-orange-500 text-lg flex-shrink-0" />
                                                 <span className="text-sm truncate">{ticket.from}</span>
@@ -137,7 +137,7 @@ const LatestTickets = () => {
 
                                         {/* Info Grid */}
                                         <div className="grid grid-cols-2 gap-3">
-                                            <div className="flex items-center gap-3 px-4 py-4 bg-white rounded-xl border border-gray-200 transition-all duration-300 hover:bg-orange-50 hover:border-orange-200 hover:-translate-y-1 min-h-[70px]">
+                                            <div className="flex items-center gap-3 px-4 py-4  rounded-xl border border-gray-200 transition-all duration-300 hover:bg-orange-50 hover:border-orange-200 hover:-translate-y-1 min-h-[70px]">
                                                 <div className="w-9 h-9 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-base shadow-lg flex-shrink-0">
                                                     <TransportIcon />
                                                 </div>
@@ -147,7 +147,7 @@ const LatestTickets = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-3 px-4 py-4 bg-white rounded-xl border border-gray-200 transition-all duration-300 hover:bg-orange-50 hover:border-orange-200 hover:-translate-y-1 min-h-[70px]">
+                                            <div className="flex items-center gap-3 px-4 py-4  rounded-xl border border-gray-200 transition-all duration-300 hover:bg-orange-50 hover:border-orange-200 hover:-translate-y-1 min-h-[70px]">
                                                 <div className="w-9 h-9 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-base shadow-lg flex-shrink-0">
                                                     <FaUsers />
                                                 </div>
@@ -157,7 +157,7 @@ const LatestTickets = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-3 px-4 py-4 bg-white rounded-xl border border-gray-200 transition-all duration-300 hover:bg-orange-50 hover:border-orange-200 hover:-translate-y-1 min-h-[70px]">
+                                            <div className="flex items-center gap-3 px-4 py-4  rounded-xl border border-gray-200 transition-all duration-300 hover:bg-orange-50 hover:border-orange-200 hover:-translate-y-1 min-h-[70px]">
                                                 <div className="w-9 h-9 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-base shadow-lg flex-shrink-0">
                                                     <FaCalendarAlt />
                                                 </div>
@@ -167,7 +167,7 @@ const LatestTickets = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-3 px-4 py-4 bg-white rounded-xl border border-gray-200 transition-all duration-300 hover:bg-orange-50 hover:border-orange-200 hover:-translate-y-1 min-h-[70px]">
+                                            <div className="flex items-center gap-3 px-4 py-4  rounded-xl border border-gray-200 transition-all duration-300 hover:bg-orange-50 hover:border-orange-200 hover:-translate-y-1 min-h-[70px]">
                                                 <div className="w-9 h-9 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-base shadow-lg flex-shrink-0">
                                                     <FaClock />
                                                 </div>
@@ -179,7 +179,7 @@ const LatestTickets = () => {
                                         </div>
 
                                         {/* Traveler Info */}
-                                        <div className="flex items-center gap-4 px-4 py-4 bg-gray-50 rounded-xl border border-gray-200 min-h-[70px]">
+                                        <div className="flex items-center gap-4 px-4 py-4  rounded-xl border border-gray-200 min-h-[70px]">
                                             <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-base flex-shrink-0">
                                                 {ticket.name?.charAt(0)?.toUpperCase() || 'T'}
                                             </div>
