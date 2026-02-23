@@ -130,7 +130,7 @@ const Advertisement = () => {
                                         {/* Route Info */}
                                         <div className="flex items-center justify-between px-5 py-5  rounded-2xl border border-gray-200">
                                             <div className="flex items-center gap-2 font-semibold text-gray-700 flex-1 min-w-0">
-                                                <FaMapMarkerAlt className="text-orange-500 text-lg flex-shrink-0" />
+                                                <FaMapMarkerAlt className="text-orange-500 text-lg flex-shrink-0"/>
                                                 <span className="text-sm truncate">{ticket.from || 'Departure'}</span>
                                             </div>
                                             <div className="flex items-center justify-center w-10 text-orange-500 text-base font-semibold flex-shrink-0">
