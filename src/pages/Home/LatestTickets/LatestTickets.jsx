@@ -106,9 +106,9 @@ const LatestTickets = () => {
                                         </div>
                                         
                                         {/* Status Badge */}
-                                        <div className="absolute top-6 left-6 bg-green-500/90 text-white px-4 py-2 rounded-2xl text-xs font-semibold backdrop-blur-md border border-white/20">
+                                        {/* <div className="absolute top-6 left-6 bg-green-500/90 text-white px-3 py-2 rounded-2xl text-xs font-semibold backdrop-blur-md border border-white/20">
                                             Available
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                     {/* Card Content */}

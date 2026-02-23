@@ -107,7 +107,7 @@ const Advertisement = () => {
                                         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/60"></div>
                                         
                                         {/* Price Tag */}
-                                        <div className="absolute top-6 right-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-4 rounded-2xl text-center shadow-xl backdrop-blur-md border-2 border-white/20">
+                                        <div className="absolute top-6 right-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-4 rounded-2xl text-center shadow-xl backdrop-blur-md border-2 border-white/20">
                                             <div className="text-2xl font-bold leading-none">${ticket.price}</div>
                                             <div className="text-xs opacity-90 mt-1">per person</div>
                                         </div>
