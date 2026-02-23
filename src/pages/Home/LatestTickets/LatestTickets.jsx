@@ -122,14 +122,14 @@ const LatestTickets = () => {
 
                                         {/* Route Info */}
                                         <div className="flex items-center justify-between px-5 py-5  rounded-2xl border border-gray-200">
-                                            <div className="flex items-center gap-2 font-semibold text-gray-700 flex-1 min-w-0">
+                                            <div className="flex items-center gap-2 font-semibold  flex-1 min-w-0">
                                                 <FaMapMarkerAlt className="text-orange-500 text-lg flex-shrink-0" />
                                                 <span className="text-sm truncate">{ticket.from}</span>
                                             </div>
                                             <div className="flex items-center justify-center w-10 text-orange-500 text-base font-semibold flex-shrink-0">
                                                 <FaArrowRight />
                                             </div>
-                                            <div className="flex items-center gap-2 font-semibold text-gray-700 flex-1 min-w-0">
+                                            <div className="flex items-center gap-2 font-semibold  flex-1 min-w-0">
                                                 <FaMapMarkerAlt className="text-orange-500 text-lg flex-shrink-0" />
                                                 <span className="text-sm truncate">{ticket.to}</span>
                                             </div>
@@ -143,7 +143,7 @@ const LatestTickets = () => {
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <div className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Transport</div>
-                                                    <div className="text-sm text-gray-700 font-semibold truncate">{ticket.transport}</div>
+                                                    <div className="text-sm  font-semibold truncate">{ticket.transport}</div>
                                                 </div>
                                             </div>
 
@@ -153,7 +153,7 @@ const LatestTickets = () => {
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <div className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Available</div>
-                                                    <div className="text-sm text-gray-700 font-semibold truncate">{ticket.ticketQuantity} seats</div>
+                                                    <div className="text-sm  font-semibold truncate">{ticket.ticketQuantity} seats</div>
                                                 </div>
                                             </div>
 
