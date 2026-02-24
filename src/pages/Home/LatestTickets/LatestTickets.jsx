@@ -137,7 +137,7 @@ const LatestTickets = () => {
 
                                         {/* Info Grid */}
                                         <div className="grid grid-cols-2 gap-3">
-                                            <div className="flex items-center gap-3 px-4 py-4  rounded-xl border border-gray-200 transition-all duration-300 hover:bg-orange-50 hover:border-orange-200 hover:-translate-y-1 min-h-[70px]">
+                                            <div className="flex items-center gap-3 px-4 py-4  rounded-xl border border-gray-200 transition-all duration-300 border-2 hover:border-orange-500  hover:-translate-y-1 min-h-[70px]">
                                                 <div className="w-9 h-9 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-base shadow-lg flex-shrink-0">
                                                     <TransportIcon />
                                                 </div>
@@ -147,7 +147,7 @@ const LatestTickets = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-3 px-4 py-4  rounded-xl border border-gray-200 transition-all duration-300 hover:bg-orange-50 hover:border-orange-200 hover:-translate-y-1 min-h-[70px]">
+                                            <div className="flex items-center gap-3 px-4 py-4  rounded-xl border border-gray-200 transition-all duration-300 border-2 hover:border-orange-500 hover:-translate-y-1 min-h-[70px]">
                                                 <div className="w-9 h-9 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-base shadow-lg flex-shrink-0">
                                                     <FaUsers />
                                                 </div>
@@ -157,7 +157,7 @@ const LatestTickets = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-3 px-4 py-4  rounded-xl border border-gray-200 transition-all duration-300 hover:bg-orange-50 hover:border-orange-200 hover:-translate-y-1 min-h-[70px]">
+                                            <div className="flex items-center gap-3 px-4 py-4  rounded-xl border border-gray-200 transition-all duration-300 border-2 hover:border-orange-500 hover:-translate-y-1 min-h-[70px]">
                                                 <div className="w-9 h-9 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-base shadow-lg flex-shrink-0">
                                                     <FaCalendarAlt />
                                                 </div>
@@ -167,7 +167,7 @@ const LatestTickets = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-3 px-4 py-4  rounded-xl border border-gray-200 transition-all duration-300 hover:bg-orange-50 hover:border-orange-200 hover:-translate-y-1 min-h-[70px]">
+                                            <div className="flex items-center gap-3 px-4 py-4  rounded-xl border border-gray-200 transition-all duration-300 border-2 hover:border-orange-500 hover:-translate-y-1 min-h-[70px]">
                                                 <div className="w-9 h-9 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white text-base shadow-lg flex-shrink-0">
                                                     <FaClock />
                                                 </div>
