@@ -203,7 +203,9 @@ const LatestTickets = () => {
                                                         {ticket.perks.slice(0, 3).map((perk, index) => {
                                                             const PerkIcon = perkIcons[perk] || FaWifi;
                                                             return (
-                                                                <div key={index} className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl text-xs font-semibold shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                                                                <div key={index} className="flex items-center gap-2 px-3 py- bg-gradient-to-r from-orange-500 to-orange-600 
+                                                                text-white rounded-[10px] text-xs font-semibold shadow-lg transition-all duration-300 hover:-translate-y-1 
+                                                                hover:shadow-xl">
                                                                     <PerkIcon className="text-sm" />
                                                                     <span>{perk}</span>
                                                                 </div>
