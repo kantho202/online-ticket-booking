@@ -229,9 +229,9 @@ const LatestTickets = () => {
                                         {/* Action Button */}
                                         <div className="mt-auto pt-4">
                                             <Link to={`/seeDetails/${ticket._id}`} className="block w-full">
-                                                <button className="relative w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none btn rounded-2xl font-bold text-lg cursor-pointer transition-all duration-500 overflow-hidden shadow-xl hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 group">
+                                                <button className="relative w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none btn rounded-[10px]  font-bold text-lg cursor-pointer transition-all duration-500 overflow-hidden shadow-xl hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 group">
                                                     <div className="flex items-center justify-center gap-4 relative z-10">
-                                                        <span className="text-lg">View Details</span>
+                                                        <span className="text-lg ">View Details</span>
                                                         <div className="text-xl transition-transform duration-300 group-hover:translate-x-1">
                                                             <FaArrowRight />
                                                         </div>
