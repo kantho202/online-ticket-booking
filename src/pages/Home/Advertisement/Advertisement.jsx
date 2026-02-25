@@ -3,22 +3,17 @@ import useAxiosSecure from '../../../hook/useAxiosecure';
 import { Link } from 'react-router';
 import Loader from '../../../components/Loading/Loading';
 import {
-    FaMapMarkerAlt,
-    FaUsers,
     FaBus,
     FaTrain,
     FaPlane,
     FaShip,
     FaArrowRight,
-    FaCalendarAlt,
-    FaClock,
     FaStar,
     FaWifi,
     FaCoffee,
     FaParking,
     FaTv,
-    FaSnowflake,
-    FaRoute
+    FaSnowflake
 } from 'react-icons/fa';
 import { LuCalendar, LuClock, LuMapPin, LuUsers } from 'react-icons/lu';
 
@@ -42,16 +37,6 @@ const Advertisement = () => {
         Boat: FaShip
     };
 
-    const perkIcons = {
-        AC: FaSnowflake,
-        Breakfast: FaCoffee,
-        WiFi: FaWifi,
-        TV: FaTv,
-        Parking: FaParking,
-        'Air Conditioning': FaSnowflake,
-        'Free WiFi': FaWifi
-    };
-
     const perks = [
         { name: "AC", icon: FaSnowflake },
         { name: "Breakfast", icon: FaCoffee },
@@ -61,18 +46,6 @@ const Advertisement = () => {
         { name: "Air Conditioning", icon: FaSnowflake },
         { name: "Free WiFi", icon: FaWifi }
     ];
-
-    const formatDate = (dateString) => {
-        if (!dateString) return 'Available';
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    };
-
-    const formatTime = (dateString) => {
-        if (!dateString) return 'Flexible';
-        const date = new Date(dateString);
-        return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    };
 
     if (isLoading) {
         return <Loader />;

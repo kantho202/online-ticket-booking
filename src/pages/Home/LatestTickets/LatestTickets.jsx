@@ -2,16 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hook/useAxiosecure';
 import { Link } from 'react-router';
 import {
-    FaMapMarkerAlt,
-    FaUsers,
     FaBus,
     FaTrain,
     FaPlane,
     FaShip,
     FaArrowRight,
-    FaCalendarAlt,
-    FaClock,
-    FaStar,
     FaWifi,
     FaCoffee,
     FaParking,
@@ -38,14 +33,6 @@ const LatestTickets = () => {
         Launch: FaShip
     };
 
-    const perkIcons = {
-        AC: FaSnowflake,
-        Breakfast: FaCoffee,
-        WiFi: FaWifi,
-        TV: FaTv,
-        Parking: FaParking
-    };
-
     const perks = [
         { name: "AC", icon: FaSnowflake },
         { name: "Breakfast", icon: FaCoffee },
@@ -53,24 +40,6 @@ const LatestTickets = () => {
         { name: "TV", icon: FaTv },
         { name: "Parking", icon: FaParking }
     ];
-
-    const formatDate = (dateString) => {
-        if (!dateString) return 'N/A';
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric'
-        });
-    };
-
-    const formatTime = (dateString) => {
-        if (!dateString) return 'N/A';
-        const date = new Date(dateString);
-        return date.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    };
 
     return (
         <div className="min-h-screen  py-24 relative overflow-hidden">

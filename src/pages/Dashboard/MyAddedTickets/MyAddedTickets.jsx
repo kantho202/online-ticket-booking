@@ -27,9 +27,7 @@ import {
     FaCoffee,
     FaParking,
     FaTv,
-    FaSnowflake,
-    FaMapMarkerAlt,
-    FaRoute
+    FaSnowflake
 } from 'react-icons/fa';
 
 const MyAddedTickets = () => {

@@ -6,23 +6,19 @@ import { LuSearch } from "react-icons/lu";
 import Loader from '../../components/Loading/Loading';
 import useRole from '../../hook/useRole';
 import { 
-    FaMapMarkerAlt, 
-    FaUsers, 
     FaBus, 
     FaTrain, 
     FaPlane, 
     FaShip,
     FaArrowRight,
-    FaCalendarAlt,
-    FaClock,
     FaWifi,
     FaCoffee,
     FaParking,
     FaTv,
     FaSnowflake,
-    FaRoute,
     FaSort
 } from 'react-icons/fa';
+import { LuCalendar, LuClock, LuMapPin, LuUsers } from 'react-icons/lu';
 
 const AllTickets = () => {
     const axiosSecure = useAxiosSecure();
@@ -50,28 +46,20 @@ const AllTickets = () => {
         Launch: FaShip
     };
 
-    const perkIcons = {
-        AC: FaSnowflake,
-        Breakfast: FaCoffee,
-        WiFi: FaWifi,
-        TV: FaTv,
-        Parking: FaParking,
-        'Air Conditioning': FaSnowflake,
-        'Free WiFi': FaWifi
-    };
+    const perks = [
+        { name: "AC", icon: FaSnowflake },
+        { name: "Breakfast", icon: FaCoffee },
+        { name: "WiFi", icon: FaWifi },
+        { name: "TV", icon: FaTv },
+        { name: "Parking", icon: FaParking },
+        { name: "Air Conditioning", icon: FaSnowflake },
+        { name: "Free WiFi", icon: FaWifi }
+    ];
 
     const handleSelect = (e) => {
         const sortText = e.target.value;
         setSort(sortText.split("-")[0]);
         setOrder(sortText.split("-")[1]);
-    };
-
-    const formatDateTime = (dateTimeString) => {
-        if (!dateTimeString) return { date: 'Available', time: 'Flexible' };
-        const dateTime = new Date(dateTimeString);
-        const date = dateTime.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        const time = dateTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        return { date, time };
     };
 
     const { role } = useRole();
@@ -88,10 +76,10 @@ const AllTickets = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-16 relative overflow-hidden">
+        <div className="min-h-screen  py-16 relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute inset-0 bg-gradient-radial from-white/10 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 "></div>
             </div>
 
             <div className="max-w-7xl mx-auto px-8 md:px-4 relative z-10" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
@@ -165,140 +153,139 @@ const AllTickets = () => {
                         <p className="text-white/80 text-base">Try adjusting your search criteria or filters</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-3 gap-8 items-stretch lg:grid-cols-2 md:grid-cols-1 md:gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {tickets.map((ticket, index) => {
                             const TransportIcon = transportIcons[ticket.transport] || FaBus;
-                            const { date, time } = formatDateTime(ticket.departureDateTime);
                             
                             return (
-                                <div 
-                                    key={ticket._id} 
-                                    data-aos="fade-up" 
-                                    data-aos-duration="800"
-                                    data-aos-delay={index * 100}
-                                    className="bg-white rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:scale-105 hover:shadow-3xl border border-white/20 flex flex-col h-full group"
-                                >
-                                    <div className="relative h-52 overflow-hidden flex-shrink-0">
-                                        <img src={ticket.image} alt={ticket.ticketTitle} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                                        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/60"></div>
-                                        <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-2xl text-center shadow-xl backdrop-blur-md border-2 border-white/20">
-                                            <div className="text-xl font-bold leading-none">${ticket.price}</div>
-                                            <div className="text-xs opacity-90 mt-1">per person</div>
-                                        </div>
-                                    </div>
+                                <div key={ticket._id} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 100}>
+                                    <div className=" rounded-[10px] overflow-hidden shadow-2xl transition-all duration-500
+                                     hover:-translate-y-4 hover:scale-100 hover:shadow-3xl border border-white/20 flex flex-col h-full group">
+                                        {/* Image Container */}
+                                        <div className="relative h-72 overflow-hidden flex-shrink-0">
+                                            <img
+                                                src={ticket.image}
+                                                alt={ticket.ticketTitle}
+                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/60"></div>
 
-                                    <div className="p-6 flex flex-col flex-1 gap-4">
-                                        <div className="flex justify-between items-start gap-3">
-                                            <h2 className="text-xl font-bold text-gray-900 leading-tight flex-1 min-h-[2.5rem] line-clamp-2">
-                                                {ticket.ticketTitle}
-                                            </h2>
-                                        </div>
-
-                                        <div className="flex items-center justify-between px-4 py-4 bg-gray-50 rounded-xl border border-gray-200">
-                                            <div className="flex items-center gap-2 font-semibold text-gray-700 flex-1 min-w-0">
-                                                <FaMapMarkerAlt className="text-orange-500 text-sm flex-shrink-0" />
-                                                <span className="text-sm truncate">{ticket.from}</span>
-                                            </div>
-                                            <div className="text-orange-500 text-sm font-semibold w-8 flex justify-center flex-shrink-0">
-                                                <FaRoute />
-                                            </div>
-                                            <div className="flex items-center gap-2 font-semibold text-gray-700 flex-1 min-w-0">
-                                                <FaMapMarkerAlt className="text-orange-500 text-sm flex-shrink-0" />
-                                                <span className="text-sm truncate">{ticket.to}</span>
+                                            {/* Price Tag */}
+                                            <div className="absolute top-4 right-4 px-4 py-2 bg-white/95 text-orange-500 rounded-full font-bold text-lg backdrop-blur-md">
+                                                ${ticket.price}
                                             </div>
                                         </div>
 
-                                        <div className="grid grid-cols-2 gap-2">
-                                            <div className="flex items-center gap-2 px-3 py-3 bg-white rounded-lg border-2 border-gray-100 transition-all hover:border-orange-500 hover:-translate-y-1 hover:shadow-md min-h-[55px]">
-                                                <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-orange-600 rounded-md flex items-center justify-center text-white text-xs shadow-md flex-shrink-0">
-                                                    <FaUsers />
+                                        {/* Card Content */}
+                                        <div className="p-8">
+                                            <h3 className="text-2xl font-bold  mb-4">{ticket.ticketTitle}</h3>
+
+                                            <div className="flex items-center gap-4 mb-6 px-4 py-4  rounded-xl">
+                                                <div className="flex items-center gap-2 font-semibold ">
+                                                    <LuMapPin className="text-orange-500" />
+                                                    <span>{ticket.from}</span>
                                                 </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Seats</div>
-                                                    <div className="text-xs text-gray-700 font-semibold truncate">{ticket.ticketQuantity}</div>
+                                                <div className="text-orange-500 font-bold text-xl">→ </div>
+                                                <div className="flex items-center gap-2 font-semibold ">
+                                                    <LuMapPin className="text-orange-500" />
+                                                    <span>{ticket.to}</span>
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-2 px-3 py-3 bg-white rounded-lg border-2 border-gray-100 transition-all hover:border-orange-500 hover:-translate-y-1 hover:shadow-md min-h-[55px]">
-                                                <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-orange-600 rounded-md flex items-center justify-center text-white text-xs shadow-md flex-shrink-0">
-                                                    <FaCalendarAlt />
+                                            <div className="grid grid-cols-2 gap-4 mb-6">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-10 h-10 bg-orange-50 border-2 border-orange-200 rounded-lg flex items-center justify-center text-orange-500 text-lg">
+                                                        <TransportIcon />
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <div className="text-xs font-semibold  uppercase  mb-1">Transport</div>
+                                                        <div className="tracking-wide text-gray-700 text-sm">{ticket.transport}</div>
+                                                    </div>
                                                 </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Date</div>
-                                                    <div className="text-xs text-gray-700 font-semibold truncate">{date}</div>
-                                                </div>
-                                            </div>
 
-                                            <div className="flex items-center gap-2 px-3 py-3 bg-white rounded-lg border-2 border-gray-100 transition-all hover:border-orange-500 hover:-translate-y-1 hover:shadow-md min-h-[55px]">
-                                                <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-orange-600 rounded-md flex items-center justify-center text-white text-xs shadow-md flex-shrink-0">
-                                                    <FaClock />
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-10 h-10 bg-orange-50 border-2 border-orange-200 rounded-lg flex items-center justify-center text-orange-500 text-lg">
+                                                        <LuUsers />
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <div className="text-xs font-semibold  uppercase  mb-1">Quantity</div>
+                                                        <div className="tracking-wide text-gray-700 text-sm">{ticket.ticketQuantity}</div>
+                                                    </div>
                                                 </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Time</div>
-                                                    <div className="text-xs text-gray-700 font-semibold truncate">{time}</div>
-                                                </div>
-                                            </div>
 
-                                            <div className="flex items-center gap-2 px-3 py-3 bg-white rounded-lg border-2 border-gray-100 transition-all hover:border-orange-500 hover:-translate-y-1 hover:shadow-md min-h-[55px]">
-                                                <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-orange-600 rounded-md flex items-center justify-center text-white text-xs shadow-md flex-shrink-0">
-                                                    <TransportIcon />
-                                                </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Type</div>
-                                                    <div className="text-xs text-gray-700 font-semibold truncate">{ticket.transport}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex items-center gap-3 px-3 py-3 bg-gray-50 rounded-xl border border-gray-200 min-h-[60px]">
-                                            <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                                                {ticket.name?.charAt(0)?.toUpperCase() || 'T'}
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-1">Organized by</div>
-                                                <div className="text-sm text-gray-700 font-semibold truncate">
-                                                    {ticket.name?.length > 12 ? 
-                                                        ticket.name : 
-                                                        ticket.name || 'Travel Agent'
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {ticket.perks && ticket.perks.length > 0 && (
-                                            <div className="min-h-[60px] flex flex-col">
-                                                <h4 className="text-xs font-semibold text-gray-700 mb-2">Amenities</h4>
-                                                <div className="flex flex-wrap gap-2 flex-1">
-                                                    {ticket.perks.slice(0, 3).map((perk, index) => {
-                                                        const PerkIcon = perkIcons[perk] || FaWifi;
-                                                        return (
-                                                            <div key={index} className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl text-xs font-semibold shadow-md transition-all hover:-translate-y-1 hover:shadow-lg">
-                                                                <PerkIcon className="text-xs" />
-                                                                <span>{perk}</span>
-                                                            </div>
-                                                        );
-                                                    })}
-                                                    {ticket.perks.length > 3 && (
-                                                        <div className="flex items-center px-2 py-1 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl text-xs font-semibold shadow-md">
-                                                            +{ticket.perks.length - 3}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        <div className="mt-auto pt-3">
-                                            <Link to={`/seeDetails/${ticket._id}`} className="block w-full">
-                                                <button className="relative w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none px-6 py-4 rounded-xl font-bold text-base cursor-pointer transition-all duration-500 overflow-hidden shadow-xl hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 group">
-                                                    <div className="flex items-center justify-center gap-3 relative z-10">
-                                                        <span className="text-base">View Details</span>
-                                                        <div className="text-base transition-transform duration-300 group-hover:translate-x-1">
-                                                            <FaArrowRight />
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-10 h-10 bg-orange-50 border-2 border-orange-200 rounded-lg flex items-center justify-center text-orange-500 text-lg">
+                                                        <LuCalendar />
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <div className="text-xs font-semibold uppercase mb-1">Departure</div>
+                                                        <div className="tracking-wide text-gray-700 text-sm">
+                                                            {new Date(ticket.departureDateTime).toLocaleDateString()}
                                                         </div>
                                                     </div>
-                                                    <div className="absolute top-0 -left-full w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-all duration-700 group-hover:left-full"></div>
-                                                </button>
-                                            </Link>
+                                                </div>
+
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-10 h-10 bg-orange-50 border-2 border-orange-200 rounded-lg flex items-center justify-center text-orange-500 text-lg">
+                                                        <LuClock />
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <div className="text-xs font-semibold uppercase  mb-1">Time</div>
+                                                        <div className="tracking-wide text-gray-700 text-sm">
+                                                            {new Date(ticket.departureDateTime).toLocaleTimeString([], {
+                                                                hour: '2-digit',
+                                                                minute: '2-digit'
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div className="flex items-center gap-4 px-4 py-4  rounded-xl  min-h-[70px]">
+                                                <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-base flex-shrink-0">
+                                                    {ticket.name?.charAt(0)?.toUpperCase() || 'T'}
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="text-xs  font-semibold uppercase tracking-wide mb-1">Organized by</div>
+                                                    <div className="text-sm text-gray-500 font-semibold truncate">
+                                                        {ticket.name?.length > 15
+                                                            ? ticket.name.slice(0, 15) + '...'
+                                                            : ticket.name || 'Travel Agent'
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {ticket.perks && ticket.perks.length > 0 && (
+                                                <div className="mb-6">
+                                                    <h4 className="text-sm font-semibold  mb-3">Included Perks</h4>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {ticket.perks.map((perk, index) => {
+                                                            const PerkIcon = perks.find(p => p.name === perk)?.icon || FaWifi;
+                                                            return (
+                                                                <div key={index} className="flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl text-xs font-semibold">
+                                                                    <PerkIcon className="text-sm" />
+                                                                    {perk}
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Action Button */}
+                                            <div className="mt-auto pt-4">
+                                                <Link to={`/seeDetails/${ticket._id}`} className="block w-full">
+                                                    <button className="relative w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none px-6 py-3 rounded-2xl font-bold text-lg cursor-pointer transition-all duration-500 overflow-hidden shadow-xl hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 group">
+                                                        <div className="flex items-center justify-center gap-4 relative z-10">
+                                                            <span className="text-lg">Book Now</span>
+                                                            <div className="text-xl transition-transform duration-300 group-hover:translate-x-1">
+                                                                <FaArrowRight />
+                                                            </div>
+                                                        </div>
+                                                        <div className="absolute top-0 -left-full w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-all duration-700 group-hover:left-full"></div>
+                                                    </button>
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
