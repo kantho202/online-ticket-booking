@@ -15,8 +15,7 @@ import {
     FaCoffee,
     FaParking,
     FaTv,
-    FaSnowflake,
-    FaSort
+    FaSnowflake
 } from 'react-icons/fa';
 import { LuCalendar, LuClock, LuMapPin, LuUsers } from 'react-icons/lu';
 
@@ -85,7 +84,7 @@ const AllTickets = () => {
             <div className="max-w-7xl mx-auto px-8 md:px-4 relative z-10" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
                 {/* Header Section */}
                 <div className="text-center mb-12">
-                    <h1 className="text-6xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight leading-tight">
+                    <h1 className="text-6xl md:text-4xl font-extrabold  mb-4 tracking-tight leading-tight">
                         All Available Tickets
                     </h1>
                     <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -94,52 +93,106 @@ const AllTickets = () => {
                 </div>
 
                 {/* Filter Section */}
-                <div className="flex justify-between items-center gap-8 mb-12 bg-white/50 backdrop-blur-md p-8 rounded-3xl border border-white/20 md:flex-col md:gap-6">
-                    <div className="flex-1 w-full">
-                        <div className="flex items-center bg-white rounded-full px-2 py-2 shadow-xl border-2 border-transparent transition-all focus-within:border-orange-500 focus-within:shadow-orange">
-                            <div className="px-4 text-gray-600 text-xl">
-                                <LuSearch />
+                <div className=" rounded-2xl shadow-lg border border-gray-100 mb-12 overflow-hidden">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                        {/* Search Input */}
+                        <div className="lg:col-span-6 border-b lg:border-b-0 lg:border-r border-gray-100">
+                            <div className="relative h-full">
+                                <div className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400">
+                                    <LuSearch className="text-xl" />
+                                </div>
+                                <input
+                                    type="search"
+                                    placeholder="Search destinations, cities, or ticket names..."
+                                    className="w-full h-full pl-16 pr-6 py-6 text-base text-gray-700 placeholder:text-gray-400 focus:outline-none bg-transparent"
+                                    onChange={(e) => {
+                                        setSearchText(e.target.value);
+                                        setCurrentPage(1);
+                                    }}
+                                />
                             </div>
-                            <input
-                                onChange={(e) => {
-                                    setSearchText(e.target.value);
-                                    setCurrentPage(1);
-                                }}
-                                type="search"
-                                placeholder="Search destinations, cities, or ticket names..."
-                                className="flex-1 border-none outline-none py-4 text-base bg-transparent placeholder:text-gray-400"
-                            />
+                        </div>
+
+                        {/* Transport Type Select */}
+                        <div className="lg:col-span-3 border-b lg:border-b-0 lg:border-r border-gray-100">
                             <select
                                 value={transportType}
                                 onChange={(e) => {
                                     setTransportType(e.target.value);
                                     setCurrentPage(1);
                                 }}
-                                className="border-none outline-none px-4 py-4 bg-gray-50 rounded-3xl font-semibold text-gray-700 cursor-pointer mr-2 focus:bg-gray-200"
+                                className="w-full h-full px-6 py-6 text-base text-gray-700 font-medium focus:outline-none bg-transparent cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27currentColor%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e')] bg-[length:1.25rem] bg-[right_1.5rem_center] bg-no-repeat"
                             >
                                 <option value="">All Transport</option>
-                                <option value="Bus">🚌 Bus</option>
-                                <option value="Train">🚂 Train</option>
-                                <option value="Plane">✈️ Plane</option>
-                                <option value="Launch">🚢 Launch</option>
+                                <option value="Bus">Bus</option>
+                                <option value="Train">Train</option>
+                                <option value="Plane">Plane</option>
+                                <option value="Launch">Launch</option>
+                            </select>
+                        </div>
+
+                        {/* Sort Select */}
+                        <div className="lg:col-span-3">
+                            <select
+                                defaultValue="price-asc"
+                                onChange={handleSelect}
+                                className="w-full h-full px-6 py-6 text-base text-gray-700 font-medium focus:outline-none bg-transparent cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27currentColor%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e')] bg-[length:1.25rem] bg-[right_1.5rem_center] bg-no-repeat"
+                            >
+                                <option disabled value="">Sort by Price</option>
+                                <option value="price-asc">Price: Low to High</option>
+                                <option value="price-desc">Price: High to Low</option>
                             </select>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-4 bg-white/80 px-6 py-4 rounded-3xl border border-white/30">
-                        <div className="text-gray-700 text-lg">
-                            <FaSort />
+                    {/* Active Filters */}
+                    {(searchText || transportType) && (
+                        <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
+                            <div className="flex flex-wrap items-center gap-3">
+                                <span className="text-sm font-medium text-gray-500">Active:</span>
+                                {searchText && (
+                                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700">
+                                        <span className="text-gray-500">Search:</span>
+                                        <span className="text-orange-600">{searchText}</span>
+                                        <button
+                                            onClick={() => {
+                                                setSearchText('');
+                                                setCurrentPage(1);
+                                            }}
+                                            className="ml-1 text-gray-400 hover:text-gray-600 transition-colors"
+                                        >
+                                            ✕
+                                        </button>
+                                    </div>
+                                )}
+                                {transportType && (
+                                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700">
+                                        <span className="text-gray-500">Transport:</span>
+                                        <span className="text-orange-600">{transportType}</span>
+                                        <button
+                                            onClick={() => {
+                                                setTransportType('');
+                                                setCurrentPage(1);
+                                            }}
+                                            className="ml-1 text-gray-400 hover:text-gray-600 transition-colors"
+                                        >
+                                            ✕
+                                        </button>
+                                    </div>
+                                )}
+                                <button
+                                    onClick={() => {
+                                        setSearchText('');
+                                        setTransportType('');
+                                        setCurrentPage(1);
+                                    }}
+                                    className="ml-auto text-sm font-medium text-orange-600 hover:text-orange-700 transition-colors"
+                                >
+                                    Clear All
+                                </button>
+                            </div>
                         </div>
-                        <select
-                            defaultValue="price-asc"
-                            onChange={handleSelect}
-                            className="border-none outline-none bg-transparent text-gray-800 font-semibold cursor-pointer"
-                        >
-                            <option disabled value="">Sort by price</option>
-                            <option value="price-asc">💰 Low to High</option>
-                            <option value="price-desc">💎 High to Low</option>
-                        </select>
-                    </div>
+                    )}
                 </div>
 
                 {isLoading ? (
