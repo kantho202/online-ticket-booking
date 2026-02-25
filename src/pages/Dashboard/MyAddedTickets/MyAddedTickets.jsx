@@ -188,7 +188,7 @@ const MyAddedTickets = () => {
 
     return (
         <div className="p-8 md:p-4  min-h-screen font-sans">
-            <div className="flex flex-col md:flex-row items-center gap-8 mb-12 p-8  rounded-3xl shadow-md border border-gray-100 md:gap-4">
+            <div className="flex flex-col md:flex-row items-center gap-8 mb-12 p-8  rounded-xl shadow-md border border-gray-100 md:gap-4">
                 <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-4xl text-white shadow-xl flex-shrink-0">
                     <LuTicketsPlane />
                 </div>
@@ -219,7 +219,7 @@ const MyAddedTickets = () => {
                     {tickets.map(ticket => {
                         const TransportIcon = transportIcons[ticket.transport] || FaBus;
                         return (
-                            <div key={ticket._id} className=" rounded-3xl overflow-hidden shadow-md border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                            <div key={ticket._id} className=" rounded-xl overflow-hidden shadow-md border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
                                 <div className="relative h-52 overflow-hidden">
                                     <img src={ticket.image} alt={ticket.ticketTitle} className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" />
                                     <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30"></div>
@@ -234,19 +234,7 @@ const MyAddedTickets = () => {
 
                                 <div className="p-8">
                                     <h3 className="text-2xl font-bold  mb-4">{ticket.ticketTitle}</h3>
-                                    {/* <div className="flex items-center justify-between px-5 py-5  ">
-                                        <div className="flex items-center gap-2 font-semibold  flex-1 min-w-0">
-                                            <FaMapMarkerAlt className="text-orange-500 text-lg flex-shrink-0" />
-                                            <span className="text-sm truncate">{ticket.from || 'Departure'}</span>
-                                        </div>
-                                        <div className="flex items-center justify-center w-10 text-orange-500 text-base font-semibold flex-shrink-0">
-                                            <FaRoute />
-                                        </div>
-                                        <div className="flex items-center gap-2 font-semibold  flex-1 min-w-0">
-                                            <FaMapMarkerAlt className="text-orange-500 text-lg flex-shrink-0" />
-                                            <span className="text-sm truncate">{ticket.to || 'Destination'}</span>
-                                        </div>
-                                    </div> */}
+                                   
                                     <div className="flex items-center gap-4 mb-6 px-4 py-4  rounded-xl">
                                         <div className="flex items-center gap-2 font-semibold ">
                                             <LuMapPin className="text-orange-500" />
