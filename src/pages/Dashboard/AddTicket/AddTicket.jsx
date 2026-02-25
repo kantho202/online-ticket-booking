@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLoaderData, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
@@ -29,7 +29,6 @@ import {
     FaTv,
     FaSnowflake
 } from 'react-icons/fa';
-import styled from 'styled-components';
 
 const AddTicket = () => {
     const serviceCenter = useLoaderData();
@@ -40,7 +39,7 @@ const AddTicket = () => {
     const { user, loading } = useAuth();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);
-    const [selectedImage, setSelectedImage] = useState(null); // Add this state
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const perks = [
         { name: "AC", icon: FaSnowflake, label: "Air Conditioning" },
@@ -57,30 +56,26 @@ const AddTicket = () => {
         { value: "Launch", icon: FaShip, label: "Launch/Ferry" }
     ];
 
-    const { register, handleSubmit, formState: { errors }, setValue, clearErrors } = useForm();
+    const { register, handleSubmit, formState: { errors }, clearErrors } = useForm();
 
-    // Fixed image change handler
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            // Validate file type
             const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
             if (!validTypes.includes(file.type)) {
                 toast.error('Please select a valid image file (JPG, PNG, GIF, WebP)');
                 return;
             }
 
-            // Validate file size (10MB limit)
-            const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+            const maxSize = 10 * 1024 * 1024;
             if (file.size > maxSize) {
                 toast.error('Image size should be less than 10MB');
                 return;
             }
 
             setSelectedImage(file);
-            clearErrors('image'); // Clear any existing image errors
+            clearErrors('image');
 
-            // Create preview
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImagePreview(reader.result);
@@ -90,7 +85,6 @@ const AddTicket = () => {
     };
 
     const handleAddTicket = async (data) => {
-        // Validate image before submission
         if (!selectedImage) {
             toast.error('Please select an image');
             return;
@@ -112,13 +106,11 @@ const AddTicket = () => {
         setIsSubmitting(true);
 
         try {
-            // Create FormData for image upload
             const formData = new FormData();
             formData.append('image', selectedImage);
 
             const imageAPI_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`;
             
-            // Upload image with better error handling
             const imageResponse = await axios.post(imageAPI_URL, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -128,20 +120,15 @@ const AddTicket = () => {
             if (imageResponse.data && imageResponse.data.data && imageResponse.data.data.url) {
                 const imageUrl = imageResponse.data.data.url;
                 
-                // Prepare ticket data
                 const ticketData = {
                     ...data,
                     image: imageUrl,
                     createAt: new Date(),
-                    status: 'pending' // Add default status
+                    status: 'pending'
                 };
 
-                // Remove the file input data since we're using the uploaded URL
                 delete ticketData.imageFile;
 
-                console.log('Ticket data to be saved:', ticketData);
-
-                // Save ticket to database
                 const saveResponse = await axiosSecure.post('/tickets', ticketData);
                 
                 if (saveResponse.data) {
@@ -158,14 +145,11 @@ const AddTicket = () => {
             console.error('Error adding ticket:', error);
             
             if (error.response) {
-                // Server responded with error
                 const errorMessage = error.response.data?.message || 'Server error occurred';
                 toast.error(`Error: ${errorMessage}`);
             } else if (error.request) {
-                // Network error
                 toast.error('Network error. Please check your connection.');
             } else {
-                // Other error
                 toast.error(error.message || 'An unexpected error occurred');
             }
         } finally {
@@ -178,92 +162,99 @@ const AddTicket = () => {
     }
 
     return (
-        <Container>
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-8 md:p-4 font-sans">
             {/* Header Section */}
-            <Header>
-                <HeaderIcon>
+            <div className="flex items-center gap-6 mb-12 p-8 bg-white rounded-3xl shadow-md border border-gray-100 md:flex-col md:text-center md:gap-4 md:p-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-4xl text-white shadow-xl md:w-15 md:h-15 md:text-3xl">
                     <IoTicket />
-                </HeaderIcon>
-                <HeaderContent>
-                    <Title>Add New Ticket</Title>
-                    <Subtitle>Create a new travel ticket for your customers</Subtitle>
-                </HeaderContent>
-            </Header>
+                </div>
+                <div className="flex-1">
+                    <h1 className="text-5xl font-bold text-gray-800 mb-2 bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent md:text-3xl">
+                        Add New Ticket
+                    </h1>
+                    <p className="text-xl text-gray-600 m-0 md:text-base">
+                        Create a new travel ticket for your customers
+                    </p>
+                </div>
+            </div>
 
             {/* Form Container */}
-            <FormContainer>
-                <StyledForm onSubmit={handleSubmit(handleAddTicket)}>
+            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+                <form onSubmit={handleSubmit(handleAddTicket)} className="p-12 md:p-6">
                     {/* Personal Information Section */}
-                    <Section>
-                        <SectionHeader>
-                            <SectionIcon>
+                    <div className="mb-12">
+                        <div className="flex items-center gap-4 mb-8 pb-4 border-b-2 border-gray-100">
+                            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center text-2xl text-white shadow-lg">
                                 <FaUser />
-                            </SectionIcon>
-                            <SectionTitle>Personal Information</SectionTitle>
-                        </SectionHeader>
+                            </div>
+                            <h2 className="text-2xl font-semibold text-gray-800 m-0">Personal Information</h2>
+                        </div>
                         
-                        <FormGrid>
-                            <FormGroup>
-                                <Label>
-                                    <FaUser />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6">
+                            <div className="flex flex-col gap-2">
+                                <label className="flex items-center gap-2 font-semibold text-gray-700 text-sm mb-2">
+                                    <FaUser className="text-orange-500 text-base" />
                                     Full Name
-                                </Label>
-                                <Input
+                                </label>
+                                <input
                                     type="text"
                                     defaultValue={user?.displayName}
                                     readOnly
                                     {...register('name', { required: 'Name is required' })}
                                     placeholder="Enter your full name"
+                                    className="px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all bg-white focus:outline-none focus:border-orange-500 focus:bg-white focus:shadow-orange read-only:bg-gray-50 read-only:text-gray-600 read-only:cursor-not-allowed placeholder:text-gray-400"
                                 />
-                                {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
-                            </FormGroup>
+                                {errors.name && <span className="text-red-500 text-xs mt-1 flex items-center gap-1 before:content-['⚠']">{errors.name.message}</span>}
+                            </div>
 
-                            <FormGroup>
-                                <Label>
-                                    <FaEnvelope />
+                            <div className="flex flex-col gap-2">
+                                <label className="flex items-center gap-2 font-semibold text-gray-700 text-sm mb-2">
+                                    <FaEnvelope className="text-orange-500 text-base" />
                                     Email Address
-                                </Label>
-                                <Input
+                                </label>
+                                <input
                                     type="email"
                                     defaultValue={user?.email}
                                     readOnly
                                     {...register('email', { required: 'Email is required' })}
                                     placeholder="Enter your email"
+                                    className="px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all bg-white focus:outline-none focus:border-orange-500 focus:bg-white focus:shadow-orange read-only:bg-gray-50 read-only:text-gray-600 read-only:cursor-not-allowed placeholder:text-gray-400"
                                 />
-                                {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
-                            </FormGroup>
-                        </FormGrid>
-                    </Section>
+                                {errors.email && <span className="text-red-500 text-xs mt-1 flex items-center gap-1 before:content-['⚠']">{errors.email.message}</span>}
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Ticket Details Section */}
-                    <Section>
-                        <SectionHeader>
-                            <SectionIcon>
+                    <div className="mb-12">
+                        <div className="flex items-center gap-4 mb-8 pb-4 border-b-2 border-gray-100">
+                            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center text-2xl text-white shadow-lg">
                                 <IoTicket />
-                            </SectionIcon>
-                            <SectionTitle>Ticket Details</SectionTitle>
-                        </SectionHeader>
+                            </div>
+                            <h2 className="text-2xl font-semibold text-gray-800 m-0">Ticket Details</h2>
+                        </div>
 
-                        <FormGrid>
-                            <FormGroup className="full-width">
-                                <Label>
-                                    <IoTicket />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6">
+                            <div className="flex flex-col gap-2 md:col-span-2">
+                                <label className="flex items-center gap-2 font-semibold text-gray-700 text-sm mb-2">
+                                    <IoTicket className="text-orange-500 text-base" />
                                     Ticket Title
-                                </Label>
-                                <Input
+                                </label>
+                                <input
                                     type="text"
                                     {...register('ticketTitle', { required: 'Ticket title is required' })}
                                     placeholder="Enter descriptive ticket title"
+                                    className="px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all bg-white focus:outline-none focus:border-orange-500 focus:bg-white focus:shadow-orange placeholder:text-gray-400"
                                 />
-                                {errors.ticketTitle && <ErrorMessage>{errors.ticketTitle.message}</ErrorMessage>}
-                            </FormGroup>
+                                {errors.ticketTitle && <span className="text-red-500 text-xs mt-1 flex items-center gap-1 before:content-['⚠']">{errors.ticketTitle.message}</span>}
+                            </div>
 
-                            <FormGroup>
-                                <Label>
-                                    <IoPricetag />
+                            <div className="flex flex-col gap-2">
+                                <label className="flex items-center gap-2 font-semibold text-gray-700 text-sm mb-2">
+                                    <IoPricetag className="text-orange-500 text-base" />
                                     Price (৳)
-                                </Label>
-                                <Input
+                                </label>
+                                <input
                                     type="number"
                                     min="0"
                                     step="0.01"
@@ -272,16 +263,17 @@ const AddTicket = () => {
                                         min: { value: 1, message: 'Price must be greater than 0' }
                                     })}
                                     placeholder="Enter ticket price"
+                                    className="px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all bg-white focus:outline-none focus:border-orange-500 focus:bg-white focus:shadow-orange placeholder:text-gray-400"
                                 />
-                                {errors.price && <ErrorMessage>{errors.price.message}</ErrorMessage>}
-                            </FormGroup>
+                                {errors.price && <span className="text-red-500 text-xs mt-1 flex items-center gap-1 before:content-['⚠']">{errors.price.message}</span>}
+                            </div>
 
-                            <FormGroup>
-                                <Label>
-                                    <IoTicket />
+                            <div className="flex flex-col gap-2">
+                                <label className="flex items-center gap-2 font-semibold text-gray-700 text-sm mb-2">
+                                    <IoTicket className="text-orange-500 text-base" />
                                     Ticket Quantity
-                                </Label>
-                                <Input
+                                </label>
+                                <input
                                     type="number"
                                     min="1"
                                     {...register('ticketQuantity', { 
@@ -289,719 +281,212 @@ const AddTicket = () => {
                                         min: { value: 1, message: 'Quantity must be at least 1' }
                                     })}
                                     placeholder="Available tickets"
+                                    className="px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all bg-white focus:outline-none focus:border-orange-500 focus:bg-white focus:shadow-orange placeholder:text-gray-400"
                                 />
-                                {errors.ticketQuantity && <ErrorMessage>{errors.ticketQuantity.message}</ErrorMessage>}
-                            </FormGroup>
-                        </FormGrid>
-                    </Section>
+                                {errors.ticketQuantity && <span className="text-red-500 text-xs mt-1 flex items-center gap-1 before:content-['⚠']">{errors.ticketQuantity.message}</span>}
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Travel Information Section */}
-                    <Section>
-                        <SectionHeader>
-                            <SectionIcon>
+                    <div className="mb-12">
+                        <div className="flex items-center gap-4 mb-8 pb-4 border-b-2 border-gray-100">
+                            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center text-2xl text-white shadow-lg">
                                 <IoLocation />
-                            </SectionIcon>
-                            <SectionTitle>Travel Information</SectionTitle>
-                        </SectionHeader>
+                            </div>
+                            <h2 className="text-2xl font-semibold text-gray-800 m-0">Travel Information</h2>
+                        </div>
 
-                        <FormGrid>
-                            <FormGroup>
-                                <Label>
-                                    <IoLocation />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6">
+                            <div className="flex flex-col gap-2">
+                                <label className="flex items-center gap-2 font-semibold text-gray-700 text-sm mb-2">
+                                    <IoLocation className="text-orange-500 text-base" />
                                     From
-                                </Label>
-                                <Select
+                                </label>
+                                <select
                                     {...register('from', { required: 'Departure location is required' })}
+                                    className="px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all bg-white cursor-pointer focus:outline-none focus:border-orange-500 focus:bg-white focus:shadow-orange"
                                 >
                                     <option value="">Select departure location</option>
                                     {regions.map((region, i) => (
                                         <option key={i} value={region}>{region}</option>
                                     ))}
-                                </Select>
-                                {errors.from && <ErrorMessage>{errors.from.message}</ErrorMessage>}
-                            </FormGroup>
+                                </select>
+                                {errors.from && <span className="text-red-500 text-xs mt-1 flex items-center gap-1 before:content-['⚠']">{errors.from.message}</span>}
+                            </div>
 
-                            <FormGroup>
-                                <Label>
-                                    <IoLocation />
+                            <div className="flex flex-col gap-2">
+                                <label className="flex items-center gap-2 font-semibold text-gray-700 text-sm mb-2">
+                                    <IoLocation className="text-orange-500 text-base" />
                                     To
-                                </Label>
-                                <Select
+                                </label>
+                                <select
                                     {...register('to', { required: 'Destination is required' })}
+                                    className="px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all bg-white cursor-pointer focus:outline-none focus:border-orange-500 focus:bg-white focus:shadow-orange"
                                 >
                                     <option value="">Select destination</option>
                                     {regions.map((region, i) => (
                                         <option key={i} value={region}>{region}</option>
                                     ))}
-                                </Select>
-                                {errors.to && <ErrorMessage>{errors.to.message}</ErrorMessage>}
-                            </FormGroup>
+                                </select>
+                                {errors.to && <span className="text-red-500 text-xs mt-1 flex items-center gap-1 before:content-['⚠']">{errors.to.message}</span>}
+                            </div>
 
-                            <FormGroup>
-                                <Label>
-                                    <IoCalendar />
+                            <div className="flex flex-col gap-2">
+                                <label className="flex items-center gap-2 font-semibold text-gray-700 text-sm mb-2">
+                                    <IoCalendar className="text-orange-500 text-base" />
                                     Departure Date & Time
-                                </Label>
-                                <Input
+                                </label>
+                                <input
                                     type="datetime-local"
                                     {...register('departureDateTime', { required: 'Departure date and time is required' })}
+                                    className="px-5 py-4 border-2 border-gray-200 rounded-xl text-base transition-all bg-white focus:outline-none focus:border-orange-500 focus:bg-white focus:shadow-orange"
                                 />
-                                {errors.departureDateTime && <ErrorMessage>{errors.departureDateTime.message}</ErrorMessage>}
-                            </FormGroup>
+                                {errors.departureDateTime && <span className="text-red-500 text-xs mt-1 flex items-center gap-1 before:content-['⚠']">{errors.departureDateTime.message}</span>}
+                            </div>
 
-                            <FormGroup>
-                                <Label>Transport Type</Label>
-                                <TransportGrid>
+                            <div className="flex flex-col gap-2">
+                                <label className="font-semibold text-gray-700 text-sm mb-2">Transport Type</label>
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
                                     {transportTypes.map((transport) => (
-                                        <TransportOption key={transport.value}>
-                                            <TransportRadio
+                                        <div key={transport.value} className="relative">
+                                            <input
                                                 type="radio"
                                                 value={transport.value}
                                                 {...register('transport', { required: 'Transport type is required' })}
                                                 id={transport.value}
+                                                className="absolute opacity-0 cursor-pointer peer"
                                             />
-                                            <TransportLabel htmlFor={transport.value}>
-                                                <transport.icon />
+                                            <label 
+                                                htmlFor={transport.value}
+                                                className="flex flex-col items-center gap-2 px-4 py-4 border-2 border-gray-200 rounded-xl cursor-pointer transition-all bg-white text-sm font-medium hover:border-orange-500 hover:bg-orange-50 peer-checked:bg-gradient-to-br peer-checked:from-orange-500 peer-checked:to-orange-600 peer-checked:text-white peer-checked:border-orange-500 peer-checked:-translate-y-1 peer-checked:shadow-xl"
+                                            >
+                                                <transport.icon className="text-2xl" />
                                                 {transport.label}
-                                            </TransportLabel>
-                                        </TransportOption>
+                                            </label>
+                                        </div>
                                     ))}
-                                </TransportGrid>
-                                {errors.transport && <ErrorMessage>{errors.transport.message}</ErrorMessage>}
-                            </FormGroup>
-                        </FormGrid>
-                    </Section>
+                                </div>
+                                {errors.transport && <span className="text-red-500 text-xs mt-1 flex items-center gap-1 before:content-['⚠']">{errors.transport.message}</span>}
+                            </div>
+                        </div>
+                    </div>
 
-                    {/* Image Upload Section - FIXED */}
-                    <Section>
-                        <SectionHeader>
-                            <SectionIcon>
+                    {/* Image Upload Section */}
+                    <div className="mb-12">
+                        <div className="flex items-center gap-4 mb-8 pb-4 border-b-2 border-gray-100">
+                            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center text-2xl text-white shadow-lg">
                                 <IoCloudUpload />
-                            </SectionIcon>
-                            <SectionTitle>Ticket Image</SectionTitle>
-                        </SectionHeader>
+                            </div>
+                            <h2 className="text-2xl font-semibold text-gray-800 m-0">Ticket Image</h2>
+                        </div>
 
-                        <ImageUploadContainer>
-                            <ImageUploadArea>
-                                {/* Hidden file input */}
-                                <HiddenFileInput
+                        <div className="mt-4">
+                            <div className="relative">
+                                <input
                                     type="file"
                                     accept="image/*"
                                     onChange={handleImageChange}
                                     id="image-upload"
+                                    className="hidden"
                                 />
                                 
-                                <ImageUploadLabel htmlFor="image-upload">
+                                <label htmlFor="image-upload" className="block cursor-pointer">
                                     {imagePreview ? (
-                                        <ImagePreview>
-                                            <img src={imagePreview} alt="Preview" />
-                                            <ImageOverlay>
-                                                <IoCloudUpload />
+                                        <div className="relative w-full h-52 rounded-xl overflow-hidden border-2 border-dashed border-gray-200 group">
+                                            <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                            <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-2 text-white opacity-0 transition-opacity group-hover:opacity-100">
+                                                <IoCloudUpload className="text-3xl" />
                                                 <span>Click to change image</span>
-                                            </ImageOverlay>
-                                        </ImagePreview>
+                                            </div>
+                                        </div>
                                     ) : (
-                                        <UploadPlaceholder>
-                                            <IoCloudUpload />
-                                            <UploadText>
-                                                <strong>Click to upload</strong> or drag and drop
-                                            </UploadText>
-                                            <UploadSubtext>PNG, JPG, GIF up to 10MB</UploadSubtext>
-                                        </UploadPlaceholder>
+                                        <div className="flex flex-col items-center justify-center gap-4 px-8 py-12 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 transition-all hover:border-orange-500 hover:bg-orange-50">
+                                            <IoCloudUpload className="text-5xl text-gray-400" />
+                                            <div className="text-lg text-gray-700 text-center">
+                                                <strong className="text-orange-500">Click to upload</strong> or drag and drop
+                                            </div>
+                                            <div className="text-sm text-gray-600">PNG, JPG, GIF up to 10MB</div>
+                                        </div>
                                     )}
-                                </ImageUploadLabel>
-                            </ImageUploadArea>
-                            {!selectedImage && <ErrorMessage>Ticket image is required</ErrorMessage>}
-                        </ImageUploadContainer>
-                    </Section>
+                                </label>
+                            </div>
+                            {!selectedImage && <span className="text-red-500 text-xs mt-1 flex items-center gap-1 before:content-['⚠']">Ticket image is required</span>}
+                        </div>
+                    </div>
 
                     {/* Perks Section */}
-                    <Section>
-                        <SectionHeader>
-                            <SectionIcon>
+                    <div className="mb-12">
+                        <div className="flex items-center gap-4 mb-8 pb-4 border-b-2 border-gray-100">
+                            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center text-2xl text-white shadow-lg">
                                 <IoCheckmarkCircle />
-                            </SectionIcon>
-                            <SectionTitle>Available Perks</SectionTitle>
-                            <SectionSubtitle>Select the amenities included with this ticket</SectionSubtitle>
-                        </SectionHeader>
+                            </div>
+                            <h2 className="text-2xl font-semibold text-gray-800 m-0">Available Perks</h2>
+                            <p className="text-sm text-gray-600 m-0 ml-auto">Select the amenities included with this ticket</p>
+                        </div>
 
-                        <PerksGrid>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                             {perks.map((perk) => (
-                                <PerkOption key={perk.name}>
-                                    <PerkCheckbox
+                                <div key={perk.name} className="relative">
+                                    <input
                                         type="checkbox"
                                         value={perk.name}
                                         {...register("perks", { required: 'Please select at least one perk' })}
                                         id={perk.name}
+                                        className="absolute opacity-0 cursor-pointer peer"
                                     />
-                                    <PerkLabel htmlFor={perk.name}>
-                                        <PerkIcon>
+                                    <label 
+                                        htmlFor={perk.name}
+                                        className="flex items-center gap-4 px-4 py-4 border-2 border-gray-200 rounded-xl cursor-pointer transition-all bg-white hover:border-orange-500 hover:bg-orange-50 peer-checked:bg-gradient-to-br peer-checked:from-orange-500 peer-checked:to-orange-600 peer-checked:text-white peer-checked:border-orange-500 peer-checked:-translate-y-1 peer-checked:shadow-xl"
+                                    >
+                                        <div className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center text-xl text-gray-600 transition-all peer-checked:text-white peer-checked:bg-white/20">
                                             <perk.icon />
-                                        </PerkIcon>
-                                        <PerkContent>
-                                            <PerkName>{perk.name}</PerkName>
-                                            <PerkDescription>{perk.label}</PerkDescription>
-                                        </PerkContent>
-                                    </PerkLabel>
-                                </PerkOption>
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="font-semibold text-gray-700 mb-1 peer-checked:text-white">{perk.name}</div>
+                                            <div className="text-xs text-gray-600 peer-checked:text-white/90">{perk.label}</div>
+                                        </div>
+                                    </label>
+                                </div>
                             ))}
-                        </PerksGrid>
-                        {errors.perks && <ErrorMessage>{errors.perks.message}</ErrorMessage>}
-                    </Section>
+                        </div>
+                        {errors.perks && <span className="text-red-500 text-xs mt-1 flex items-center gap-1 before:content-['⚠']">{errors.perks.message}</span>}
+                    </div>
 
                     {/* Submit Button */}
-                    <SubmitSection>
-                        <SubmitButton type="submit" disabled={isSubmitting || !selectedImage}>
+                    <div className="flex flex-col items-center gap-4 mt-12 pt-8 border-t-2 border-gray-100">
+                        <button 
+                            type="submit" 
+                            disabled={isSubmitting || !selectedImage}
+                            className="flex items-center gap-3 px-12 py-5 bg-gradient-to-br from-orange-500 to-orange-600 text-white border-none rounded-full text-lg font-semibold cursor-pointer transition-all shadow-xl hover:not(:disabled):-translate-y-1 hover:not(:disabled):shadow-2xl disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none md:w-full md:justify-center"
+                        >
                             {isSubmitting ? (
                                 <>
-                                    <LoadingSpinner />
+                                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                                     Adding Ticket...
                                 </>
                             ) : (
                                 <>
-                                    <IoTicket />
+                                    <IoTicket className="text-xl" />
                                     Add Ticket
                                 </>
                             )}
-                        </SubmitButton>
-                        <SubmitNote>
-                            <IoInformationCircle />
+                        </button>
+                        <div className="flex items-center gap-2 text-sm text-gray-600 text-center">
+                            <IoInformationCircle className="text-orange-500 text-base" />
                             Your ticket will be reviewed before being published
-                        </SubmitNote>
-                    </SubmitSection>
-                </StyledForm>
-            </FormContainer>
-        </Container>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <style jsx>{`
+                .focus\\:shadow-orange:focus {
+                    box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+                }
+            `}</style>
+        </div>
     );
 };
-
-// Add this new styled component for the hidden file input
-const HiddenFileInput = styled.input`
-    display: none;
-`;
-
-// Keep all your existing styled components here...
-const Container = styled.div`
-    min-height: 100vh;
-    background: ;
-    padding: 2rem;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-
-    @media (max-width: 768px) {
-        padding: 1rem;
-    }
-`;
-
-const Header = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-    padding: 2rem;
-    background: ;
-    border-radius: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #f1f5f9;
-
-    @media (max-width: 768px) {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-        padding: 1.5rem;
-    }
-`;
-
-const HeaderIcon = styled.div`
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    color: white;
-    box-shadow: 0 8px 25px rgba(255, 140, 66, 0.3);
-
-    @media (max-width: 768px) {
-        width: 60px;
-        height: 60px;
-        font-size: 2rem;
-    }
-`;
-
-const HeaderContent = styled.div`
-    flex: 1;
-`;
-
-const Title = styled.h1`
-    font-size: 3rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-
-    @media (max-width: 768px) {
-        font-size: 2rem;
-    }
-`;
-
-const Subtitle = styled.p`
-    font-size: 1.2rem;
-    color: #64748b;
-    margin: 0;
-
-    @media (max-width: 768px) {
-        font-size: 1rem;
-    }
-`;
-
-const FormContainer = styled.div`
-    background: ;
-    border-radius: 24px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f1f5f9;
-    overflow: hidden;
-`;
-
-const StyledForm = styled.form`
-    padding: 3rem;
-
-    @media (max-width: 768px) {
-        padding: 1.5rem;
-    }
-`;
-
-const Section = styled.div`
-    margin-bottom: 3rem;
-    
-    &:last-child {
-        margin-bottom: 0;
-    }
-`;
-
-const SectionHeader = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid #f1f5f9;
-`;
-
-const SectionIcon = styled.div`
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: white;
-    box-shadow: 0 4px 15px rgba(255, 140, 66, 0.3);
-`;
-
-const SectionTitle = styled.h2`
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #;
-    margin: 0;
-`;
-
-const SectionSubtitle = styled.p`
-    font-size: 0.9rem;
-    color: #;
-    margin: 0;
-    margin-left: auto;
-`;
-
-const FormGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-
-    .full-width {
-        grid-column: 1 / -1;
-    }
-
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-`;
-
-const FormGroup = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-`;
-
-const Label = styled.label`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 600;
-    color: #;
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-
-    svg {
-        color: #ff8c42;
-        font-size: 1rem;
-    }
-`;
-
-const Input = styled.input`
-    padding: 1rem 1.25rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    background: #;
-
-    &:focus {
-        outline: none;
-        border-color: #ff8c42;
-        background: ;
-        box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
-    }
-
-    &:read-only {
-        background: #;
-        color: #64748b;
-        cursor: not-allowed;
-    }
-
-    &::placeholder {
-        color: #94a3b8;
-    }
-`;
-
-const Select = styled.select`
-    padding: 1rem 1.25rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    background: #;
-    cursor: pointer;
-
-    &:focus {
-        outline: none;
-        border-color: #ff8c42;
-        background: ;
-        box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
-    }
-
-    option {
-        padding: 0.5rem;
-    }
-`;
-
-const TransportGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 1rem;
-    margin-top: 0.5rem;
-`;
-
-const TransportOption = styled.div`
-    position: relative;
-`;
-
-const TransportRadio = styled.input`
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-
-    &:checked + label {
-        background: linear-gradient(135deg, #ff8c42, #ff6b35);
-        color: white;
-        border-color: #ff8c42;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(255, 140, 66, 0.3);
-    }
-`;
-
-const TransportLabel = styled.label`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: #;
-    font-size: 0.9rem;
-    font-weight: 500;
-
-    &:hover {
-        border-color: #ff8c42;
-        background: ;
-    }
-
-    svg {
-        font-size: 1.5rem;
-    }
-`;
-
-const ImageUploadContainer = styled.div`
-    margin-top: 1rem;
-`;
-
-const ImageUploadArea = styled.div`
-    position: relative;
-`;
-
-const ImageUploadLabel = styled.label`
-    display: block;
-    cursor: pointer;
-`;
-
-const ImagePreview = styled.div`
-    position: relative;
-    width: 100%;
-    height: 200px;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 2px dashed #e2e8f0;
-
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-`;
-
-const ImageOverlay = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: ;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    color: white;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-
-    ${ImagePreview}:hover & {
-        opacity: 1;
-    }
-
-    svg {
-        font-size: 2rem;
-    }
-`;
-
-const UploadPlaceholder = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 3rem 2rem;
-    border: 2px dashed #cbd5e1;
-    border-radius: 12px;
-    background: #;
-    transition: all 0.2s ease;
-
-    &:hover {
-        border-color: #ff8c42;
-        background: ;
-    }
-
-    svg {
-        font-size: 3rem;
-        color: #94a3b8;
-    }
-`;
-
-const UploadText = styled.div`
-    font-size: 1.1rem;
-    color: #374151;
-    text-align: center;
-
-    strong {
-        color: #ff8c42;
-    }
-`;
-
-const UploadSubtext = styled.div`
-    font-size: 0.9rem;
-    color: #64748b;
-`;
-
-const PerksGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-`;
-
-const PerkOption = styled.div`
-    position: relative;
-`;
-
-const PerkCheckbox = styled.input`
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-
-    &:checked + label {
-        background: linear-gradient(135deg, #ff8c42, #ff6b35);
-        color: white;
-        border-color: #ff8c42;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(255, 140, 66, 0.3);
-
-        svg {
-            color: ;
-        }
-    }
-`;
-
-const PerkLabel = styled.label`
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: #;
-
-    &:hover {
-        border-color: #ff8c42;
-        background: ;
-    }
-`;
-
-const PerkIcon = styled.div`
-    width: 40px;
-    height: 40px;
-    background: #e2e8f0;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    color: #64748b;
-    transition: all 0.2s ease;
-`;
-
-const PerkContent = styled.div`
-    flex: 1;
-`;
-
-const PerkName = styled.div`
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 0.25rem;
-`;
-
-const PerkDescription = styled.div`
-    font-size: 0.8rem;
-    color: #64748b;
-`;
-
-const ErrorMessage = styled.span`
-    color: #ef4444;
-    font-size: 0.8rem;
-    margin-top: 0.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-
-    &::before {
-        content: '⚠';
-        font-size: 0.9rem;
-    }
-`;
-
-const SubmitSection = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 2px solid #f1f5f9;
-`;
-
-const SubmitButton = styled.button`
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1.25rem 3rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 25px rgba(255, 140, 66, 0.3);
-
-    &:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 35px rgba(255, 140, 66, 0.4);
-    }
-
-    &:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-        transform: none;
-    }
-
-    svg {
-        font-size: 1.3rem;
-    }
-
-    @media (max-width: 768px) {
-        width: 100%;
-        justify-content: center;
-    }
-`;
-
-const LoadingSpinner = styled.div`
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top: 2px solid white;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-`;
-
-const SubmitNote = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-    color: #64748b;
-    text-align: center;
-
-    svg {
-        color: #ff8c42;
-        font-size: 1rem;
-    }
-`;
 
 export default AddTicket;

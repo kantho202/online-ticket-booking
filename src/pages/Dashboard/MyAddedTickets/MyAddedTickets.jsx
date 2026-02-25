@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import useAuth from '../../../hook/useAuth';
 import useAxiosSecure from '../../../hook/useAxiosecure';
 import Swal from 'sweetalert2';
@@ -9,17 +9,14 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { 
     LuTicketsPlane, 
-    // LuEdit, 
     LuTrash2, 
     LuCalendar, 
     LuMapPin, 
     LuUsers, 
-    LuDollarSign,
     LuClock,
     LuImage,
     LuX,
-    LuCheck,
-    // LuAlertCircle
+    LuCheck
 } from 'react-icons/lu';
 import { 
     FaBus, 
@@ -32,7 +29,6 @@ import {
     FaTv,
     FaSnowflake
 } from 'react-icons/fa';
-import styled from 'styled-components';
 
 const MyAddedTickets = () => {
     const { user } = useAuth();
@@ -71,7 +67,6 @@ const MyAddedTickets = () => {
         setSelectedTicket(ticket);
         setImagePreview(ticket.image);
         
-        // Pre-fill form with existing data
         setValue('name', ticket.name);
         setValue('ticketTitle', ticket.ticketTitle);
         setValue('departureDateTime', ticket.departureDateTime);
@@ -82,7 +77,6 @@ const MyAddedTickets = () => {
         setValue('from', ticket.from);
         setValue('to', ticket.to);
         
-        // Set perks checkboxes
         if (ticket.perks) {
             setValue('perks', ticket.perks);
         }
@@ -172,9 +166,9 @@ const MyAddedTickets = () => {
 
     const getStatusColor = (status) => {
         switch (status) {
-            case 'approved': return '#10b981';
-            case 'rejected': return '#ef4444';
-            default: return '#f59e0b';
+            case 'approved': return 'bg-green-500';
+            case 'rejected': return 'bg-red-500';
+            default: return 'bg-yellow-500';
         }
     };
 
@@ -191,305 +185,332 @@ const MyAddedTickets = () => {
     }
 
     return (
-        <Container className='p-4 lg:p-8'>
-            {/* Header */}
-            <Header>
-                <HeaderIcon>
+        <div className="p-8 md:p-4 bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen font-sans">
+            <div className="flex items-center gap-8 mb-12 p-8 bg-white rounded-3xl shadow-md border border-gray-100 md:flex-col md:text-center md:gap-4">
+                <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-4xl text-white shadow-xl">
                     <LuTicketsPlane />
-                </HeaderIcon>
-                <HeaderContent>
-                    <Title>My Added Tickets</Title>
-                    <Subtitle>Manage and track your ticket listings</Subtitle>
-                </HeaderContent>
-                <StatsCard>
-                    <StatsNumber>{tickets.length}</StatsNumber>
-                    <StatsLabel>Total Tickets</StatsLabel>
-                </StatsCard>
-            </Header>
+                </div>
+                <div className="flex-1">
+                    <h1 className="text-4xl font-bold text-gray-800 mb-2 bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+                        My Added Tickets
+                    </h1>
+                    <p className="text-lg text-gray-600 m-0">
+                        Manage and track your ticket listings
+                    </p>
+                </div>
+                <div className="text-center px-6 py-6 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl text-white min-w-[120px]">
+                    <div className="text-3xl font-bold mb-1">{tickets.length}</div>
+                    <div className="text-sm opacity-90">Total Tickets</div>
+                </div>
+            </div>
 
-            {/* Tickets Grid */}
             {tickets.length === 0 ? (
-                <EmptyState>
-                    <EmptyIcon>
+                <div className="text-center p-16 md:p-8 bg-white rounded-3xl shadow-md">
+                    <div className="w-25 h-25 bg-gray-100 rounded-full flex items-center justify-center text-5xl text-gray-400 mx-auto mb-8">
                         <LuTicketsPlane />
-                    </EmptyIcon>
-                    <EmptyTitle>No Tickets Added Yet</EmptyTitle>
-                    <EmptySubtitle>Start by adding your first ticket to get bookings</EmptySubtitle>
-                </EmptyState>
+                    </div>
+                    <h2 className="text-2xl font-semibold text-gray-700 mb-2">No Tickets Added Yet</h2>
+                    <p className="text-gray-600 text-base">Start by adding your first ticket to get bookings</p>
+                </div>
             ) : (
-                <TicketsGrid>
-                    {tickets.map(ticket => (
-                        <TicketCard key={ticket._id}>
-                            <ImageContainer>
-                                <TicketImage src={ticket.image} alt={ticket.ticketTitle} />
-                                <ImageOverlay />
-                                <StatusBadge color={getStatusColor(ticket.status)}>
-                                    {getStatusIcon(ticket.status)}
-                                    {ticket.status || 'pending'}
-                                </StatusBadge>
-                                <PriceTag>${ticket.price}</PriceTag>
-                            </ImageContainer>
+                <div className="grid grid-cols-3 gap-8 lg:grid-cols-2 md:grid-cols-1">
+                    {tickets.map(ticket => {
+                        const TransportIcon = transportIcons[ticket.transport] || FaBus;
+                        return (
+                            <div key={ticket._id} className="bg-white rounded-3xl overflow-hidden shadow-md border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                                <div className="relative h-52 overflow-hidden">
+                                    <img src={ticket.image} alt={ticket.ticketTitle} className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" />
+                                    <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30"></div>
+                                    <div className={`absolute top-4 left-4 flex items-center gap-2 px-4 py-2 ${getStatusColor(ticket.status)} text-white rounded-full text-xs font-semibold capitalize backdrop-blur-md`}>
+                                        {getStatusIcon(ticket.status)}
+                                        {ticket.status || 'pending'}
+                                    </div>
+                                    <div className="absolute top-4 right-4 px-4 py-2 bg-white/95 text-orange-500 rounded-full font-bold text-lg backdrop-blur-md">
+                                        ${ticket.price}
+                                    </div>
+                                </div>
 
-                            <CardContent>
-                                <TicketTitle>{ticket.ticketTitle}</TicketTitle>
-                                
-                                <RouteInfo>
-                                    <RouteItem>
-                                        <LuMapPin />
-                                        <span>{ticket.from}</span>
-                                    </RouteItem>
-                                    <RouteDivider>→</RouteDivider>
-                                    <RouteItem>
-                                        <LuMapPin />
-                                        <span>{ticket.to}</span>
-                                    </RouteItem>
-                                </RouteInfo>
-
-                                <InfoGrid>
-                                    <InfoItem>
-                                        <InfoIcon>
-                                            {React.createElement(transportIcons[ticket.transport] || FaBus)}
-                                        </InfoIcon>
-                                        <InfoText>
-                                            <InfoLabel>Transport</InfoLabel>
-                                            <InfoValue>{ticket.transport}</InfoValue>
-                                        </InfoText>
-                                    </InfoItem>
+                                <div className="p-8">
+                                    <h3 className="text-2xl font-bold text-gray-800 mb-4">{ticket.ticketTitle}</h3>
                                     
-                                    <InfoItem>
-                                        <InfoIcon>
-                                            <LuUsers />
-                                        </InfoIcon>
-                                        <InfoText>
-                                            <InfoLabel>Quantity</InfoLabel>
-                                            <InfoValue>{ticket.ticketQuantity}</InfoValue>
-                                        </InfoText>
-                                    </InfoItem>
+                                    <div className="flex items-center gap-4 mb-6 px-4 py-4 bg-gray-50 rounded-xl">
+                                        <div className="flex items-center gap-2 font-semibold text-gray-700">
+                                            <LuMapPin className="text-orange-500" />
+                                            <span>{ticket.from}</span>
+                                        </div>
+                                        <div className="text-orange-500 font-bold text-xl">→</div>
+                                        <div className="flex items-center gap-2 font-semibold text-gray-700">
+                                            <LuMapPin className="text-orange-500" />
+                                            <span>{ticket.to}</span>
+                                        </div>
+                                    </div>
 
-                                    <InfoItem>
-                                        <InfoIcon>
-                                            <LuCalendar />
-                                        </InfoIcon>
-                                        <InfoText>
-                                            <InfoLabel>Departure</InfoLabel>
-                                            <InfoValue>
-                                                {new Date(ticket.departureDateTime).toLocaleDateString()}
-                                            </InfoValue>
-                                        </InfoText>
-                                    </InfoItem>
+                                    <div className="grid grid-cols-2 gap-4 mb-6">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 bg-orange-50 border-2 border-orange-200 rounded-lg flex items-center justify-center text-orange-500 text-lg">
+                                                <TransportIcon />
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Transport</div>
+                                                <div className="font-semibold text-gray-700 text-sm">{ticket.transport}</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 bg-orange-50 border-2 border-orange-200 rounded-lg flex items-center justify-center text-orange-500 text-lg">
+                                                <LuUsers />
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Quantity</div>
+                                                <div className="font-semibold text-gray-700 text-sm">{ticket.ticketQuantity}</div>
+                                            </div>
+                                        </div>
 
-                                    <InfoItem>
-                                        <InfoIcon>
-                                            <LuClock />
-                                        </InfoIcon>
-                                        <InfoText>
-                                            <InfoLabel>Time</InfoLabel>
-                                            <InfoValue>
-                                                {new Date(ticket.departureDateTime).toLocaleTimeString([], {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit'
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 bg-orange-50 border-2 border-orange-200 rounded-lg flex items-center justify-center text-orange-500 text-lg">
+                                                <LuCalendar />
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Departure</div>
+                                                <div className="font-semibold text-gray-700 text-sm">
+                                                    {new Date(ticket.departureDateTime).toLocaleDateString()}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 bg-orange-50 border-2 border-orange-200 rounded-lg flex items-center justify-center text-orange-500 text-lg">
+                                                <LuClock />
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Time</div>
+                                                <div className="font-semibold text-gray-700 text-sm">
+                                                    {new Date(ticket.departureDateTime).toLocaleTimeString([], {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    })}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {ticket.perks && ticket.perks.length > 0 && (
+                                        <div className="mb-6">
+                                            <h4 className="text-sm font-semibold text-gray-700 mb-3">Included Perks</h4>
+                                            <div className="flex flex-wrap gap-2">
+                                                {ticket.perks.map((perk, index) => {
+                                                    const PerkIcon = perks.find(p => p.name === perk)?.icon || FaWifi;
+                                                    return (
+                                                        <div key={index} className="flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl text-xs font-semibold">
+                                                            <PerkIcon className="text-sm" />
+                                                            {perk}
+                                                        </div>
+                                                    );
                                                 })}
-                                            </InfoValue>
-                                        </InfoText>
-                                    </InfoItem>
-                                </InfoGrid>
+                                            </div>
+                                        </div>
+                                    )}
 
-                                {ticket.perks && ticket.perks.length > 0 && (
-                                    <PerksContainer>
-                                        <PerksTitle>Included Perks</PerksTitle>
-                                        <PerksGrid>
-                                            {ticket.perks.map((perk, index) => (
-                                                <PerkTag key={index}>
-                                                    {React.createElement(
-                                                        perks.find(p => p.name === perk)?.icon || FaWifi
-                                                    )}
-                                                    {perk}
-                                                </PerkTag>
-                                            ))}
-                                          
-                                        </PerksGrid>
-                                    </PerksContainer>
-                                )}
-
-                                <ActionButtons>
-                                    <UpdateButton
-                                        disabled={ticket.status === 'rejected'}
-                                        onClick={() => handleTicketShowModal(ticket)}
-                                    >
-                                        {/* <LuEdit /> */}
-                                        Update
-                                    </UpdateButton>
-                                    <DeleteButton
-                                        disabled={ticket.status === 'rejected'}
-                                        onClick={() => handleTicketRemove(ticket._id)}
-                                    >
-                                        <LuTrash2 />
-                                        Delete
-                                    </DeleteButton>
-                                </ActionButtons>
-                            </CardContent>
-                        </TicketCard>
-                    ))}
-                </TicketsGrid>
+                                    <div className="flex gap-4">
+                                        <button
+                                            disabled={ticket.status === 'rejected'}
+                                            onClick={() => handleTicketShowModal(ticket)}
+                                            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none rounded-xl font-semibold cursor-pointer transition-all hover:not(:disabled):-translate-y-1 hover:not(:disabled):shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                                        >
+                                            Update
+                                        </button>
+                                        <button
+                                            disabled={ticket.status === 'rejected'}
+                                            onClick={() => handleTicketRemove(ticket._id)}
+                                            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-white text-red-500 border-2 border-red-500 rounded-xl font-semibold cursor-pointer transition-all hover:not(:disabled):bg-red-500 hover:not(:disabled):text-white hover:not(:disabled):-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                                        >
+                                            <LuTrash2 />
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
             )}
 
-            {/* Update Modal */}
-            {selectedTicket && (
-                <Modal ref={ticketModalRef}>
-                    <ModalContent>
-                        <ModalHeader>
-                            <ModalTitle>Update Ticket</ModalTitle>
-                            <CloseButton onClick={() => ticketModalRef.current.close()}>
-                                <LuX />
-                            </CloseButton>
-                        </ModalHeader>
 
-                        <ModalBody>
-                            <UpdateForm onSubmit={handleSubmit(handleTicketUpdate)}>
-                                <FormGrid>
-                                    {/* Left Column */}
-                                    <FormColumn>
-                                        <FormGroup>
-                                            <Label>Ticket Title</Label>
-                                            <Input
+            {selectedTicket && (
+                <dialog ref={ticketModalRef} className="p-0 border-none rounded-3xl bg-transparent max-w-[90vw] max-h-[90vh] w-[1000px] backdrop:bg-black/50 backdrop:backdrop-blur-sm">
+                    <div className="bg-white rounded-3xl overflow-hidden shadow-2xl">
+                        <div className="flex items-center justify-between px-8 py-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+                            <h2 className="text-2xl font-bold m-0">Update Ticket</h2>
+                            <button
+                                onClick={() => ticketModalRef.current.close()}
+                                className="bg-white/20 border-none text-white w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition-all hover:bg-white/30"
+                            >
+                                <LuX />
+                            </button>
+                        </div>
+
+                        <div className="p-8 max-h-[70vh] overflow-y-auto">
+                            <form onSubmit={handleSubmit(handleTicketUpdate)} className="flex flex-col gap-8">
+                                <div className="grid grid-cols-2 gap-8 md:grid-cols-1">
+                                    <div className="flex flex-col gap-6">
+                                        <div className="flex flex-col gap-2">
+                                            <label className="font-semibold text-gray-700 text-sm">Ticket Title</label>
+                                            <input
                                                 type="text"
                                                 {...register('ticketTitle', { required: 'Title is required' })}
                                                 placeholder="Enter ticket title"
+                                                className="px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-orange-500 focus:shadow-orange"
                                             />
-                                            {errors.ticketTitle && <ErrorMessage>{errors.ticketTitle.message}</ErrorMessage>}
-                                        </FormGroup>
+                                            {errors.ticketTitle && <span className="text-red-500 text-xs flex items-center gap-1 before:content-['⚠']">{errors.ticketTitle.message}</span>}
+                                        </div>
 
-                                        <FormRow>
-                                            <FormGroup>
-                                                <Label>From</Label>
-                                                <Input
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="flex flex-col gap-2">
+                                                <label className="font-semibold text-gray-700 text-sm">From</label>
+                                                <input
                                                     type="text"
                                                     {...register('from', { required: 'From location is required' })}
                                                     placeholder="Departure location"
+                                                    className="px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-orange-500 focus:shadow-orange"
                                                 />
-                                                {errors.from && <ErrorMessage>{errors.from.message}</ErrorMessage>}
-                                            </FormGroup>
+                                                {errors.from && <span className="text-red-500 text-xs flex items-center gap-1 before:content-['⚠']">{errors.from.message}</span>}
+                                            </div>
 
-                                            <FormGroup>
-                                                <Label>To</Label>
-                                                <Input
+                                            <div className="flex flex-col gap-2">
+                                                <label className="font-semibold text-gray-700 text-sm">To</label>
+                                                <input
                                                     type="text"
                                                     {...register('to', { required: 'Destination is required' })}
                                                     placeholder="Destination"
+                                                    className="px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-orange-500 focus:shadow-orange"
                                                 />
-                                                {errors.to && <ErrorMessage>{errors.to.message}</ErrorMessage>}
-                                            </FormGroup>
-                                        </FormRow>
+                                                {errors.to && <span className="text-red-500 text-xs flex items-center gap-1 before:content-['⚠']">{errors.to.message}</span>}
+                                            </div>
+                                        </div>
 
-                                        <FormGroup>
-                                            <Label>Transport Type</Label>
-                                            <Select {...register('transport', { required: 'Transport type is required' })}>
+                                        <div className="flex flex-col gap-2">
+                                            <label className="font-semibold text-gray-700 text-sm">Transport Type</label>
+                                            <select 
+                                                {...register('transport', { required: 'Transport type is required' })}
+                                                className="px-4 py-3 border-2 border-gray-200 rounded-lg text-sm bg-white cursor-pointer transition-all focus:outline-none focus:border-orange-500 focus:shadow-orange"
+                                            >
                                                 <option value="">Select Transport</option>
                                                 <option value="Bus">Bus</option>
                                                 <option value="Train">Train</option>
                                                 <option value="Plane">Plane</option>
                                                 <option value="Launch">Launch</option>
-                                            </Select>
-                                            {errors.transport && <ErrorMessage>{errors.transport.message}</ErrorMessage>}
-                                        </FormGroup>
+                                            </select>
+                                            {errors.transport && <span className="text-red-500 text-xs flex items-center gap-1 before:content-['⚠']">{errors.transport.message}</span>}
+                                        </div>
 
-                                        <FormRow>
-                                            <FormGroup>
-                                                <Label>Price (৳)</Label>
-                                                <Input
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="flex flex-col gap-2">
+                                                <label className="font-semibold text-gray-700 text-sm">Price (৳)</label>
+                                                <input
                                                     type="number"
                                                     {...register('price', { required: 'Price is required' })}
                                                     placeholder="Ticket price"
+                                                    className="px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-orange-500 focus:shadow-orange"
                                                 />
-                                                {errors.price && <ErrorMessage>{errors.price.message}</ErrorMessage>}
-                                            </FormGroup>
+                                                {errors.price && <span className="text-red-500 text-xs flex items-center gap-1 before:content-['⚠']">{errors.price.message}</span>}
+                                            </div>
 
-                                            <FormGroup>
-                                                <Label>Quantity</Label>
-                                                <Input
+                                            <div className="flex flex-col gap-2">
+                                                <label className="font-semibold text-gray-700 text-sm">Quantity</label>
+                                                <input
                                                     type="number"
                                                     {...register('ticketQuantity', { required: 'Quantity is required' })}
                                                     placeholder="Available tickets"
+                                                    className="px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-orange-500 focus:shadow-orange"
                                                 />
-                                                {errors.ticketQuantity && <ErrorMessage>{errors.ticketQuantity.message}</ErrorMessage>}
-                                            </FormGroup>
-                                        </FormRow>
+                                                {errors.ticketQuantity && <span className="text-red-500 text-xs flex items-center gap-1 before:content-['⚠']">{errors.ticketQuantity.message}</span>}
+                                            </div>
+                                        </div>
 
-                                        <FormGroup>
-                                            <Label>Departure Date & Time</Label>
-                                            <Input
+                                        <div className="flex flex-col gap-2">
+                                            <label className="font-semibold text-gray-700 text-sm">Departure Date & Time</label>
+                                            <input
                                                 type="datetime-local"
                                                 {...register('departureDateTime', { required: 'Date and time is required' })}
+                                                className="px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-orange-500 focus:shadow-orange"
                                             />
-                                            {errors.departureDateTime && <ErrorMessage>{errors.departureDateTime.message}</ErrorMessage>}
-                                        </FormGroup>
-                                    </FormColumn>
+                                            {errors.departureDateTime && <span className="text-red-500 text-xs flex items-center gap-1 before:content-['⚠']">{errors.departureDateTime.message}</span>}
+                                        </div>
+                                    </div>
 
-                                    {/* Right Column */}
-                                    <FormColumn>
-                                        <FormGroup>
-                                            <Label>Update Image</Label>
-                                            <ImageUploadArea>
+                                    <div className="flex flex-col gap-6">
+                                        <div className="flex flex-col gap-2">
+                                            <label className="font-semibold text-gray-700 text-sm">Update Image</label>
+                                            <div className="relative">
                                                 <input
                                                     type="file"
                                                     accept="image/*"
                                                     {...register('image')}
                                                     onChange={handleImageChange}
-                                                    style={{ display: 'none' }}
+                                                    className="hidden"
                                                     id="update-image"
                                                 />
-                                                <ImageUploadLabel htmlFor="update-image">
+                                                <label htmlFor="update-image" className="block cursor-pointer">
                                                     {imagePreview ? (
-                                                        <ImagePreview>
-                                                            <img src={imagePreview} alt="Preview" />
-                                                            <ImageOverlayUpdate>
+                                                        <div className="relative w-full h-40 rounded-lg overflow-hidden border-2 border-dashed border-gray-200 group">
+                                                            <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                                            <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center gap-2 text-white opacity-0 transition-opacity group-hover:opacity-100">
                                                                 <LuImage />
                                                                 <span>Click to change</span>
-                                                            </ImageOverlayUpdate>
-                                                        </ImagePreview>
+                                                            </div>
+                                                        </div>
                                                     ) : (
-                                                        <UploadPlaceholder>
+                                                        <div className="flex flex-col items-center justify-center gap-2 px-8 py-8 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 text-gray-600 transition-all hover:border-orange-500 hover:bg-white">
                                                             <LuImage />
                                                             <span>Click to upload new image</span>
-                                                        </UploadPlaceholder>
+                                                        </div>
                                                     )}
-                                                </ImageUploadLabel>
-                                            </ImageUploadArea>
-                                        </FormGroup>
+                                                </label>
+                                            </div>
+                                        </div>
 
-                                        <FormGroup>
-                                            <Label>Available Perks</Label>
-                                            <PerksUpdateGrid>
+                                        <div className="flex flex-col gap-2">
+                                            <label className="font-semibold text-gray-700 text-sm">Available Perks</label>
+                                            <div className="grid grid-cols-2 gap-3">
                                                 {perks.map((perk) => (
-                                                    <PerkCheckboxContainer key={perk.name}>
-                                                        <PerkCheckbox
+                                                    <div key={perk.name} className="relative">
+                                                        <input
                                                             type="checkbox"
                                                             value={perk.name}
                                                             {...register("perks")}
                                                             id={`update-${perk.name}`}
+                                                            className="absolute opacity-0 cursor-pointer peer"
                                                         />
-                                                        <PerkCheckboxLabel htmlFor={`update-${perk.name}`}>
+                                                        <label 
+                                                            htmlFor={`update-${perk.name}`}
+                                                            className="flex items-center gap-2 px-3 py-2 border-2 border-gray-200 rounded-lg cursor-pointer transition-all text-xs font-medium hover:border-orange-500 hover:bg-orange-50 peer-checked:bg-gradient-to-r peer-checked:from-orange-500 peer-checked:to-orange-600 peer-checked:text-white peer-checked:border-orange-500"
+                                                        >
                                                             <perk.icon />
                                                             {perk.name}
-                                                        </PerkCheckboxLabel>
-                                                    </PerkCheckboxContainer>
+                                                        </label>
+                                                    </div>
                                                 ))}
-                                            </PerksUpdateGrid>
-                                        </FormGroup>
-                                    </FormColumn>
-                                </FormGrid>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                <ModalActions>
-                                    <CancelButton
+                                <div className="flex gap-4 justify-end">
+                                    <button
                                         type="button"
                                         onClick={() => ticketModalRef.current.close()}
+                                        className="px-6 py-3 bg-gray-100 text-gray-600 border-none rounded-lg font-semibold cursor-pointer transition-all hover:bg-gray-200"
                                     >
                                         Cancel
-                                    </CancelButton>
-                                    <SubmitButton type="submit" disabled={isUpdating}>
+                                    </button>
+                                    <button 
+                                        type="submit" 
+                                        disabled={isUpdating}
+                                        className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none rounded-lg font-semibold cursor-pointer transition-all hover:not(:disabled):-translate-y-1 hover:not(:disabled):shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
+                                    >
                                         {isUpdating ? (
                                             <>
-                                                <LoadingSpinner />
+                                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                                                 Updating...
                                             </>
                                         ) : (
@@ -498,702 +519,21 @@ const MyAddedTickets = () => {
                                                 Update Ticket
                                             </>
                                         )}
-                                    </SubmitButton>
-                                </ModalActions>
-                            </UpdateForm>
-                        </ModalBody>
-                    </ModalContent>
-                </Modal>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </dialog>
             )}
-        </Container>
+
+            <style jsx>{`
+                .focus\\:shadow-orange:focus {
+                    box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+                }
+            `}</style>
+        </div>
     );
 };
-
-// Styled Components
-const Container = styled.div`
-    // padding: 2rem;
-    background: #;
-    min-height: 100vh;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-`;
-
-const Header = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin-bottom: 3rem;
-    padding: 2rem;
-    background: ;
-    border-radius: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #f1f5f9;
-
-    @media (max-width: 768px) {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-    }
-`;
-
-const HeaderIcon = styled.div`
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    color: white;
-    box-shadow: 0 8px 25px rgba(255, 140, 66, 0.3);
-`;
-
-const HeaderContent = styled.div`
-    flex: 1;
-`;
-
-const Title = styled.h1`
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-`;
-
-const Subtitle = styled.p`
-    font-size: 1.1rem;
-    color: #64748b;
-    margin: 0;
-`;
-
-const StatsCard = styled.div`
-    text-align: center;
-    padding: 1.5rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    border-radius: 16px;
-    color: white;
-    min-width: 120px;
-`;
-
-const StatsNumber = styled.div`
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-`;
-
-const StatsLabel = styled.div`
-    font-size: 0.9rem;
-    opacity: 0.9;
-`;
-
-const EmptyState = styled.div`
-    text-align: center;
-    padding: 4rem 2rem;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-`;
-
-const EmptyIcon = styled.div`
-    width: 100px;
-    height: 100px;
-    background: #f1f5f9;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    color: #94a3b8;
-    margin: 0 auto 2rem;
-`;
-
-const EmptyTitle = styled.h2`
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 0.5rem;
-`;
-
-const EmptySubtitle = styled.p`
-    color: #64748b;
-    font-size: 1rem;
-`;
-
-const TicketsGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-
-    @media (max-width: 1200px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-    }
-`;
-
-const TicketCard = styled.div`
-    background: ;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #f1f5f9;
-    transition: all 0.3s ease;
-
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    }
-`;
-
-const ImageContainer = styled.div`
-    position: relative;
-    height: 200px;
-    overflow: hidden;
-`;
-
-const TicketImage = styled.img`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-
-    ${TicketCard}:hover & {
-        transform: scale(1.05);
-    }
-`;
-
-const ImageOverlay = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0.1) 0%,
-        rgba(0, 0, 0, 0.3) 100%
-    );
-`;
-
-const StatusBadge = styled.div`
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: ${props => props.color};
-    color: white;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: capitalize;
-    backdrop-filter: blur(10px);
-`;
-
-const PriceTag = styled.div`
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.95);
-    color: #ff8c42;
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 1.1rem;
-    backdrop-filter: blur(10px);
-`;
-
-const CardContent = styled.div`
-    padding: 2rem;
-`;
-
-const TicketTitle = styled.h3`
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #;
-    margin-bottom: 1rem;
-`;
-
-const RouteInfo = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: #;
-    border-radius: 12px;
-`;
-
-const RouteItem = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 600;
-    color: #374151;
-
-    svg {
-        color: #ff8c42;
-    }
-`;
-
-const RouteDivider = styled.div`
-    color: #ff8c42;
-    font-weight: 700;
-    font-size: 1.2rem;
-`;
-
-const InfoGrid = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-`;
-
-const InfoItem = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-`;
-
-const InfoIcon = styled.div`
-    width: 40px;
-    height: 40px;
-    background: #fff5f0;
-    border: 2px solid #fed7aa;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ff8c42;
-    font-size: 1.1rem;
-`;
-
-const InfoText = styled.div`
-    flex: 1;
-`;
-
-const InfoLabel = styled.div`
-    font-size: 0.7rem;
-    color: #94a3b8;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.25rem;
-`;
-
-const InfoValue = styled.div`
-    font-weight: 600;
-    color: #374151;
-    font-size: 0.9rem;
-`;
-
-const PerksContainer = styled.div`
-    margin-bottom: 1.5rem;
-`;
-
-const PerksTitle = styled.h4`
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 0.75rem;
-`;
-
-const PerksGrid = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-`;
-
-const PerkTag = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.75rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
-    border-radius: 15px;
-    font-size: 0.7rem;
-    font-weight: 600;
-
-    &.more {
-        background: #64748b;
-    }
-
-    svg {
-        font-size: 0.8rem;
-    }
-`;
-
-const ActionButtons = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
-
-const UpdateButton = styled.button`
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(255, 140, 66, 0.3);
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none;
-    }
-`;
-
-const DeleteButton = styled.button`
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: ;
-    color: #ef4444;
-    border: 2px solid #ef4444;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover:not(:disabled) {
-        background: #ef4444;
-        color: white;
-        transform: translateY(-2px);
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none;
-    }
-`;
-
-const Modal = styled.dialog`
-    padding: 0;
-    border: none;
-    border-radius: 20px;
-    background: transparent;
-    max-width: 90vw;
-    max-height: 90vh;
-    width: 1000px;
-
-    &::backdrop {
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(4px);
-    }
-`;
-
-const ModalContent = styled.div`
-    background: white;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-`;
-
-const ModalHeader = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 2rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
-`;
-
-const ModalTitle = styled.h2`
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
-`;
-
-const CloseButton = styled.button`
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-        background: rgba(255, 255, 255, 0.3);
-    }
-`;
-
-const ModalBody = styled.div`
-    padding: 2rem;
-    max-height: 70vh;
-    overflow-y: auto;
-`;
-
-const UpdateForm = styled.form`
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-`;
-
-const FormGrid = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-    }
-`;
-
-const FormColumn = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-`;
-
-const FormRow = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-`;
-
-const FormGroup = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-`;
-
-const Label = styled.label`
-    font-weight: 600;
-    color: #374151;
-    font-size: 0.9rem;
-`;
-
-const Input = styled.input`
-    padding: 0.75rem 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-
-    &:focus {
-        outline: none;
-        border-color: #ff8c42;
-        box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
-    }
-`;
-
-const Select = styled.select`
-    padding: 0.75rem 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    background: white;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:focus {
-        outline: none;
-        border-color: #ff8c42;
-        box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
-    }
-`;
-
-const ImageUploadArea = styled.div`
-    position: relative;
-`;
-
-const ImageUploadLabel = styled.label`
-    display: block;
-    cursor: pointer;
-`;
-
-const ImagePreview = styled.div`
-    position: relative;
-    width: 100%;
-    height: 150px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 2px dashed #e2e8f0;
-
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-`;
-
-const ImageOverlayUpdate = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    color: white;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-
-    ${ImagePreview}:hover & {
-        opacity: 1;
-    }
-`;
-
-const UploadPlaceholder = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 2rem;
-    border: 2px dashed #cbd5e1;
-    border-radius: 8px;
-    background: #f8fafc;
-    color: #64748b;
-    transition: all 0.2s ease;
-
-    &:hover {
-        border-color: #ff8c42;
-        background: white;
-    }
-`;
-
-const PerksUpdateGrid = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-`;
-
-const PerkCheckboxContainer = styled.div`
-    position: relative;
-`;
-
-const PerkCheckbox = styled.input`
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-
-    &:checked + label {
-        background: linear-gradient(135deg, #ff8c42, #ff6b35);
-        color: white;
-        border-color: #ff8c42;
-    }
-`;
-
-const PerkCheckboxLabel = styled.label`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 0.8rem;
-    font-weight: 500;
-
-    &:hover {
-        border-color: #ff8c42;
-        background: #fff5f0;
-    }
-`;
-
-const ErrorMessage = styled.span`
-    color: #ef4444;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-
-    &::before {
-        content: '⚠';
-    }
-`;
-
-const ModalActions = styled.div`
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
-`;
-
-const CancelButton = styled.button`
-    padding: 0.75rem 1.5rem;
-    background: #f1f5f9;
-    color: #64748b;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-        background: #e2e8f0;
-    }
-`;
-
-const SubmitButton = styled.button`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: ;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover:not(:disabled) {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 15px rgba(255, 140, 66, 0.3);
-    }
-
-    &:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-    }
-`;
-
-const LoadingSpinner = styled.div`
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top: 2px solid white;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-`;
 
 export default MyAddedTickets;
