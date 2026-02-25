@@ -129,14 +129,14 @@ const Advertisement = () => {
 
                                         {/* Route Info */}
                                         <div className="flex items-center justify-between px-5 py-5  rounded-2xl border border-gray-200">
-                                            <div className="flex items-center gap-2 font-semibold text-gray-700 flex-1 min-w-0">
+                                            <div className="flex items-center gap-2 font-semibold  flex-1 min-w-0">
                                                 <FaMapMarkerAlt className="text-orange-500 text-lg flex-shrink-0"/>
                                                 <span className="text-sm truncate">{ticket.from || 'Departure'}</span>
                                             </div>
                                             <div className="flex items-center justify-center w-10 text-orange-500 text-base font-semibold flex-shrink-0">
                                                 <FaRoute />
                                             </div>
-                                            <div className="flex items-center gap-2 font-semibold text-gray-700 flex-1 min-w-0">
+                                            <div className="flex items-center gap-2 font-semibold  flex-1 min-w-0">
                                                 <FaMapMarkerAlt className="text-orange-500 text-lg flex-shrink-0" />
                                                 <span className="text-sm truncate">{ticket.to || 'Destination'}</span>
                                             </div>
@@ -149,8 +149,8 @@ const Advertisement = () => {
                                                     <FaUsers />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Available</div>
-                                                    <div className="text-sm text-gray-700 font-semibold truncate">{ticket.ticketQuantity} seats</div>
+                                                    <div className="text-xs  font-semibold uppercase tracking-wide mb-1">Available</div>
+                                                    <div className="text-sm text-gray-500 font-semibold truncate">{ticket.ticketQuantity} seats</div>
                                                 </div>
                                             </div>
 
@@ -159,8 +159,8 @@ const Advertisement = () => {
                                                     <FaCalendarAlt />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Date</div>
-                                                    <div className="text-sm text-gray-700 font-semibold truncate">{formatDate(ticket.date)}</div>
+                                                    <div className="text-xs  font-semibold uppercase tracking-wide mb-1">Date</div>
+                                                    <div className="text-sm text-gray-500 font-semibold truncate">{formatDate(ticket.date)}</div>
                                                 </div>
                                             </div>
 
@@ -169,8 +169,8 @@ const Advertisement = () => {
                                                     <FaClock />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Time</div>
-                                                    <div className="text-sm text-gray-700 font-semibold truncate">{formatTime(ticket.time)}</div>
+                                                    <div className="text-xs  font-semibold uppercase tracking-wide mb-1">Time</div>
+                                                    <div className="text-sm text-gray-500 font-semibold truncate">{formatTime(ticket.time)}</div>
                                                 </div>
                                             </div>
 
@@ -179,8 +179,8 @@ const Advertisement = () => {
                                                     <TransportIcon />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Transport</div>
-                                                    <div className="text-sm text-gray-700 font-semibold truncate">{ticket.transport}</div>
+                                                    <div className="text-xs  font-semibold uppercase tracking-wide mb-1">Transport</div>
+                                                    <div className="text-sm text-gray-500 font-semibold truncate">{ticket.transport}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -191,8 +191,8 @@ const Advertisement = () => {
                                                 {ticket.name?.charAt(0)?.toUpperCase() || 'T'}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <div className="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-1">Organized by</div>
-                                                <div className="text-sm text-gray-700 font-semibold truncate">
+                                                <div className="text-xs  font-semibold uppercase tracking-wide mb-1">Organized by</div>
+                                                <div className="text-sm text-gray-500 font-semibold truncate">
                                                     {ticket.name?.length > 15 ? 
                                                         ticket.name.slice(0, 15) + '...' : 
                                                         ticket.name || 'Travel Agent'
@@ -234,7 +234,7 @@ const Advertisement = () => {
                                         {/* Action Button */}
                                         <div className="mt-auto pt-4">
                                             <Link to={`/seeDetails/${ticket._id}`} className="block w-full">
-                                                <button className="relative w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none btn rounded-2xl font-bold text-lg cursor-pointer transition-all duration-500 overflow-hidden shadow-xl hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 group">
+                                                <button className="relative w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none btn rounded-xl font-bold text-lg cursor-pointer transition-all duration-500 overflow-hidden shadow-xl hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 group">
                                                     <div className="flex items-center justify-center gap-4 relative z-10">
                                                         <span className="text-lg">Book Now</span>
                                                         <div className="text-xl transition-transform duration-300 group-hover:translate-x-1">
