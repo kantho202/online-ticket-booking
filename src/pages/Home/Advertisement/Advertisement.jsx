@@ -77,7 +77,7 @@ const Advertisement = () => {
             <div className="max-w-7xl mx-auto px-8 md:px-4 relative z-10" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="800">
                 {/* Header Section */}
                 <div className="text-center mb-20 md:mb-12">
-                    <div className="inline-flex items-center gap-2 px-6 py-3  backdrop-blur-md text-gray-800 rounded-full text-sm font-semibold mb-8 border border-white/30">
+                    <div className="inline-flex items-center gap-2 px-6 py-3  backdrop-blur-md  rounded-full text-sm font-semibold mb-8 border border-white/30">
                         <FaStar className="text-yellow-400" />
                         Featured Destinations
                     </div>
@@ -107,9 +107,10 @@ const Advertisement = () => {
                                         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/60"></div>
                                         
                                         {/* Price Tag */}
-                                        <div className="absolute top-6 right-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-4 rounded-2xl text-center shadow-xl backdrop-blur-md border-2 border-white/20">
-                                            <div className="text-2xl font-bold leading-none">${ticket.price}</div>
-                                            <div className="text-xs opacity-90 mt-1">per person</div>
+                                       <div className="absolute top-6 right-6 bg-gradient-to-r
+                                         from-orange-500 to-orange-600 text-white px-3 py-2 rounded-[10px] text-center shadow-xl backdrop-blur-md border-2 border-white/20">
+                                            <div className="text-[15px] font-bold leading-none">${ticket.price}</div>
+                                            <div className="text-[11px] opacity-90 mt-1">per person</div>
                                         </div>
                                         
                                         {/* Status Badge */}
@@ -203,7 +204,7 @@ const Advertisement = () => {
 
                                         {/* Perks Section */}
                                         <div className="min-h-[80px] flex flex-col">
-                                            <h4 className="text-sm font-semibold text-gray-700 mb-3">Included Amenities</h4>
+                                            <h4 className="text-sm font-semibold  mb-3">Included Amenities</h4>
                                             <div className="flex flex-wrap gap-2 flex-1">
                                                 {ticket.perks && ticket.perks.length > 0 ? (
                                                     <>
