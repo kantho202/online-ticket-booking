@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import useAxiosSecure from '../../hook/useAxiosecure';
 import { Link } from 'react-router';
 import { LuSearch } from "react-icons/lu";
-import styled from 'styled-components';
 import Loader from '../../components/Loading/Loading';
 import useRole from '../../hook/useRole';
 import { 
@@ -16,14 +15,12 @@ import {
     FaArrowRight,
     FaCalendarAlt,
     FaClock,
-    FaStar,
     FaWifi,
     FaCoffee,
     FaParking,
     FaTv,
     FaSnowflake,
     FaRoute,
-    FaFilter,
     FaSort
 } from 'react-icons/fa';
 
@@ -81,956 +78,265 @@ const AllTickets = () => {
 
     if (role === 'fraud') {
         return (
-            <FraudContainer>
-                <FraudCard>
-                    <h2>Access Restricted 🚫</h2>
-                    <p>Your account is marked as fraud. You are not allowed to view tickets.</p>
-                </FraudCard>
-            </FraudContainer>
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-purple-800">
+                <div className="text-center p-12 bg-white/10 rounded-3xl backdrop-blur-md border border-white/20 max-w-lg">
+                    <h2 className="text-3xl font-bold text-red-500 mb-4">Access Restricted 🚫</h2>
+                    <p className="text-white text-lg leading-relaxed">Your account is marked as fraud. You are not allowed to view tickets.</p>
+                </div>
+            </div>
         );
     }
 
     return (
-        <StyledContainer>
-            <BackgroundPattern />
-            <div className="container" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
-                <HeaderSection>
-                    <MainTitle>All Available Tickets</MainTitle>
-                    <Subtitle>Discover and book your perfect travel experience</Subtitle>
-                </HeaderSection>
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-16 relative overflow-hidden">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute inset-0 bg-gradient-radial from-white/10 via-transparent to-transparent"></div>
+            </div>
 
-                <FilterSection>
-                    <SearchContainer>
-                        <SearchWrapper>
-                            <SearchIcon>
+            <div className="max-w-7xl mx-auto px-8 md:px-4 relative z-10" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1000">
+                {/* Header Section */}
+                <div className="text-center mb-12">
+                    <h1 className="text-6xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight leading-tight">
+                        All Available Tickets
+                    </h1>
+                    <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                        Discover and book your perfect travel experience
+                    </p>
+                </div>
+
+                {/* Filter Section */}
+                <div className="flex justify-between items-center gap-8 mb-12 bg-white/50 backdrop-blur-md p-8 rounded-3xl border border-white/20 md:flex-col md:gap-6">
+                    <div className="flex-1 w-full">
+                        <div className="flex items-center bg-white rounded-full px-2 py-2 shadow-xl border-2 border-transparent transition-all focus-within:border-orange-500 focus-within:shadow-orange">
+                            <div className="px-4 text-gray-600 text-xl">
                                 <LuSearch />
-                            </SearchIcon>
-                            <SearchInput
+                            </div>
+                            <input
                                 onChange={(e) => {
                                     setSearchText(e.target.value);
                                     setCurrentPage(1);
                                 }}
                                 type="search"
                                 placeholder="Search destinations, cities, or ticket names..."
+                                className="flex-1 border-none outline-none py-4 text-base bg-transparent placeholder:text-gray-400"
                             />
-                            <TransportSelect
+                            <select
                                 value={transportType}
                                 onChange={(e) => {
                                     setTransportType(e.target.value);
                                     setCurrentPage(1);
                                 }}
+                                className="border-none outline-none px-4 py-4 bg-gray-50 rounded-3xl font-semibold text-gray-700 cursor-pointer mr-2 focus:bg-gray-200"
                             >
                                 <option value="">All Transport</option>
                                 <option value="Bus">🚌 Bus</option>
                                 <option value="Train">🚂 Train</option>
                                 <option value="Plane">✈️ Plane</option>
                                 <option value="Launch">🚢 Launch</option>
-                            </TransportSelect>
-                        </SearchWrapper>
-                    </SearchContainer>
+                            </select>
+                        </div>
+                    </div>
 
-                    <SortContainer>
-                        <SortIcon>
+                    <div className="flex items-center gap-4 bg-white/80 px-6 py-4 rounded-3xl border border-white/30">
+                        <div className="text-gray-700 text-lg">
                             <FaSort />
-                        </SortIcon>
-                        <SortSelect
+                        </div>
+                        <select
                             defaultValue="price-asc"
                             onChange={handleSelect}
+                            className="border-none outline-none bg-transparent text-gray-800 font-semibold cursor-pointer"
                         >
                             <option disabled value="">Sort by price</option>
                             <option value="price-asc">💰 Low to High</option>
                             <option value="price-desc">💎 High to Low</option>
-                        </SortSelect>
-                    </SortContainer>
-                </FilterSection>
+                        </select>
+                    </div>
+                </div>
 
                 {isLoading ? (
-                    <LoaderContainer>
+                    <div className="text-center py-16">
                         <Loader />
-                    </LoaderContainer>
+                    </div>
                 ) : tickets.length === 0 ? (
-                    <EmptyState>
-                        <EmptyIcon>🎫</EmptyIcon>
-                        <EmptyTitle>No Tickets Found</EmptyTitle>
-                        <EmptySubtitle>Try adjusting your search criteria or filters</EmptySubtitle>
-                    </EmptyState>
+                    <div className="text-center p-16 md:p-8 bg-white/10 backdrop-blur-md rounded-3xl border border-white/20">
+                        <div className="text-6xl mb-6">🎫</div>
+                        <h3 className="text-2xl font-semibold text-white mb-2">No Tickets Found</h3>
+                        <p className="text-white/80 text-base">Try adjusting your search criteria or filters</p>
+                    </div>
                 ) : (
-                    <TicketsGrid>
+                    <div className="grid grid-cols-3 gap-8 items-stretch lg:grid-cols-2 md:grid-cols-1 md:gap-6">
                         {tickets.map((ticket, index) => {
                             const TransportIcon = transportIcons[ticket.transport] || FaBus;
                             const { date, time } = formatDateTime(ticket.departureDateTime);
                             
                             return (
-                                <TicketCard 
+                                <div 
                                     key={ticket._id} 
                                     data-aos="fade-up" 
                                     data-aos-duration="800"
                                     data-aos-delay={index * 100}
+                                    className="bg-white rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:scale-105 hover:shadow-3xl border border-white/20 flex flex-col h-full group"
                                 >
-                                    <ImageContainer>
-                                        <TicketImage src={ticket.image} alt={ticket.ticketTitle} />
-                                        <ImageOverlay />
-                                        <PriceTag>
-                                            <PriceAmount>${ticket.price}</PriceAmount>
-                                            <PriceLabel>per person</PriceLabel>
-                                        </PriceTag>
-                                        {/* <TransportBadge>
-                                            <TransportIcon />
-                                            {ticket.transport}
-                                        </TransportBadge> */}
-                                    </ImageContainer>
+                                    <div className="relative h-52 overflow-hidden flex-shrink-0">
+                                        <img src={ticket.image} alt={ticket.ticketTitle} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/30 to-black/60"></div>
+                                        <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-3 rounded-2xl text-center shadow-xl backdrop-blur-md border-2 border-white/20">
+                                            <div className="text-xl font-bold leading-none">${ticket.price}</div>
+                                            <div className="text-xs opacity-90 mt-1">per person</div>
+                                        </div>
+                                    </div>
 
-                                    <CardContent>
-                                        <TicketHeader>
-                                            <TicketTitle>{ticket.ticketTitle}</TicketTitle>
-                                            {/* <RatingContainer>
-                                                <FaStar />
-                                                <span>4.8</span>
-                                            </RatingContainer> */}
-                                        </TicketHeader>
+                                    <div className="p-6 flex flex-col flex-1 gap-4">
+                                        <div className="flex justify-between items-start gap-3">
+                                            <h2 className="text-xl font-bold text-gray-900 leading-tight flex-1 min-h-[2.5rem] line-clamp-2">
+                                                {ticket.ticketTitle}
+                                            </h2>
+                                        </div>
 
-                                        <RouteInfo>
-                                            <RoutePoint>
-                                                <FaMapMarkerAlt />
-                                                <RouteText>{ticket.from}</RouteText>
-                                            </RoutePoint>
-                                            <RouteLine>
+                                        <div className="flex items-center justify-between px-4 py-4 bg-gray-50 rounded-xl border border-gray-200">
+                                            <div className="flex items-center gap-2 font-semibold text-gray-700 flex-1 min-w-0">
+                                                <FaMapMarkerAlt className="text-orange-500 text-sm flex-shrink-0" />
+                                                <span className="text-sm truncate">{ticket.from}</span>
+                                            </div>
+                                            <div className="text-orange-500 text-sm font-semibold w-8 flex justify-center flex-shrink-0">
                                                 <FaRoute />
-                                            </RouteLine>
-                                            <RoutePoint>
-                                                <FaMapMarkerAlt />
-                                                <RouteText>{ticket.to}</RouteText>
-                                            </RoutePoint>
-                                        </RouteInfo>
+                                            </div>
+                                            <div className="flex items-center gap-2 font-semibold text-gray-700 flex-1 min-w-0">
+                                                <FaMapMarkerAlt className="text-orange-500 text-sm flex-shrink-0" />
+                                                <span className="text-sm truncate">{ticket.to}</span>
+                                            </div>
+                                        </div>
 
-                                       
-
-                                        <InfoGrid>
-                                            <InfoCard>
-                                                <InfoIcon>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <div className="flex items-center gap-2 px-3 py-3 bg-white rounded-lg border-2 border-gray-100 transition-all hover:border-orange-500 hover:-translate-y-1 hover:shadow-md min-h-[55px]">
+                                                <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-orange-600 rounded-md flex items-center justify-center text-white text-xs shadow-md flex-shrink-0">
                                                     <FaUsers />
-                                                </InfoIcon>
-                                                <InfoContent>
-                                                    <InfoLabel>Seats</InfoLabel>
-                                                    <InfoValue>{ticket.ticketQuantity}</InfoValue>
-                                                </InfoContent>
-                                            </InfoCard>
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Seats</div>
+                                                    <div className="text-xs text-gray-700 font-semibold truncate">{ticket.ticketQuantity}</div>
+                                                </div>
+                                            </div>
 
-                                            <InfoCard>
-                                                <InfoIcon>
+                                            <div className="flex items-center gap-2 px-3 py-3 bg-white rounded-lg border-2 border-gray-100 transition-all hover:border-orange-500 hover:-translate-y-1 hover:shadow-md min-h-[55px]">
+                                                <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-orange-600 rounded-md flex items-center justify-center text-white text-xs shadow-md flex-shrink-0">
                                                     <FaCalendarAlt />
-                                                </InfoIcon>
-                                                <InfoContent>
-                                                    <InfoLabel>Date</InfoLabel>
-                                                    <InfoValue>{date}</InfoValue>
-                                                </InfoContent>
-                                            </InfoCard>
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Date</div>
+                                                    <div className="text-xs text-gray-700 font-semibold truncate">{date}</div>
+                                                </div>
+                                            </div>
 
-                                            <InfoCard>
-                                                <InfoIcon>
+                                            <div className="flex items-center gap-2 px-3 py-3 bg-white rounded-lg border-2 border-gray-100 transition-all hover:border-orange-500 hover:-translate-y-1 hover:shadow-md min-h-[55px]">
+                                                <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-orange-600 rounded-md flex items-center justify-center text-white text-xs shadow-md flex-shrink-0">
                                                     <FaClock />
-                                                </InfoIcon>
-                                                <InfoContent>
-                                                    <InfoLabel>Time</InfoLabel>
-                                                    <InfoValue>{time}</InfoValue>
-                                                </InfoContent>
-                                            </InfoCard>
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Time</div>
+                                                    <div className="text-xs text-gray-700 font-semibold truncate">{time}</div>
+                                                </div>
+                                            </div>
 
-                                            <InfoCard>
-                                                <InfoIcon>
+                                            <div className="flex items-center gap-2 px-3 py-3 bg-white rounded-lg border-2 border-gray-100 transition-all hover:border-orange-500 hover:-translate-y-1 hover:shadow-md min-h-[55px]">
+                                                <div className="w-7 h-7 bg-gradient-to-r from-orange-500 to-orange-600 rounded-md flex items-center justify-center text-white text-xs shadow-md flex-shrink-0">
                                                     <TransportIcon />
-                                                </InfoIcon>
-                                                <InfoContent>
-                                                    <InfoLabel>Type</InfoLabel>
-                                                    <InfoValue>{ticket.transport}</InfoValue>
-                                                </InfoContent>
-                                            </InfoCard>
-                                        </InfoGrid>
- <TravelerInfo>
-                                            <TravelerAvatar>
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Type</div>
+                                                    <div className="text-xs text-gray-700 font-semibold truncate">{ticket.transport}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-3 px-3 py-3 bg-gray-50 rounded-xl border border-gray-200 min-h-[60px]">
+                                            <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                                                 {ticket.name?.charAt(0)?.toUpperCase() || 'T'}
-                                            </TravelerAvatar>
-                                            <TravelerDetails>
-                                                <TravelerLabel>Organized by</TravelerLabel>
-                                                <TravelerName>
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-1">Organized by</div>
+                                                <div className="text-sm text-gray-700 font-semibold truncate">
                                                     {ticket.name?.length > 12 ? 
                                                         ticket.name : 
                                                         ticket.name || 'Travel Agent'
                                                     }
-                                                </TravelerName>
-                                            </TravelerDetails>
-                                            {/* <VerifiedBadge>✓</VerifiedBadge> */}
-                                        </TravelerInfo>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         {ticket.perks && ticket.perks.length > 0 && (
-                                            <PerksSection>
-                                                <PerksTitle>Amenities</PerksTitle>
-                                                <PerksContainer>
+                                            <div className="min-h-[60px] flex flex-col">
+                                                <h4 className="text-xs font-semibold text-gray-700 mb-2">Amenities</h4>
+                                                <div className="flex flex-wrap gap-2 flex-1">
                                                     {ticket.perks.slice(0, 3).map((perk, index) => {
                                                         const PerkIcon = perkIcons[perk] || FaWifi;
                                                         return (
-                                                            <PerkTag key={index}>
-                                                                <PerkIcon />
+                                                            <div key={index} className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl text-xs font-semibold shadow-md transition-all hover:-translate-y-1 hover:shadow-lg">
+                                                                <PerkIcon className="text-xs" />
                                                                 <span>{perk}</span>
-                                                            </PerkTag>
+                                                            </div>
                                                         );
                                                     })}
                                                     {ticket.perks.length > 3 && (
-                                                        <PerkTag className="more">
+                                                        <div className="flex items-center px-2 py-1 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl text-xs font-semibold shadow-md">
                                                             +{ticket.perks.length - 3}
-                                                        </PerkTag>
+                                                        </div>
                                                     )}
-                                                </PerksContainer>
-                                            </PerksSection>
+                                                </div>
+                                            </div>
                                         )}
 
-                                        <ActionSection>
-                                            <Link to={`/seeDetails/${ticket._id}`}>
-                                                <BookButton>
-                                                    <ButtonContent>
-                                                        <ButtonText>View Details</ButtonText>
-                                                        <ButtonIcon>
+                                        <div className="mt-auto pt-3">
+                                            <Link to={`/seeDetails/${ticket._id}`} className="block w-full">
+                                                <button className="relative w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none px-6 py-4 rounded-xl font-bold text-base cursor-pointer transition-all duration-500 overflow-hidden shadow-xl hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 group">
+                                                    <div className="flex items-center justify-center gap-3 relative z-10">
+                                                        <span className="text-base">View Details</span>
+                                                        <div className="text-base transition-transform duration-300 group-hover:translate-x-1">
                                                             <FaArrowRight />
-                                                        </ButtonIcon>
-                                                    </ButtonContent>
-                                                    <ButtonGlow />
-                                                </BookButton>
+                                                        </div>
+                                                    </div>
+                                                    <div className="absolute top-0 -left-full w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-all duration-700 group-hover:left-full"></div>
+                                                </button>
                                             </Link>
-                                        </ActionSection>
-                                    </CardContent>
-                                </TicketCard>
+                                        </div>
+                                    </div>
+                                </div>
                             );
                         })}
-                    </TicketsGrid>
+                    </div>
                 )}
 
                 {tickets.length > 0 && (
-                    <PaginationContainer>
-                        <PaginationButton
+                    <div className="flex justify-center items-center gap-6 mt-12">
+                        <button
                             disabled={currentPage === 1}
                             onClick={() => setCurrentPage(prev => prev - 1)}
+                            className="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none rounded-xl font-semibold cursor-pointer transition-all shadow-lg hover:not(:disabled):-translate-y-1 hover:not(:disabled):shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
                         >
                             Previous
-                        </PaginationButton>
-                        <PageIndicator>Page {currentPage}</PageIndicator>
-                        <PaginationButton
+                        </button>
+                        <span className="px-6 py-4 bg-white/20 text-white rounded-xl font-semibold backdrop-blur-md border border-white/30">
+                            Page {currentPage}
+                        </span>
+                        <button
                             disabled={tickets.length < itemsPerPage}
                             onClick={() => setCurrentPage(prev => prev + 1)}
+                            className="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none rounded-xl font-semibold cursor-pointer transition-all shadow-lg hover:not(:disabled):-translate-y-1 hover:not(:disabled):shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
                         >
                             Next
-                        </PaginationButton>
-                    </PaginationContainer>
+                        </button>
+                    </div>
                 )}
             </div>
-        </StyledContainer>
+
+            <style jsx>{`
+                .focus-within\\:shadow-orange:focus-within {
+                    box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+                }
+            `}</style>
+        </div>
     );
 };
-
-// Styled Components
-const StyledContainer = styled.div`
-    min-height: 100vh;
-    background: ;
-    padding: 4rem 0;
-    position: relative;
-    overflow: hidden;
-
-    .container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 0 2rem;
-        position: relative;
-        z-index: 2;
-
-        @media (max-width: 768px) {
-            padding: 0 1rem;
-        }
-    }
-`;
-
-const BackgroundPattern = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: 
-        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(255, 140, 66, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-`;
-
-const HeaderSection = styled.div`
-    text-align: center;
-    margin-bottom: 3rem;
-`;
-
-const MainTitle = styled.h1`
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: ;
-    margin-bottom: 1rem;
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-
-    @media (max-width: 768px) {
-        font-size: 2.5rem;
-    }
-`;
-
-const Subtitle = styled.p`
-    font-size: 1.2rem;
-    color: ;
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.6;
-`;
-
-const FilterSection = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
-    margin-bottom: 3rem;
-    background: ;
-    backdrop-filter: blur(10px);
-    padding: 2rem;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-
-    @media (max-width: 768px) {
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-`;
-
-const SearchContainer = styled.div`
-    flex: 1;
-`;
-
-const SearchWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    background: ;
-    border-radius: 50px;
-    padding: 0.5rem;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-
-    &:focus-within {
-        border-color: #ff8c42;
-        box-shadow: 0 8px 25px rgba(255, 140, 66, 0.2);
-    }
-`;
-
-const SearchIcon = styled.div`
-    padding: 1rem;
-    color: #;
-    font-size: 1.2rem;
-`;
-
-const SearchInput = styled.input`
-    flex: 1;
-    border: none;
-    outline: none;
-    padding: 1rem 0;
-    font-size: 1rem;
-    background: ;
-
-    &::placeholder {
-        color: #9ca3af;
-    }
-`;
-
-const TransportSelect = styled.select`
-    border: none;
-    outline: none;
-    padding: 1rem;
-    background: #;
-    border-radius: 25px;
-    font-weight: 600;
-    color: #374151;
-    cursor: pointer;
-    margin-right: 0.5rem;
-
-    &:focus {
-        background: #e2e8f0;
-    }
-`;
-
-const SortContainer = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    background: ;
-    padding: 1rem 1.5rem;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-`;
-
-const SortIcon = styled.div`
-    color: ;
-    font-size: 1.1rem;
-`;
-
-const SortSelect = styled.select`
-    border: none;
-    outline: none;
-    background: ;
-    color: ;
-    font-weight: 600;
-    cursor: pointer;
-
-    option {
-        background: ;
-        color: white;
-    }
-`;
-
-const LoaderContainer = styled.div`
-    text-center;
-    padding: 4rem 0;
-`;
-
-const EmptyState = styled.div`
-    text-align: center;
-    padding: 4rem 2rem;
-    background: ;
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-`;
-
-const EmptyIcon = styled.div`
-    font-size: 4rem;
-    margin-bottom: 1.5rem;
-`;
-
-const EmptyTitle = styled.h3`
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: white;
-    margin-bottom: 0.5rem;
-`;
-
-const EmptySubtitle = styled.p`
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1rem;
-`;
-
-const TicketsGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    align-items: stretch;
-
-    @media (max-width: 1200px) {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-    }
-
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-`;
-
-const TicketCard = styled.div`
-    background: ;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-
-    &:hover {
-        transform: translateY(-10px) scale(1.02);
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
-    }
-`;
-
-const ImageContainer = styled.div`
-    position: relative;
-    height: 200px;
-    overflow: hidden;
-    flex-shrink: 0;
-`;
-
-const TicketImage = styled.img`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s ease;
-
-    ${TicketCard}:hover & {
-        transform: scale(1.1);
-    }
-`;
-
-const ImageOverlay = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0.1) 0%,
-        rgba(0, 0, 0, 0.3) 70%,
-        rgba(0, 0, 0, 0.6) 100%
-    );
-`;
-
-const PriceTag = styled.div`
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
-    padding: 0.75rem 1rem;
-    border-radius: 16px;
-    text-align: center;
-    box-shadow: 0 6px 20px rgba(255, 140, 66, 0.4);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-`;
-
-const PriceAmount = styled.div`
-    font-size: 1.2rem;
-    font-weight: 700;
-    line-height: 1;
-`;
-
-const PriceLabel = styled.div`
-    font-size: 0.65rem;
-    opacity: 0.9;
-    margin-top: 0.25rem;
-`;
-
-const TransportBadge = styled.div`
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-    background: ;
-    color: white;
-    padding: 0.4rem 0.8rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    text-transform: capitalize;
-`;
-
-const CardContent = styled.div`
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 1rem;
-`;
-
-const TicketHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 0.75rem;
-`;
-
-const TicketTitle = styled.h2`
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #;
-    line-height: 1.3;
-    flex: 1;
-    min-height: 2.5rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-`;
-
-const RatingContainer = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    background: #fef3c7;
-    padding: 0.4rem 0.6rem;
-    border-radius: 10px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #92400e;
-    flex-shrink: 0;
-
-    svg {
-        color: #ffd700;
-        font-size: 0.75rem;
-    }
-`;
-
-const RouteInfo = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    background: #;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
-`;
-
-const RoutePoint = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-weight: 600;
-    color: #;
-    flex: 1;
-    min-width: 0;
-
-    svg {
-        color: #ff8c42;
-        font-size: 0.9rem;
-        flex-shrink: 0;
-    }
-`;
-
-const RouteText = styled.span`
-    font-size: 0.8rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
-const RouteLine = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    color: #ff8c42;
-    font-size: 0.8rem;
-    font-weight: 600;
-    flex-shrink: 0;
-`;
-
-const TravelerInfo = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    background: #;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
-    min-height: 60px;
-`;
-
-const TravelerAvatar = styled.div`
-    width: 32px;
-    height: 32px;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 0.9rem;
-    flex-shrink: 0;
-`;
-
-const TravelerDetails = styled.div`
-    flex: 1;
-    min-width: 0;
-`;
-
-const TravelerLabel = styled.div`
-    font-size: 0.6rem;
-    color: #9ca3af;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.2rem;
-`;
-
-const TravelerName = styled.div`
-    font-size: 0.8rem;
-    color: #374151;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
-const VerifiedBadge = styled.div`
-    background: #10b981;
-    color: white;
-    padding: 0.2rem 0.5rem;
-    border-radius: 8px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    flex-shrink: 0;
-`;
-
-const InfoGrid = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-`;
-
-const InfoCard = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem;
-    background: ;
-    border-radius: 10px;
-    border: 2px solid #f1f5f9;
-    transition: all 0.3s ease;
-    min-height: 55px;
-
-    &:hover {
-        border-color: #ff8c42;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.15);
-    }
-`;
-
-const InfoIcon = styled.div`
-    width: 28px;
-    height: 28px;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: ;
-    font-size: 0.8rem;
-    box-shadow: 0 3px 10px rgba(255, 140, 66, 0.3);
-    flex-shrink: 0;
-`;
-
-const InfoContent = styled.div`
-    flex: 1;
-    min-width: 0;
-`;
-
-const InfoLabel = styled.div`
-    font-size: 0.6rem;
-    color: #6b7280;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.2rem;
-`;
-
-const InfoValue = styled.div`
-    font-size: 0.75rem;
-    color: #374151;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
-const PerksSection = styled.div`
-    min-height: 60px;
-    display: flex;
-    flex-direction: column;
-`;
-
-const PerksTitle = styled.h4`
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 0.5rem;
-`;
-
-const PerksContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    flex: 1;
-    align-content: flex-start;
-`;
-
-const PerkTag = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.3rem 0.6rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
-    border-radius: 12px;
-    font-size: 0.65rem;
-    font-weight: 600;
-    box-shadow: 0 3px 10px rgba(255, 140, 66, 0.3);
-    transition: all 0.3s ease;
-
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(255, 140, 66, 0.4);
-    }
-
-    &.more {
-        background: linear-gradient(135deg, #6b7280, #4b5563);
-        box-shadow: 0 3px 10px rgba(107, 114, 128, 0.3);
-    }
-
-    svg {
-        font-size: 0.7rem;
-    }
-`;
-
-const ActionSection = styled.div`
-    margin-top: auto;
-    padding-top: 0.75rem;
-
-    a {
-        text-decoration: none;
-        width: 100%;
-        display: block;
-    }
-`;
-
-const BookButton = styled.button`
-    position: relative;
-    width: 100%;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
-    border: none;
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: all 0.4s ease;
-    overflow: hidden;
-    box-shadow: 0 6px 20px rgba(255, 140, 66, 0.3);
-
-    &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 30px rgba(255, 140, 66, 0.4);
-    }
-
-    &:active {
-        transform: translateY(-1px);
-    }
-`;
-
-const ButtonContent = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    position: relative;
-    z-index: 2;
-`;
-
-const ButtonText = styled.span`
-    font-size: 0.95rem;
-`;
-
-const ButtonIcon = styled.div`
-    font-size: 1rem;
-    transition: transform 0.3s ease;
-
-    ${BookButton}:hover & {
-        transform: translateX(3px);
-    }
-`;
-
-const ButtonGlow = styled.div`
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.6s;
-
-    ${BookButton}:hover & {
-        left: 100%;
-    }
-`;
-
-const PaginationContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1.5rem;
-    margin-top: 3rem;
-`;
-
-const PaginationButton = styled.button`
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 140, 66, 0.3);
-
-    &:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(255, 140, 66, 0.4);
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
-    }
-`;
-
-const PageIndicator = styled.span`
-    padding: 1rem 1.5rem;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border-radius: 12px;
-    font-weight: 600;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-`;
-
-const FraudContainer = styled.div`
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-`;
-
-const FraudCard = styled.div`
-    text-align: center;
-    padding: 3rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    max-width: 500px;
-
-    h2 {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #ef4444;
-        margin-bottom: 1rem;
-    }
-
-    p {
-        color: white;
-        font-size: 1.1rem;
-        line-height: 1.6;
-    }
-`;
 
 export default AllTickets;
