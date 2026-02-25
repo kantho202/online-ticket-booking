@@ -7,27 +7,29 @@ import Loader from '../../../components/Loading/Loading';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { 
-    LuTicketsPlane, 
-    LuTrash2, 
-    LuCalendar, 
-    LuMapPin, 
-    LuUsers, 
+import {
+    LuTicketsPlane,
+    LuTrash2,
+    LuCalendar,
+    LuMapPin,
+    LuUsers,
     LuClock,
     LuImage,
     LuX,
     LuCheck
 } from 'react-icons/lu';
-import { 
-    FaBus, 
-    FaTrain, 
-    FaPlane, 
+import {
+    FaBus,
+    FaTrain,
+    FaPlane,
     FaShip,
     FaWifi,
     FaCoffee,
     FaParking,
     FaTv,
-    FaSnowflake
+    FaSnowflake,
+    FaMapMarkerAlt,
+    FaRoute
 } from 'react-icons/fa';
 
 const MyAddedTickets = () => {
@@ -66,7 +68,7 @@ const MyAddedTickets = () => {
     const handleTicketShowModal = (ticket) => {
         setSelectedTicket(ticket);
         setImagePreview(ticket.image);
-        
+
         setValue('name', ticket.name);
         setValue('ticketTitle', ticket.ticketTitle);
         setValue('departureDateTime', ticket.departureDateTime);
@@ -76,11 +78,11 @@ const MyAddedTickets = () => {
         setValue('ticketQuantity', ticket.ticketQuantity);
         setValue('from', ticket.from);
         setValue('to', ticket.to);
-        
+
         if (ticket.perks) {
             setValue('perks', ticket.perks);
         }
-        
+
         ticketModalRef.current.showModal();
     };
 
@@ -97,16 +99,16 @@ const MyAddedTickets = () => {
 
     const handleTicketUpdate = async (data) => {
         setIsUpdating(true);
-        
+
         try {
             let imageUrl = selectedTicket.image;
 
             if (data.image && data.image.length > 0) {
                 const formData = new FormData();
                 formData.append('image', data.image[0]);
-                
+
                 const imgRes = await axios.post(
-                    `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`, 
+                    `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`,
                     formData
                 );
                 imageUrl = imgRes.data.data.url;
@@ -119,7 +121,7 @@ const MyAddedTickets = () => {
             };
 
             const res = await axiosSecure.patch(`/tickets/${selectedTicket._id}`, updatedTicket);
-            
+
             if (res.data.modifiedCount > 0) {
                 toast.success('Ticket updated successfully!');
                 refetch();
@@ -185,27 +187,27 @@ const MyAddedTickets = () => {
     }
 
     return (
-        <div className="p-8 md:p-4 bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen font-sans">
-            <div className="flex items-center gap-8 mb-12 p-8 bg-white rounded-3xl shadow-md border border-gray-100 md:flex-col md:text-center md:gap-4">
-                <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-4xl text-white shadow-xl">
+        <div className="p-8 md:p-4  min-h-screen font-sans">
+            <div className="flex flex-col md:flex-row items-center gap-8 mb-12 p-8  rounded-3xl shadow-md border border-gray-100 md:gap-4">
+                <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-4xl text-white shadow-xl flex-shrink-0">
                     <LuTicketsPlane />
                 </div>
-                <div className="flex-1">
-                    <h1 className="text-4xl font-bold text-gray-800 mb-2 bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+                <div className="flex-1 text-center md:text-left">
+                    <h1 className="text-4xl md:text-3xl font-bold text-gray-800 mb-2 bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
                         My Added Tickets
                     </h1>
-                    <p className="text-lg text-gray-600 m-0">
+                    <p className="text-lg md:text-base text-gray-600 m-0">
                         Manage and track your ticket listings
                     </p>
                 </div>
-                <div className="text-center px-6 py-6 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl text-white min-w-[120px]">
+                <div className="text-center px-6 py-6 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl text-white min-w-[120px] flex-shrink-0">
                     <div className="text-3xl font-bold mb-1">{tickets.length}</div>
                     <div className="text-sm opacity-90">Total Tickets</div>
                 </div>
             </div>
 
             {tickets.length === 0 ? (
-                <div className="text-center p-16 md:p-8 bg-white rounded-3xl shadow-md">
+                <div className="text-center p-16 md:p-8  rounded-3xl shadow-md">
                     <div className="w-25 h-25 bg-gray-100 rounded-full flex items-center justify-center text-5xl text-gray-400 mx-auto mb-8">
                         <LuTicketsPlane />
                     </div>
@@ -213,11 +215,11 @@ const MyAddedTickets = () => {
                     <p className="text-gray-600 text-base">Start by adding your first ticket to get bookings</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-3 gap-8 lg:grid-cols-2 md:grid-cols-1">
+                <div className="grid grid-cols-3 gap-8 lg:grid-cols-3 md:grid-cols-1">
                     {tickets.map(ticket => {
                         const TransportIcon = transportIcons[ticket.transport] || FaBus;
                         return (
-                            <div key={ticket._id} className="bg-white rounded-3xl overflow-hidden shadow-md border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                            <div key={ticket._id} className=" rounded-3xl overflow-hidden shadow-md border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
                                 <div className="relative h-52 overflow-hidden">
                                     <img src={ticket.image} alt={ticket.ticketTitle} className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" />
                                     <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30"></div>
@@ -231,15 +233,27 @@ const MyAddedTickets = () => {
                                 </div>
 
                                 <div className="p-8">
-                                    <h3 className="text-2xl font-bold text-gray-800 mb-4">{ticket.ticketTitle}</h3>
-                                    
-                                    <div className="flex items-center gap-4 mb-6 px-4 py-4 bg-gray-50 rounded-xl">
-                                        <div className="flex items-center gap-2 font-semibold text-gray-700">
+                                    <h3 className="text-2xl font-bold  mb-4">{ticket.ticketTitle}</h3>
+                                    {/* <div className="flex items-center justify-between px-5 py-5  ">
+                                        <div className="flex items-center gap-2 font-semibold  flex-1 min-w-0">
+                                            <FaMapMarkerAlt className="text-orange-500 text-lg flex-shrink-0" />
+                                            <span className="text-sm truncate">{ticket.from || 'Departure'}</span>
+                                        </div>
+                                        <div className="flex items-center justify-center w-10 text-orange-500 text-base font-semibold flex-shrink-0">
+                                            <FaRoute />
+                                        </div>
+                                        <div className="flex items-center gap-2 font-semibold  flex-1 min-w-0">
+                                            <FaMapMarkerAlt className="text-orange-500 text-lg flex-shrink-0" />
+                                            <span className="text-sm truncate">{ticket.to || 'Destination'}</span>
+                                        </div>
+                                    </div> */}
+                                    <div className="flex items-center gap-4 mb-6 px-4 py-4  rounded-xl">
+                                        <div className="flex items-center gap-2 font-semibold ">
                                             <LuMapPin className="text-orange-500" />
                                             <span>{ticket.from}</span>
                                         </div>
-                                        <div className="text-orange-500 font-bold text-xl">→</div>
-                                        <div className="flex items-center gap-2 font-semibold text-gray-700">
+                                        <div className="text-orange-500 font-bold text-xl">→ </div>
+                                        <div className="flex items-center gap-2 font-semibold ">
                                             <LuMapPin className="text-orange-500" />
                                             <span>{ticket.to}</span>
                                         </div>
@@ -251,18 +265,18 @@ const MyAddedTickets = () => {
                                                 <TransportIcon />
                                             </div>
                                             <div className="flex-1">
-                                                <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Transport</div>
-                                                <div className="font-semibold text-gray-700 text-sm">{ticket.transport}</div>
+                                                <div className="text-xs font-semibold  uppercase  mb-1">Transport</div>
+                                                <div className="tracking-wide text-gray-700 text-sm">{ticket.transport}</div>
                                             </div>
                                         </div>
-                                        
+
                                         <div className="flex items-center gap-3">
                                             <div className="w-10 h-10 bg-orange-50 border-2 border-orange-200 rounded-lg flex items-center justify-center text-orange-500 text-lg">
                                                 <LuUsers />
                                             </div>
                                             <div className="flex-1">
-                                                <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Quantity</div>
-                                                <div className="font-semibold text-gray-700 text-sm">{ticket.ticketQuantity}</div>
+                                                <div className="text-xs font-semibold  uppercase  mb-1">Quantity</div>
+                                                <div className="tracking-wide text-gray-700 text-sm">{ticket.ticketQuantity}</div>
                                             </div>
                                         </div>
 
@@ -271,8 +285,8 @@ const MyAddedTickets = () => {
                                                 <LuCalendar />
                                             </div>
                                             <div className="flex-1">
-                                                <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Departure</div>
-                                                <div className="font-semibold text-gray-700 text-sm">
+                                                <div className="text-xs font-semibold uppercase mb-1">Departure</div>
+                                                <div className="tracking-wide text-gray-700 text-sm">
                                                     {new Date(ticket.departureDateTime).toLocaleDateString()}
                                                 </div>
                                             </div>
@@ -283,8 +297,8 @@ const MyAddedTickets = () => {
                                                 <LuClock />
                                             </div>
                                             <div className="flex-1">
-                                                <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Time</div>
-                                                <div className="font-semibold text-gray-700 text-sm">
+                                                <div className="text-xs font-semibold uppercase  mb-1">Time</div>
+                                                <div className="tracking-wide text-gray-700 text-sm">
                                                     {new Date(ticket.departureDateTime).toLocaleTimeString([], {
                                                         hour: '2-digit',
                                                         minute: '2-digit'
@@ -296,7 +310,7 @@ const MyAddedTickets = () => {
 
                                     {ticket.perks && ticket.perks.length > 0 && (
                                         <div className="mb-6">
-                                            <h4 className="text-sm font-semibold text-gray-700 mb-3">Included Perks</h4>
+                                            <h4 className="text-sm font-semibold  mb-3">Included Perks</h4>
                                             <div className="flex flex-wrap gap-2">
                                                 {ticket.perks.map((perk, index) => {
                                                     const PerkIcon = perks.find(p => p.name === perk)?.icon || FaWifi;
@@ -390,7 +404,7 @@ const MyAddedTickets = () => {
 
                                         <div className="flex flex-col gap-2">
                                             <label className="font-semibold text-gray-700 text-sm">Transport Type</label>
-                                            <select 
+                                            <select
                                                 {...register('transport', { required: 'Transport type is required' })}
                                                 className="px-4 py-3 border-2 border-gray-200 rounded-lg text-sm bg-white cursor-pointer transition-all focus:outline-none focus:border-orange-500 focus:shadow-orange"
                                             >
@@ -481,7 +495,7 @@ const MyAddedTickets = () => {
                                                             id={`update-${perk.name}`}
                                                             className="absolute opacity-0 cursor-pointer peer"
                                                         />
-                                                        <label 
+                                                        <label
                                                             htmlFor={`update-${perk.name}`}
                                                             className="flex items-center gap-2 px-3 py-2 border-2 border-gray-200 rounded-lg cursor-pointer transition-all text-xs font-medium hover:border-orange-500 hover:bg-orange-50 peer-checked:bg-gradient-to-r peer-checked:from-orange-500 peer-checked:to-orange-600 peer-checked:text-white peer-checked:border-orange-500"
                                                         >
@@ -503,8 +517,8 @@ const MyAddedTickets = () => {
                                     >
                                         Cancel
                                     </button>
-                                    <button 
-                                        type="submit" 
+                                    <button
+                                        type="submit"
                                         disabled={isUpdating}
                                         className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none rounded-lg font-semibold cursor-pointer transition-all hover:not(:disabled):-translate-y-1 hover:not(:disabled):shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
                                     >
