@@ -121,7 +121,7 @@ const LatestTickets = () => {
                                         </div>
 
                                         {/* Route Info */}
-                                        <div className="flex items-center justify-between px-5 py-5  rounded-2xl border border-gray-200">
+                                        <div className="flex items-center justify-between px-5 py-5  rounded-[10px] border border-gray-200">
                                             <div className="flex items-center gap-2 font-semibold  flex-1 min-w-0">
                                                 <FaMapMarkerAlt className="text-orange-500 text-lg flex-shrink-0" />
                                                 <span className="text-sm truncate">{ticket.from}</span>
@@ -142,8 +142,8 @@ const LatestTickets = () => {
                                                     <TransportIcon />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Transport</div>
-                                                    <div className="text-sm  font-semibold truncate">{ticket.transport}</div>
+                                                    <div className="text-xs  font-semibold uppercase tracking-wide mb-1">Transport</div>
+                                                    <div className="text-sm text-gray-500 font-semibold truncate">{ticket.transport}</div>
                                                 </div>
                                             </div>
 
@@ -152,8 +152,8 @@ const LatestTickets = () => {
                                                     <FaUsers />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Available</div>
-                                                    <div className="text-sm  font-semibold truncate">{ticket.ticketQuantity} seats</div>
+                                                    <div className="text-xs  font-semibold uppercase tracking-wide mb-1">Available</div>
+                                                    <div className="text-sm text-gray-500 font-semibold truncate">{ticket.ticketQuantity} seats</div>
                                                 </div>
                                             </div>
 
@@ -162,8 +162,8 @@ const LatestTickets = () => {
                                                     <FaCalendarAlt />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Date</div>
-                                                    <div className="text-sm text-gray-700 font-semibold truncate">{formatDate(ticket.departureDateTime)}</div>
+                                                    <div className="text-xs  font-semibold uppercase tracking-wide mb-1">Date</div>
+                                                    <div className="text-sm text-gray-500 font-semibold truncate">{formatDate(ticket.departureDateTime)}</div>
                                                 </div>
                                             </div>
 
@@ -172,8 +172,8 @@ const LatestTickets = () => {
                                                     <FaClock />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Time</div>
-                                                    <div className="text-sm text-gray-700 font-semibold truncate">{formatTime(ticket.departureDateTime)}</div>
+                                                    <div className="text-xs  font-semibold uppercase tracking-wide mb-1">Time</div>
+                                                    <div className="text-sm text-gray-500 font-semibold truncate">{formatTime(ticket.departureDateTime)}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -184,8 +184,8 @@ const LatestTickets = () => {
                                                 {ticket.name?.charAt(0)?.toUpperCase() || 'T'}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <div className="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-1">Organized by</div>
-                                                <div className="text-sm text-gray-700 font-semibold truncate">
+                                                <div className="text-xs  font-semibold uppercase tracking-wide mb-1">Organized by</div>
+                                                <div className="text-sm text-gray-500 font-semibold truncate">
                                                     {ticket.name?.length > 15 
                                                         ? ticket.name.slice(0, 15) + '...' 
                                                         : ticket.name || 'Travel Agent'
@@ -196,7 +196,7 @@ const LatestTickets = () => {
 
                                         {/* Perks Section */}
                                         <div className="min-h-[80px] flex flex-col">
-                                            <h4 className="text-sm font-semibold text-gray-700 mb-3">Included Amenities</h4>
+                                            <h4 className="text-sm font-semibold  mb-3">Included Amenities</h4>
                                             <div className="flex flex-wrap gap-2 flex-1">
                                                 {ticket.perks && ticket.perks.length > 0 ? (
                                                     <>
@@ -212,13 +212,13 @@ const LatestTickets = () => {
                                                             );
                                                         })}
                                                         {ticket.perks.length > 3 && (
-                                                            <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-2xl text-xs font-semibold shadow-lg">
+                                                            <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-[10px] text-xs font-semibold shadow-lg">
                                                                 +{ticket.perks.length - 3} more
                                                             </div>
                                                         )}
                                                     </>
                                                 ) : (
-                                                    <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-gray-400 to-gray-500 text-white rounded-2xl text-xs font-semibold shadow-lg">
+                                                    <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-gray-400 to-gray-500 text-white rounded-[10px] text-xs font-semibold shadow-lg">
                                                         <FaWifi className="text-sm" />
                                                         <span>Basic Service</span>
                                                     </div>
@@ -231,7 +231,7 @@ const LatestTickets = () => {
                                             <Link to={`/seeDetails/${ticket._id}`} className="block w-full">
                                                 <button className="relative w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none btn rounded-[10px]  font-bold text-lg cursor-pointer transition-all duration-500 overflow-hidden shadow-xl hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 group">
                                                     <div className="flex items-center justify-center gap-4 relative z-10">
-                                                        <span className="text-lg ">View Details</span>
+                                                        <span className="text-lg ">Book Now</span>
                                                         <div className="text-xl transition-transform duration-300 group-hover:translate-x-1">
                                                             <FaArrowRight />
                                                         </div>

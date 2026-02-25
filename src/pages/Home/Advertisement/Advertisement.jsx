@@ -113,9 +113,9 @@ const Advertisement = () => {
                                         </div>
                                         
                                         {/* Status Badge */}
-                                        <div className="absolute top-6 left-6 bg-green-500/90 text-white px-4 py-2 rounded-2xl text-xs font-semibold backdrop-blur-md border border-white/20">
+                                        {/* <div className="absolute top-6 left-6 bg-green-500/90 text-white px-4 py-2 rounded-2xl text-xs font-semibold backdrop-blur-md border border-white/20">
                                             Featured
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                     {/* Card Content */}
@@ -234,7 +234,7 @@ const Advertisement = () => {
                                         {/* Action Button */}
                                         <div className="mt-auto pt-4">
                                             <Link to={`/seeDetails/${ticket._id}`} className="block w-full">
-                                                <button className="relative w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none px-8 py-5 rounded-2xl font-bold text-lg cursor-pointer transition-all duration-500 overflow-hidden shadow-xl hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 group">
+                                                <button className="relative w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none btn rounded-2xl font-bold text-lg cursor-pointer transition-all duration-500 overflow-hidden shadow-xl hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 group">
                                                     <div className="flex items-center justify-center gap-4 relative z-10">
                                                         <span className="text-lg">Book Now</span>
                                                         <div className="text-xl transition-transform duration-300 group-hover:translate-x-1">
