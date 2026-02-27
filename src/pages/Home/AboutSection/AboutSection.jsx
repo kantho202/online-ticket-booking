@@ -40,7 +40,7 @@ const AboutSection = () => {
                                     <FaRocket />
                                 </div>
                                 <div>
-                                    <div className="text-2xl font-bold text-gray-800">10K+</div>
+                                    <div className="text-2xl font-bold text-gray-800">20K+</div>
                                     <div className="text-sm text-gray-600">Tickets Booked</div>
                                 </div>
                             </div>
