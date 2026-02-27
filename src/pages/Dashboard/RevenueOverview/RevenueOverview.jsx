@@ -26,7 +26,6 @@ import {
     FiDownload,
     FiRefreshCw
 } from 'react-icons/fi';
-import styled from 'styled-components';
 
 const RevenueOverview = () => {
     const axiosSecure = useAxiosSecure()
@@ -96,83 +95,94 @@ const RevenueOverview = () => {
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
-                <TooltipContainer>
-                    <TooltipLabel>{label}</TooltipLabel>
-                    <TooltipValue>
+                <div className="bg-white p-4 rounded-xl shadow-lg border border-gray-200">
+                    <div className="font-semibold text-gray-700 mb-1">{label}</div>
+                    <div className="text-xl font-bold text-orange-500">
                         {typeof payload[0].value === 'number' && payload[0].dataKey === 'amount' && label === 'Revenue'
                             ? `৳${payload[0].value.toLocaleString()}`
                             : payload[0].value.toLocaleString()
                         }
-                    </TooltipValue>
-                </TooltipContainer>
+                    </div>
+                </div>
             );
         }
         return null;
     };
 
-     const handleRefresh = async () => {
-        // await refetch(); // This will refetch the data
-       window.location.reload();
+    const handleRefresh = async () => {
+        window.location.reload();
     };
+
     return (
-        <Container>
+        <div className="p-8 bg-gray-50 min-h-screen font-sans">
             {/* Header Section */}
-            <Header>
-                <HeaderLeft>
-                    <Title>Revenue Overview</Title>
-                    <Subtitle>Track your business performance and growth</Subtitle>
-                </HeaderLeft>
-                <HeaderRight>
-                    {/* <ActionButton  onClick={ refetch}>
-                        <FiRefreshCw />
-                        Refresh
-                    </ActionButton> */}
-                     <ActionButton onClick={handleRefresh} disabled={isFetching}>
-                <FiRefreshCw className={isFetching ? 'animate-spin' : ''} />
-                {isFetching ? 'Refreshing...' : 'Refresh'}
-            </ActionButton>
-                    <ActionButton>
+            <div className="flex justify-between items-start mb-8 flex-col md:flex-row gap-4">
+                <div>
+                    <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+                        Revenue Overview
+                    </h1>
+                    <p className="text-gray-600 text-lg">Track your business performance and growth</p>
+                </div>
+                <div className="flex gap-4 flex-wrap">
+                    <button
+                        onClick={handleRefresh}
+                        disabled={isFetching}
+                        className="flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-medium cursor-pointer transition-all hover:bg-gray-50 hover:border-orange-500 hover:text-orange-500"
+                    >
+                        <FiRefreshCw className={isFetching ? 'animate-spin' : ''} />
+                        {isFetching ? 'Refreshing...' : 'Refresh'}
+                    </button>
+                    <button className="flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-medium cursor-pointer transition-all hover:bg-gray-50 hover:border-orange-500 hover:text-orange-500">
                         <FiDownload />
                         Export
-                    </ActionButton>
-                    <DateButton type='date'>
+                    </button>
+                    <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-medium cursor-pointer transition-all hover:from-orange-600 hover:to-orange-700 border-0">
                         <FiCalendar />
                         Last 30 days
-                    </DateButton>
-                </HeaderRight>
-            </Header>
+                    </button>
+                </div>
+            </div>
 
             {/* Stats Cards */}
-            <StatsGrid>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 {statsData.map((stat, index) => (
-                    <StatsCard key={index} bgColor={stat.bgColor}>
-                        <StatsHeader>
-                            <StatsIcon color={stat.color}>
+                    <div
+                        key={index}
+                        className="bg-white p-8 rounded-2xl border border-gray-100 transition-all hover:-translate-y-2 hover:shadow-2xl"
+                    >
+                        <div className="flex justify-between items-center mb-6">
+                            <div
+                                className="w-15 h-15 rounded-2xl flex items-center justify-center text-2xl text-white shadow-lg"
+                                style={{ backgroundColor: stat.color, boxShadow: `0 8px 25px ${stat.color}40` }}
+                            >
                                 <stat.icon />
-                            </StatsIcon>
-                            <TrendIndicator trend={stat.trend}>
+                            </div>
+                            <div className={`flex items-center gap-1 text-sm font-semibold ${stat.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}>
                                 {stat.trend === 'up' ? <FiTrendingUp /> : <FiTrendingDown />}
                                 {stat.change}
-                            </TrendIndicator>
-                        </StatsHeader>
-                        <StatsValue>{stat.value}</StatsValue>
-                        <StatsTitle>{stat.title}</StatsTitle>
-                        <StatsProgress>
-                            <ProgressBar width="75%" color={stat.color} />
-                        </StatsProgress>
-                    </StatsCard>
+                            </div>
+                        </div>
+                        <div className="text-4xl font-bold text-gray-900 mb-2">{stat.value}</div>
+                        <div className="text-gray-500 font-medium mb-4">{stat.title}</div>
+                        <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                                className="h-full rounded-full transition-all duration-1000"
+                                style={{ width: '75%', backgroundColor: stat.color }}
+                            ></div>
+                        </div>
+                    </div>
                 ))}
-            </StatsGrid>
+            </div>
 
             {/* Charts Section */}
-            <ChartsGrid>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
                 {/* Area Chart */}
-                <ChartCard>
-                    <ChartHeader>
-                        <ChartTitle>Revenue Trend</ChartTitle>
-                        <ChartSubtitle>Monthly performance overview</ChartSubtitle>
-                    </ChartHeader>
-                    <ChartContainer>
+                <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                    <div className="mb-8">
+                        <h3 className="text-2xl font-semibold text-gray-900 mb-2">Revenue Trend</h3>
+                        <p className="text-gray-500 text-sm">Monthly performance overview</p>
+                    </div>
+                    <div className="w-full">
                         <ResponsiveContainer width="100%" height={300}>
                             <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                                 <defs>
@@ -203,16 +213,16 @@ const RevenueOverview = () => {
                                 />
                             </AreaChart>
                         </ResponsiveContainer>
-                    </ChartContainer>
-                </ChartCard>
+                    </div>
+                </div>
 
                 {/* Bar Chart */}
-                <ChartCard>
-                    <ChartHeader>
-                        <ChartTitle>Performance Metrics</ChartTitle>
-                        <ChartSubtitle>Comparative analysis</ChartSubtitle>
-                    </ChartHeader>
-                    <ChartContainer>
+                <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                    <div className="mb-8">
+                        <h3 className="text-2xl font-semibold text-gray-900 mb-2">Performance Metrics</h3>
+                        <p className="text-gray-500 text-sm">Comparative analysis</p>
+                    </div>
+                    <div className="w-full">
                         <ResponsiveContainer width="100%" height={300}>
                             <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -235,19 +245,19 @@ const RevenueOverview = () => {
                                 />
                             </BarChart>
                         </ResponsiveContainer>
-                    </ChartContainer>
-                </ChartCard>
-            </ChartsGrid>
+                    </div>
+                </div>
+            </div>
 
             {/* Bottom Section */}
-            <BottomGrid>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Pie Chart */}
-                <ChartCard>
-                    <ChartHeader>
-                        <ChartTitle>Distribution</ChartTitle>
-                        <ChartSubtitle>Revenue breakdown</ChartSubtitle>
-                    </ChartHeader>
-                    <ChartContainer>
+                <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                    <div className="mb-8">
+                        <h3 className="text-2xl font-semibold text-gray-900 mb-2">Distribution</h3>
+                        <p className="text-gray-500 text-sm">Revenue breakdown</p>
+                    </div>
+                    <div className="w-full">
                         <ResponsiveContainer width="100%" height={250}>
                             <PieChart>
                                 <Pie
@@ -266,358 +276,55 @@ const RevenueOverview = () => {
                                 <Tooltip content={<CustomTooltip />} />
                             </PieChart>
                         </ResponsiveContainer>
-                    </ChartContainer>
-                    <LegendContainer>
+                    </div>
+                    <div className="flex justify-center gap-8 mt-4 flex-wrap">
                         {pieData.map((item, index) => (
-                            <LegendItem key={index}>
-                                <LegendColor color={item.color} />
-                                <LegendText>{item.name}</LegendText>
-                            </LegendItem>
+                            <div key={index} className="flex items-center gap-2">
+                                <div
+                                    className="w-3 h-3 rounded-full"
+                                    style={{ backgroundColor: item.color }}
+                                ></div>
+                                <span className="text-sm text-gray-500 font-medium">{item.name}</span>
+                            </div>
                         ))}
-                    </LegendContainer>
-                </ChartCard>
+                    </div>
+                </div>
 
                 {/* Summary Card */}
-                <SummaryCard>
-                    <SummaryHeader>
-                        <SummaryTitle>Quick Summary</SummaryTitle>
-                        <SummaryIcon>
+                <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-8 text-white">
+                    <div className="flex justify-between items-center mb-8">
+                        <h3 className="text-2xl font-semibold">Quick Summary</h3>
+                        <div className="text-2xl opacity-80">
                             <FiTrendingUp />
-                        </SummaryIcon>
-                    </SummaryHeader>
-                    <SummaryContent>
-                        <SummaryItem>
-                            <SummaryLabel>Average Revenue</SummaryLabel>
-                            <SummaryValue>${Math.round((revenue.totalRevenue || 0) / 30).toLocaleString()}/day</SummaryValue>
-                        </SummaryItem>
-                        <SummaryItem>
-                            <SummaryLabel>Conversion Rate</SummaryLabel>
-                            <SummaryValue>
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-6">
+                        <div className="flex justify-between items-center pb-4 border-b border-white/20">
+                            <span className="opacity-90 font-medium">Average Revenue</span>
+                            <span className="font-bold text-lg">${Math.round((revenue.totalRevenue || 0) / 30).toLocaleString()}/day</span>
+                        </div>
+                        <div className="flex justify-between items-center pb-4 border-b border-white/20">
+                            <span className="opacity-90 font-medium">Conversion Rate</span>
+                            <span className="font-bold text-lg">
                                 {revenue.totalTicketSold && revenue.totalTicketAdded
                                     ? Math.round((revenue.totalTicketSold / revenue.totalTicketAdded) * 100)
                                     : 0
                                 }%
-                            </SummaryValue>
-                        </SummaryItem>
-                        <SummaryItem>
-                            <SummaryLabel>Growth Rate</SummaryLabel>
-                            <SummaryValue positive>+15.3%</SummaryValue>
-                        </SummaryItem>
-                        <SummaryItem>
-                            <SummaryLabel>Total Transactions</SummaryLabel>
-                            <SummaryValue>{(revenue.totalTicketSold || 0).toLocaleString()}</SummaryValue>
-                        </SummaryItem>
-                    </SummaryContent>
-                </SummaryCard>
-            </BottomGrid>
-        </Container>
+                            </span>
+                        </div>
+                        <div className="flex justify-between items-center pb-4 border-b border-white/20">
+                            <span className="opacity-90 font-medium">Growth Rate</span>
+                            <span className="font-bold text-lg text-green-300">+15.3%</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <span className="opacity-90 font-medium">Total Transactions</span>
+                            <span className="font-bold text-lg">{(revenue.totalTicketSold || 0).toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
-
-// Styled Components
-const Container = styled.div`
-    padding: 2rem;
-    background: ;
-    min-height: 100vh;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-`;
-
-const Header = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 2rem;
-    
-    @media (max-width: 768px) {
-        flex-direction: column;
-        gap: 1rem;
-    }
-`;
-
-const HeaderLeft = styled.div``;
-
-const HeaderRight = styled.div`
-    display: flex;
-    gap: 1rem;
-    
-    @media (max-width: 768px) {
-        flex-wrap: wrap;
-    }
-`;
-
-const Title = styled.h1`
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-`;
-
-const Subtitle = styled.p`
-    color: #;
-    font-size: 1.1rem;
-`;
-
-const ActionButton = styled.button`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: ;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    color: #;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    
-    &:hover {
-        background: #;
-        border-color: #ff8c42;
-        color: #ff8c42;
-    }
-`;
-
-const DateButton = styled(ActionButton)`
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
-    border-color: transparent;
-    
-    &:hover {
-        background: linear-gradient(135deg, #ff9f59, #ff7849);
-        color: white;
-    }
-`;
-
-const StatsGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
-`;
-
-const StatsCard = styled.div`
-    background: ${props => props.bgColor};
-    padding: 2rem;
-    border-radius: 20px;
-    border: 1px solid #f3f4f6;
-    transition: all 0.3s ease;
-    
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    }
-`;
-
-const StatsHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-`;
-
-const StatsIcon = styled.div`
-    width: 60px;
-    height: 60px;
-    background: ${props => props.color};
-    color: white;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: 0 8px 25px ${props => props.color}40;
-`;
-
-const TrendIndicator = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: ${props => props.trend === 'up' ? '#10b981' : '#ef4444'};
-`;
-
-const StatsValue = styled.div`
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #;
-    margin-bottom: 0.5rem;
-`;
-
-const StatsTitle = styled.div`
-    color: #6b7280;
-    font-weight: 500;
-    margin-bottom: 1rem;
-`;
-
-const StatsProgress = styled.div`
-    width: 100%;
-    height: 6px;
-    background: #e5e7eb;
-    border-radius: 3px;
-    overflow: hidden;
-`;
-
-const ProgressBar = styled.div`
-    width: ${props => props.width};
-    height: 100%;
-    background: ${props => props.color};
-    border-radius: 3px;
-    transition: width 1s ease;
-`;
-
-const ChartsGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
-    
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-    }
-`;
-
-const BottomGrid = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    
-    @media (max-width: 1024px) {
-        grid-template-columns: 1fr;
-    }
-`;
-
-const ChartCard = styled.div`
-    background: ;
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #f3f4f6;
-`;
-
-const ChartHeader = styled.div`
-    margin-bottom: 2rem;
-`;
-
-const ChartTitle = styled.h3`
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #;
-    margin-bottom: 0.5rem;
-`;
-
-const ChartSubtitle = styled.p`
-    color: #6b7280;
-    font-size: 0.9rem;
-`;
-
-const ChartContainer = styled.div`
-    width: 100%;
-`;
-
-const TooltipContainer = styled.div`
-    background: ;
-    padding: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    border: 1px solid #e5e7eb;
-`;
-
-const TooltipLabel = styled.div`
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 0.25rem;
-`;
-
-const TooltipValue = styled.div`
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #ff8c42;
-`;
-
-const LegendContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-top: 1rem;
-    flex-wrap: wrap;
-`;
-
-const LegendItem = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-`;
-
-const LegendColor = styled.div`
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: ${props => props.color};
-`;
-
-const LegendText = styled.span`
-    font-size: 0.9rem;
-    color: #6b7280;
-    font-weight: 500;
-`;
-
-const SummaryCard = styled.div`
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    border-radius: 20px;
-    padding: 2rem;
-    color: white;
-`;
-
-const SummaryHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-`;
-
-const SummaryTitle = styled.h3`
-    font-size: 1.5rem;
-    font-weight: 600;
-`;
-
-const SummaryIcon = styled.div`
-    font-size: 1.5rem;
-    opacity: 0.8;
-`;
-
-const SummaryContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-`;
-
-const SummaryItem = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    
-    &:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
-    }
-`;
-
-const SummaryLabel = styled.span`
-    opacity: 0.9;
-    font-weight: 500;
-`;
-
-const SummaryValue = styled.span`
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: ${props => props.positive ? '#10b981' : 'white'};
-`;
 
 export default RevenueOverview;
