@@ -1,24 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import useAxiosSecure from '../../../hook/useAxiosecure';
-import { Link } from 'react-router';
 import { 
-   
     FaCheck, 
     FaTimes, 
     FaUser, 
     FaEnvelope, 
     FaHashtag,
     FaDollarSign,
-    FaFilter,
     FaSearch,
     FaDownload,
-    
 } from 'react-icons/fa';
 import { 
-    FiCalendar, 
     FiClock, 
-    FiMoreVertical,
     FiEye,
     FiCheckCircle,
     FiXCircle,
@@ -26,11 +20,9 @@ import {
 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import Loader from '../../../components/Loading/Loading';
-import styled from 'styled-components';
 import { FaTicket } from 'react-icons/fa6';
-import { LuRefreshCcw } from 'react-icons/lu';
 import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import 'jspdf-autotable';
 
 const RequestedBooking = () => {
     const axiosSecure = useAxiosSecure();
@@ -113,24 +105,30 @@ const RequestedBooking = () => {
     };
 
     const getStatusBadge = (status) => {
-        switch (status) {
-            case 'accepted':
-                return <StatusBadge status="accepted"><FiCheckCircle /> Accepted</StatusBadge>;
-            case 'rejected':
-                return <StatusBadge status="rejected"><FiXCircle /> Rejected</StatusBadge>;
-            default:
-                return <StatusBadge status="pending"><FiClock /> Pending</StatusBadge>;
-        }
+        const badges = {
+            accepted: (
+                <span className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                    <FiCheckCircle /> Accepted
+                </span>
+            ),
+            rejected: (
+                <span className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+                    <FiXCircle /> Rejected
+                </span>
+            ),
+            pending: (
+                <span className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
+                    <FiClock /> Pending
+                </span>
+            )
+        };
+        
+        return badges[status] || badges.pending;
     };
 
     const handleRefresh = async () => {
         // await refetch(); // This will refetch the data
        window.location.reload();
-    };
-
-    const handleOpenModal = (booking) => {
-        setSelectedBooking(booking);
-        setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
@@ -390,82 +388,92 @@ const RequestedBooking = () => {
         }
     };
     return (
-        <Container className='p-4 lg:p-8'>
+        <div className='p-4 lg:p-8 bg-gray-50 min-h-screen'>
             {/* Header Section */}
-            <Header>
-                <HeaderLeft>
-                    <Title>Booking Requests</Title>
-                    <Subtitle>Manage and review customer booking requests</Subtitle>
-                </HeaderLeft>
-                <HeaderRight>
-                     <ActionButton onClick={handleRefresh} disabled={isFetching}>
-                                    <FiRefreshCw className={isFetching ? 'animate-spin' : ''} />
-                                    {isFetching ? 'Refreshing...' : 'Refresh'}
-                                </ActionButton>
-                    <ActionButton onClick={handleExportPDF}>
+            <div className="flex justify-between items-start mb-8 flex-col md:flex-row gap-4">
+                <div>
+                    <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+                        Booking Requests
+                    </h1>
+                    <p className="text-gray-500 text-lg">Manage and review customer booking requests</p>
+                </div>
+                <div className="flex gap-4">
+                    <button 
+                        onClick={handleRefresh} 
+                        disabled={isFetching}
+                        className="flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-medium cursor-pointer transition-all hover:bg-gray-50 hover:border-orange-500 hover:text-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <FiRefreshCw className={isFetching ? 'animate-spin' : ''} />
+                        {isFetching ? 'Refreshing...' : 'Refresh'}
+                    </button>
+                    <button 
+                        onClick={handleExportPDF}
+                        className="flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-medium cursor-pointer transition-all hover:bg-gray-50 hover:border-orange-500 hover:text-orange-500"
+                    >
                         <FaDownload />
                         Export
-                    </ActionButton>
-                </HeaderRight>
-            </Header>
+                    </button>
+                </div>
+            </div>
 
             {/* Stats Overview */}
-            <StatsContainer>
-                <StatCard>
-                    <StatIcon color="#ff8c42">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg flex items-center gap-4">
+                    <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center text-orange-500 text-xl flex-shrink-0">
                         <FaTicket />
-                    </StatIcon>
-                    <StatContent>
-                        <StatValue>{bookings.length}</StatValue>
-                        <StatLabel>Total Requests</StatLabel>
-                    </StatContent>
-                </StatCard>
-                <StatCard>
-                    <StatIcon color="#10b981">
+                    </div>
+                    <div>
+                        <div className="text-3xl font-bold text-gray-900">{bookings.length}</div>
+                        <div className="text-gray-500 text-sm font-medium">Total Requests</div>
+                    </div>
+                </div>
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg flex items-center gap-4">
+                    <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-500 text-xl flex-shrink-0">
                         <FaCheck />
-                    </StatIcon>
-                    <StatContent>
-                        <StatValue>{bookings.filter(b => b.status === 'accepted').length}</StatValue>
-                        <StatLabel>Accepted</StatLabel>
-                    </StatContent>
-                </StatCard>
-                <StatCard>
-                    <StatIcon color="#ef4444">
+                    </div>
+                    <div>
+                        <div className="text-3xl font-bold text-gray-900">{bookings.filter(b => b.status === 'accepted').length}</div>
+                        <div className="text-gray-500 text-sm font-medium">Accepted</div>
+                    </div>
+                </div>
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg flex items-center gap-4">
+                    <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center text-red-500 text-xl flex-shrink-0">
                         <FaTimes />
-                    </StatIcon>
-                    <StatContent>
-                        <StatValue>{bookings.filter(b => b.status === 'rejected').length}</StatValue>
-                        <StatLabel>Rejected</StatLabel>
-                    </StatContent>
-                </StatCard>
-                <StatCard>
-                    <StatIcon color="#f59e0b">
+                    </div>
+                    <div>
+                        <div className="text-3xl font-bold text-gray-900">{bookings.filter(b => b.status === 'rejected').length}</div>
+                        <div className="text-gray-500 text-sm font-medium">Rejected</div>
+                    </div>
+                </div>
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg flex items-center gap-4">
+                    <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-500 text-xl flex-shrink-0">
                         <FiClock />
-                    </StatIcon>
-                    <StatContent>
-                        <StatValue>{bookings.filter(b => !b.status || b.status === 'pending').length}</StatValue>
-                        <StatLabel>Pending</StatLabel>
-                    </StatContent>
-                </StatCard>
-            </StatsContainer>
+                    </div>
+                    <div>
+                        <div className="text-3xl font-bold text-gray-900">{bookings.filter(b => !b.status || b.status === 'pending').length}</div>
+                        <div className="text-gray-500 text-sm font-medium">Pending</div>
+                    </div>
+                </div>
+            </div>
 
             {/* Filters and Search */}
-            <FiltersContainer>
-                <SearchContainer>
-                    <SearchIcon>
+            <div className="flex items-center gap-4 mb-8 flex-col md:flex-row">
+                <div className="relative flex-1 w-full">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
                         <FaSearch />
-                    </SearchIcon>
-                    <SearchInput
+                    </div>
+                    <input
                         type="text"
                         placeholder="Search by name, email, or ticket title..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                     />
-                </SearchContainer>
+                </div>
                 
                 {/* DaisyUI Status Filter Select */}
                 <select 
-                    className="select select-bordered w-full max-w-xs"
+                    className="select select-bordered w-full md:w-auto md:max-w-xs"
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
                 >
@@ -474,176 +482,225 @@ const RequestedBooking = () => {
                     <option value="accepted">Accepted</option>
                     <option value="rejected">Rejected</option>
                 </select>
-            </FiltersContainer>
+            </div>
 
             {/* Desktop Table View */}
-            <TableContainer>
-                <TableWrapper>
-                    <Table>
-                        <TableHeader>
+            <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 mb-8 hidden lg:block">
+                <div className="overflow-x-auto">
+                    <table className="w-full border-collapse min-w-[800px]">
+                        <thead className="bg-gray-50">
                             <tr>
-                                <TableHeaderCell>#</TableHeaderCell>
-                                <TableHeaderCell>Customer</TableHeaderCell>
-                                <TableHeaderCell>Ticket Details</TableHeaderCell>
-                                <TableHeaderCell>Quantity</TableHeaderCell>
-                                <TableHeaderCell>Amount</TableHeaderCell>
-                                <TableHeaderCell>Status</TableHeaderCell>
-                                <TableHeaderCell>Actions</TableHeaderCell>
+                                <th className="px-6 py-4 text-left font-semibold text-gray-700 text-xs uppercase tracking-wider whitespace-nowrap">#</th>
+                                <th className="px-6 py-4 text-left font-semibold text-gray-700 text-xs uppercase tracking-wider whitespace-nowrap">Customer</th>
+                                <th className="px-6 py-4 text-left font-semibold text-gray-700 text-xs uppercase tracking-wider whitespace-nowrap">Ticket Details</th>
+                                <th className="px-6 py-4 text-left font-semibold text-gray-700 text-xs uppercase tracking-wider whitespace-nowrap">Quantity</th>
+                                <th className="px-6 py-4 text-left font-semibold text-gray-700 text-xs uppercase tracking-wider whitespace-nowrap">Amount</th>
+                                <th className="px-6 py-4 text-left font-semibold text-gray-700 text-xs uppercase tracking-wider whitespace-nowrap">Status</th>
+                                <th className="px-6 py-4 text-left font-semibold text-gray-700 text-xs uppercase tracking-wider whitespace-nowrap">Actions</th>
                             </tr>
-                        </TableHeader>
-                        <TableBody>
+                        </thead>
+                        <tbody>
                             {filteredBookings.map((booking, i) => (
-                                <TableRow key={booking._id}>
-                                    <TableCell>
-                                        <RowNumber>#{i + 1}</RowNumber>
-                                    </TableCell>
-                                    <TableCell>
-                                        <CustomerInfo>
-                                            <CustomerAvatar>
+                                <tr key={booking._id} className="hover:bg-gray-50 transition-colors">
+                                    <td className="px-6 py-4 border-b border-gray-100">
+                                        <span className="font-semibold text-gray-500 bg-gray-50 px-2 py-1 rounded-md text-xs whitespace-nowrap">
+                                            #{i + 1}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4 border-b border-gray-100">
+                                        <div className="flex items-center gap-3 min-w-[180px]">
+                                            <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-full flex items-center justify-center font-semibold flex-shrink-0">
                                                 {booking.name.charAt(0).toUpperCase()}
-                                            </CustomerAvatar>
-                                            <CustomerDetails>
-                                                <CustomerName>{booking.name}</CustomerName>
-                                                <CustomerEmail>{booking.email}</CustomerEmail>
-                                            </CustomerDetails>
-                                        </CustomerInfo>
-                                    </TableCell>
-                                    <TableCell>
-                                        <TicketInfo>
-                                            <TicketTitle>{booking.ticket_title}</TicketTitle>
-                                            <TicketMeta>
+                                            </div>
+                                            <div className="min-w-0 flex-1">
+                                                <div className="font-semibold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
+                                                    {booking.name}
+                                                </div>
+                                                <div className="text-xs text-gray-500 whitespace-nowrap overflow-hidden text-ellipsis">
+                                                    {booking.email}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4 border-b border-gray-100">
+                                        <div className="min-w-[200px]">
+                                            <div className="font-semibold text-gray-900 mb-1 whitespace-nowrap overflow-hidden text-ellipsis">
+                                                {booking.ticket_title}
+                                            </div>
+                                            <div className="flex items-center gap-1 text-xs text-gray-500 whitespace-nowrap">
                                                 <FaHashtag />
                                                 ID: {booking._id.slice(-6)}
-                                            </TicketMeta>
-                                        </TicketInfo>
-                                    </TableCell>
-                                    <TableCell>
-                                        <QuantityBadge>{booking.bookingQuantity}</QuantityBadge>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Amount>৳{booking.total_price?.toLocaleString()}</Amount>
-                                    </TableCell>
-                                    <TableCell>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4 border-b border-gray-100">
+                                        <span className="bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-semibold text-sm whitespace-nowrap">
+                                            {booking.bookingQuantity}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4 border-b border-gray-100">
+                                        <span className="font-bold text-green-600 text-lg whitespace-nowrap">
+                                            ৳{booking.total_price?.toLocaleString()}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4 border-b border-gray-100">
                                         {getStatusBadge(booking.status)}
-                                    </TableCell>
-                                    <TableCell>
+                                    </td>
+                                    <td className="px-6 py-4 border-b border-gray-100">
                                         {(!booking.status || booking.status === 'pending') ? (
-                                            <ActionButtons>
-                                                <AcceptButton
+                                            <div className="flex gap-2 items-center min-w-[140px]">
+                                                <button
                                                     onClick={() => handleApproved(booking._id)}
                                                     disabled={isProcessing === booking._id}
+                                                    className="flex items-center justify-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg font-medium cursor-pointer transition-all hover:bg-green-600 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed flex-1"
                                                 >
                                                     <FaCheck />
-                                                    <ButtonText>{isProcessing === booking._id ? 'Processing...' : 'Accept'}</ButtonText>
-                                                </AcceptButton>
-                                                <RejectButton
+                                                    <span className="hidden sm:inline">{isProcessing === booking._id ? 'Processing...' : 'Accept'}</span>
+                                                </button>
+                                                <button
                                                     onClick={() => handleRejection(booking._id)}
                                                     disabled={isProcessing === booking._id}
+                                                    className="flex items-center justify-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg font-medium cursor-pointer transition-all hover:bg-red-600 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed flex-1"
                                                 >
                                                     <FaTimes />
-                                                    <ButtonText>Reject</ButtonText>
-                                                </RejectButton>
-                                            </ActionButtons>
+                                                    <span className="hidden sm:inline">Reject</span>
+                                                </button>
+                                            </div>
                                         ) : (
-                                            <ViewButton onClick={() => handleOpenViewModal(booking)}>
+                                            <button 
+                                                onClick={() => handleOpenViewModal(booking)}
+                                                className="flex items-center justify-center w-8 h-8 bg-gray-100 text-gray-600 rounded-lg cursor-pointer transition-all hover:bg-gray-200 hover:text-gray-800 flex-shrink-0"
+                                            >
                                                 <FiEye />
-                                            </ViewButton>
+                                            </button>
                                         )}
-                                    </TableCell>
-                                </TableRow>
+                                    </td>
+                                </tr>
                             ))}
-                        </TableBody>
-                    </Table>
-                </TableWrapper>
-            </TableContainer>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
             {/* Mobile Card View */}
-            <MobileContainer>
+            <div className="lg:hidden space-y-4">
                 {filteredBookings.map((booking, i) => (
-                    <BookingCard key={booking._id}>
-                        <CardHeader>
-                            <CardNumber>#{i + 1}</CardNumber>
+                    <div key={booking._id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        {/* Card Header */}
+                        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-orange-50 to-orange-100 border-b border-orange-200">
+                            <span className="font-bold text-orange-600 bg-white px-3 py-1 rounded-full text-sm">
+                                #{i + 1}
+                            </span>
                             {getStatusBadge(booking.status)}
-                        </CardHeader>
+                        </div>
 
-                        <CardContent>
-                            <TicketSection>
-                                <TicketIcon>
+                        {/* Card Content */}
+                        <div className="p-4 space-y-4">
+                            {/* Ticket Section */}
+                            <div className="flex items-start gap-3 pb-4 border-b border-gray-100">
+                                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-xl flex items-center justify-center text-xl flex-shrink-0">
                                     <FaTicket />
-                                </TicketIcon>
-                                <TicketDetails>
-                                    <TicketTitle>{booking.ticket_title}</TicketTitle>
-                                    <TicketId>Booking ID: {booking._id.slice(-6)}</TicketId>
-                                </TicketDetails>
-                            </TicketSection>
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-bold text-gray-900 text-lg mb-1 break-words">
+                                        {booking.ticket_title}
+                                    </h3>
+                                    <p className="text-xs text-gray-500">
+                                        Booking ID: {booking._id.slice(-6)}
+                                    </p>
+                                </div>
+                            </div>
 
-                            <InfoGrid>
-                                <InfoItem>
-                                    <InfoIcon><FaUser /></InfoIcon>
-                                    <InfoContent>
-                                        <InfoLabel>Customer</InfoLabel>
-                                        <InfoValue>{booking.name}</InfoValue>
-                                    </InfoContent>
-                                </InfoItem>
-                                <InfoItem>
-                                    <InfoIcon><FaEnvelope /></InfoIcon>
-                                    <InfoContent>
-                                        <InfoLabel>Email</InfoLabel>
-                                        <InfoValue>{booking.email}</InfoValue>
-                                    </InfoContent>
-                                </InfoItem>
-                                <InfoItem>
-                                    <InfoIcon><FaHashtag /></InfoIcon>
-                                    <InfoContent>
-                                        <InfoLabel>Quantity</InfoLabel>
-                                        <InfoValue>{booking.bookingQuantity}</InfoValue>
-                                    </InfoContent>
-                                </InfoItem>
-                                <InfoItem>
-                                    <InfoIcon><FaDollarSign /></InfoIcon>
-                                    <InfoContent>
-                                        <InfoLabel>Total Amount</InfoLabel>
-                                        <InfoValue>৳{booking.total_price?.toLocaleString()}</InfoValue>
-                                    </InfoContent>
-                                </InfoItem>
-                            </InfoGrid>
-                        </CardContent>
+                            {/* Info Grid */}
+                            <div className="grid grid-cols-1 gap-3">
+                                {/* Customer */}
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 flex-shrink-0">
+                                        <FaUser />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-xs text-gray-500 mb-0.5">Customer</p>
+                                        <p className="font-semibold text-gray-900 truncate">{booking.name}</p>
+                                    </div>
+                                </div>
 
+                                {/* Email */}
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-600 flex-shrink-0">
+                                        <FaEnvelope />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-xs text-gray-500 mb-0.5">Email</p>
+                                        <p className="font-semibold text-gray-900 truncate">{booking.email}</p>
+                                    </div>
+                                </div>
+
+                                {/* Quantity and Amount */}
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 flex-shrink-0">
+                                            <FaHashtag />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-xs text-gray-500 mb-0.5">Quantity</p>
+                                            <p className="font-semibold text-gray-900">{booking.bookingQuantity}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600 flex-shrink-0">
+                                            <FaDollarSign />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-xs text-gray-500 mb-0.5">Total Amount</p>
+                                            <p className="font-bold text-green-600">৳{booking.total_price?.toLocaleString()}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Card Actions */}
                         {(!booking.status || booking.status === 'pending') && (
-                            <CardActions>
-                                <AcceptButton
+                            <div className="flex gap-3 p-4 bg-gray-50 border-t border-gray-100">
+                                <button
                                     onClick={() => handleApproved(booking._id)}
                                     disabled={isProcessing === booking._id}
+                                    className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-500 text-white rounded-xl font-semibold cursor-pointer transition-all hover:bg-green-600 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
                                     <FaCheck />
                                     {isProcessing === booking._id ? 'Processing...' : 'Accept'}
-                                </AcceptButton>
-                                <RejectButton
+                                </button>
+                                <button
                                     onClick={() => handleRejection(booking._id)}
                                     disabled={isProcessing === booking._id}
+                                    className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-red-500 text-white rounded-xl font-semibold cursor-pointer transition-all hover:bg-red-600 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
                                     <FaTimes />
                                     Reject
-                                </RejectButton>
-                            </CardActions>
+                                </button>
+                            </div>
                         )}
-                    </BookingCard>
+                    </div>
                 ))}
-            </MobileContainer>
+            </div>
 
+            {/* Empty State */}
             {filteredBookings.length === 0 && (
-                <EmptyState>
-                    <EmptyIcon>
+                <div className="flex flex-col items-center justify-center py-16 px-4">
+                    <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-4xl mb-6">
                         <FaTicket />
-                    </EmptyIcon>
-                    <EmptyTitle>No booking requests found</EmptyTitle>
-                    <EmptySubtitle>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                        No booking requests found
+                    </h3>
+                    <p className="text-gray-500 text-center max-w-md">
                         {searchTerm || statusFilter !== 'all' 
                             ? 'Try adjusting your search or filter criteria'
                             : 'Booking requests will appear here when customers make reservations'
                         }
-                    </EmptySubtitle>
-                </EmptyState>
+                    </p>
+                </div>
             )}
 
             {/* DaisyUI Modal for View Details */}
@@ -905,604 +962,8 @@ const RequestedBooking = () => {
                     <div className="modal-backdrop" onClick={handleCloseModal}></div>
                 </div>
             )}
-        </Container>
+        </div>
     );
 };
-
-// Styled Components
-const Container = styled.div`
-    background: #f8fafc;
-    min-height: 100vh;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-`;
-
-const Header = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 2rem;
-    
-    @media (max-width: 768px) {
-        flex-direction: column;
-        gap: 1rem;
-    }
-`;
-
-const HeaderLeft = styled.div``;
-
-const HeaderRight = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
-
-const Title = styled.h1`
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-`;
-
-const Subtitle = styled.p`
-    color: #6b7280;
-    font-size: 1.1rem;
-`;
-
-const ActionButton = styled.button`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    color: #374151;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    
-    &:hover {
-        background: #f9fafb;
-        border-color: #ff8c42;
-        color: #ff8c42;
-    }
-`;
-
-const StatsContainer = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-`;
-
-const StatCard = styled.div`
-    background: white;
-    padding: 1.5rem;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #f3f4f6;
-    transition: all 0.2s ease;
-    
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    }
-`;
-
-const StatIcon = styled.div`
-    width: 48px;
-    height: 48px;
-    background: ${props => props.color}20;
-    color: ${props => props.color};
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-`;
-
-const StatContent = styled.div``;
-
-const StatValue = styled.div`
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #1f2937;
-`;
-
-const StatLabel = styled.div`
-    color: #6b7280;
-    font-size: 0.9rem;
-    font-weight: 500;
-`;
-
-const FiltersContainer = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    
-    @media (max-width: 768px) {
-        flex-direction: column;
-        align-items: stretch;
-    }
-`;
-
-const SearchContainer = styled.div`
-    position: relative;
-    flex: 1;
-`;
-
-const SearchIcon = styled.div`
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #9ca3af;
-`;
-
-const SearchInput = styled.input`
-    width: 100%;
-    padding: 0.75rem 1rem 0.75rem 2.5rem;
-    border: 1px solid #d1d5db;
-    border-radius: 12px;
-    background: white;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-
-    &:focus {
-        outline: none;
-        border-color: #ff8c42;
-        box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
-    }
-`;
-
-const FilterSelect = styled.select`
-    padding: 0.75rem 1rem;
-    border: 1px solid #d1d5db;
-    border-radius: 12px;
-    background: white;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:focus {
-        outline: none;
-        border-color: #ff8c42;
-        box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
-    }
-`;
-
-const TableContainer = styled.div`
-    background: white;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #f3f4f6;
-    margin-bottom: 2rem;
-    
-    @media (max-width: 1024px) {
-        display: none;
-    }
-`;
-
-const TableWrapper = styled.div`
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    
-    &::-webkit-scrollbar {
-        height: 8px;
-    }
-    
-    &::-webkit-scrollbar-track {
-        background: #f1f5f9;
-        border-radius: 4px;
-    }
-    
-    &::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 4px;
-    }
-    
-    &::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-    }
-`;
-
-const Table = styled.table`
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 800px;
-`;
-
-const TableHeader = styled.thead`
-    background: #f9fafb;
-`;
-
-const TableRow = styled.tr`
-    &:hover {
-        background: #f8fafc;
-    }
-`;
-
-const TableHeaderCell = styled.th`
-    padding: 1rem 1.5rem;
-    text-align: left;
-    font-weight: 600;
-    color: #374151;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-`;
-
-const TableBody = styled.tbody``;
-
-const TableCell = styled.td`
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid #f3f4f6;
-    vertical-align: middle;
-`;
-
-const RowNumber = styled.span`
-    font-weight: 600;
-    color: #6b7280;
-    background: #f8fafc;
-    padding: 0.25rem 0.5rem;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    white-space: nowrap;
-`;
-
-const CustomerInfo = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    min-width: 180px;
-`;
-
-const CustomerAvatar = styled.div`
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    flex-shrink: 0;
-`;
-
-const CustomerDetails = styled.div`
-    min-width: 0;
-    flex: 1;
-`;
-
-const CustomerName = styled.div`
-    font-weight: 600;
-    color: #1f2937;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
-const CustomerEmail = styled.div`
-    font-size: 0.8rem;
-    color: #6b7280;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
-const TicketInfo = styled.div`
-    min-width: 200px;
-`;
-
-const TicketTitle = styled.div`
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 0.25rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
-const TicketMeta = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: 0.8rem;
-    color: #6b7280;
-    white-space: nowrap;
-`;
-
-const QuantityBadge = styled.span`
-    background: #e0f2fe;
-    color: #0369a1;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    white-space: nowrap;
-`;
-
-const Amount = styled.span`
-    font-weight: 700;
-    color: #10b981;
-    font-size: 1.1rem;
-    white-space: nowrap;
-`;
-
-const StatusBadge = styled.span`
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    white-space: nowrap;
-    
-    ${props => {
-        switch (props.status) {
-            case 'accepted':
-                return 'background: #dcfce7; color: #166534;';
-            case 'rejected':
-                return 'background: #fef2f2; color: #dc2626;';
-            default:
-                return 'background: #fef3c7; color: #d97706;';
-        }
-    }}
-`;
-
-const ActionButtons = styled.div`
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    min-width: 140px;
-`;
-
-const ViewButton = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    background: #f3f4f6;
-    color: #6b7280;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-    
-    &:hover {
-        background: #e5e7eb;
-        color: #374151;
-    }
-`;
-
-const ButtonText = styled.span`
-    @media (max-width: 480px) {
-        display: none;
-    }
-`;
-
-const MobileContainer = styled.div`
-    display: grid;
-    gap: 1.5rem;
-    
-    @media (min-width: 1025px) {
-        display: none;
-    }
-`;
-
-const BookingCard = styled.div`
-    background: white;
-    border-radius: 16px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #f3f4f6;
-    transition: all 0.3s ease;
-    
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    }
-`;
-
-const CardHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-`;
-
-const CardNumber = styled.span`
-    font-weight: 700;
-    color: #ff8c42;
-    font-size: 1.1rem;
-`;
-
-const CardContent = styled.div`
-    margin-bottom: 1.5rem;
-`;
-
-const TicketSection = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: #f8fafc;
-    border-radius: 12px;
-`;
-
-const TicketIcon = styled.div`
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, #ff8c42, #ff6b35);
-    color: white;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    flex-shrink: 0;
-`;
-
-const TicketDetails = styled.div`
-    flex: 1;
-    min-width: 0;
-`;
-
-const TicketId = styled.div`
-    font-size: 0.8rem;
-    color: #6b7280;
-    margin-top: 0.25rem;
-`;
-
-const InfoGrid = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-`;
-
-const InfoItem = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-`;
-
-const InfoIcon = styled.div`
-    width: 32px;
-    height: 32px;
-    background: #f3f4f6;
-    color: #6b7280;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-    flex-shrink: 0;
-`;
-
-const InfoContent = styled.div`
-    flex: 1;
-    min-width: 0;
-`;
-
-const InfoLabel = styled.div`
-    font-size: 0.7rem;
-    color: #9ca3af;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.25rem;
-`;
-
-const InfoValue = styled.div`
-    font-weight: 600;
-    color: #374151;
-    font-size: 0.9rem;
-    word-break: break-all;
-    overflow-wrap: anywhere;
-`;
-
-const CardActions = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
-
-const EmptyState = styled.div`
-    text-align: center;
-    padding: 4rem 2rem;
-    background: white;
-    border-radius: 16px;
-    margin-top: 2rem;
-`;
-
-const EmptyIcon = styled.div`
-    width: 80px;
-    height: 80px;
-    background: #f3f4f6;
-    color: #9ca3af;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    margin: 0 auto 1.5rem;
-`;
-
-const EmptyTitle = styled.h3`
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 0.5rem;
-`;
-
-const EmptySubtitle = styled.p`
-    color: #6b7280;
-    max-width: 400px;
-    margin: 0 auto;
-`;
-
-const AcceptButton = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: #10b981;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex: 1;
-    
-    &:hover:not(:disabled) {
-        background: #059669;
-        transform: translateY(-1px);
-    }
-    
-    &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-`;
-
-const RejectButton = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: #ef4444;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex: 1;
-    
-    &:hover:not(:disabled) {
-        background: #dc2626;
-        transform: translateY(-1px);
-    }
-    
-    &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-`;
 
 export default RequestedBooking;
