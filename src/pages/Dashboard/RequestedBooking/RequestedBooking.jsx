@@ -388,7 +388,7 @@ const RequestedBooking = () => {
         }
     };
     return (
-        <div className='p-4 lg:p-8 bg-gray-50 min-h-screen'>
+        <div className='p-4 lg:p-8 min-h-screen'>
             {/* Header Section */}
             <div className="flex justify-between items-start mb-8 flex-col md:flex-row gap-4">
                 <div>
